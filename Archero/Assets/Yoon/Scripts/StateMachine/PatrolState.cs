@@ -6,10 +6,18 @@ namespace Unit.State
 {
     public class PatrolState : IState
     {
+
+        public bool IsChangeAble() => true;
         public StateTypes GetStateType => StateTypes.Patrol;
+        public Animator anim { get; set; }
+        public PatrolState(Animator anim)
+        {
+            this.anim = anim;
+        }
 
         public void Enter()
         {
+            anim.Play("PatrolState");
 
         }
 

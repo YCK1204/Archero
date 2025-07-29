@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public class Monster : MonoBehaviour
 {
-    IStateMachine fsm;
+    protected IStateMachine fsm;
     MonsterStat stat;
     NavMeshAgent agent;
     [SerializeField]Vector3[] patrolPositions;
@@ -27,6 +27,7 @@ public class Monster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (stat.GetDetectRange > GetDistance())
         {
             agent.SetDestination(target.transform.position);
@@ -66,5 +67,9 @@ public class Monster : MonoBehaviour
             patrolIndex++;
             if (patrolIndex >= patrolPositions.Length) patrolIndex = 0;
         }
+    }
+    public void Damaged()
+    {
+        
     }
 }

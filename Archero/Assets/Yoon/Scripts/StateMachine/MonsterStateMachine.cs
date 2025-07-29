@@ -20,17 +20,17 @@ namespace Unit.State
             if (stateDict != null) { ForceChange(StateTypes.Patrol); return; }
             
             stateDict = new Dictionary<StateTypes, IState>(5);
-            stateDict.Add(StateTypes.Patrol, new PatrolState());
-            stateDict.Add(StateTypes.Trace, new TraceState());
-            stateDict.Add(StateTypes.Attack, new AttackState());
-            stateDict.Add(StateTypes.Damaged, new DamagedState());
-            stateDict.Add(StateTypes.Die, new DieState());
+            stateDict.Add(StateTypes.Patrol, new PatrolState(anim));
+            stateDict.Add(StateTypes.Trace, new TraceState(anim));
+            stateDict.Add(StateTypes.Attack, new AttackState(anim));
+            stateDict.Add(StateTypes.Damaged, new DamagedState(anim));
+            stateDict.Add(StateTypes.Die, new DieState(anim));
             ForceChange(StateTypes.Patrol);
         }
         public void Chage(StateTypes type)
         {
-            if (currState.GetStateType == StateTypes.Die||
-                currState.GetStateType == type) return;
+            //죽거나 같은 상태 진입 혹은 변경이 가능하지 않을때
+            if (currState.GetStateType == StateTypes.Die || currState.GetStateType == type || !currState.IsChangeAble()) return;
             currState.Exit();
             currState = stateDict[type];
             currState.Enter();

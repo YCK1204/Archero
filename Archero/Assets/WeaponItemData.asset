@@ -10,6 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: New Potion Item Data
-  m_EditorClassIdentifier: Assembly-CSharp::PotionItemData
-  HealAmount: 0
+  m_Name: WeaponItemData
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponItemData
+  Name: "\uC6E8\uD3F0"
+  Icon: {fileID: 0}
+  Animator: {fileID: 0}
+  Type: 0
+  AttackPower: 0

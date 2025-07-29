@@ -65,6 +65,7 @@
     <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\BaseUI.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\Data\DropList.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\Managers\ResourceManager.cs" />
+    <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Define\SingleTon.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\Managers\UIManager.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\WindowUI.cs" />

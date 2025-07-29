@@ -71,6 +71,7 @@
     <Compile Include="Assets\Define\SingleTon.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\AttackState.cs" />
     <Compile Include="Assets\Define\ResourceManager.cs" />
+    <Compile Include="Assets\Yoon\Scripts\StateMachine\DieState.cs" />
     <Compile Include="Assets\Yoon\Scripts\Monster.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\MonsterStateMachine.cs" />
   </ItemGroup>

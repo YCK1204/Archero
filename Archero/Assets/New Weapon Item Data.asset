@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: WeaponItemData
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponItemData
+  m_Script: {fileID: 11500000, guid: 99bbd6d2c8751944dab928d17af2007c, type: 3}
+  m_Name: New Weapon Item Data
+  m_EditorClassIdentifier: 
   Name: "\uC6E8\uD3F0"
   Icon: {fileID: 0}
   Animator: {fileID: 0}

@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private CharacterStats stats;
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 5f;  // 이동속도 인스펙터에서 조정 가능
+    //[SerializeField] private float moveSpeed = 5f;  // 이동속도 인스펙터에서 조정 가능
 
     [Header("Dash")]
-    [SerializeField] private float dashSpeed = 15f;    
+    //[SerializeField] private float dashSpeed = 15f;
     [SerializeField] private float dashDuration = 0.2f;
     [SerializeField] private float dashCooldown = 1f;
- //   [SerializeField] private float invincibleDuration = 0.2f;  // (일단 임시로 만든) 대쉬 중 무적 시간
+    //   [SerializeField] private float invincibleDuration = 0.2f;  // (일단 임시로 만든) 대쉬 중 무적 시간
     [SerializeField] private float acceleration = 15f;  // 가속 정도
 
     [SerializeField] private bool canDash = true;  // 대쉬기능 락/언락 가능
-    public bool CanDash{ get => canDash; set => canDash = value; }
+    public bool CanDash { get => canDash; set => canDash = value; }
     public bool IsMoving { get; private set; }
 
     private Vector2 moveInput;
@@ -28,7 +29,9 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         rgdbd = GetComponent<Rigidbody2D>();
-        currentSpeed = moveSpeed;
+        stats = GetComponent<CharacterStats>();
+        // 시작 속도를 CharacterStats에서 가져와 초기화
+        currentSpeed = stats.FinalMoveSpeed;
     }
 
     void Update()
@@ -39,7 +42,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate() // 이동
     {
-        float targetSpeed = isDashing ? dashSpeed : moveSpeed;
+        float targetSpeed = isDashing ? stats.FinalDashSpeed : stats.FinalMoveSpeed;
         currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, Time.fixedDeltaTime * acceleration); // 부드러운 대쉬 이동
         rgdbd.velocity = moveInput * currentSpeed;
     }

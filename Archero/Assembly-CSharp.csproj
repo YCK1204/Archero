@@ -61,12 +61,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\WorkSpase\Lee\Scripts\Managers\GameManager.cs" />
+    <Compile Include="Assets\WorkSpase\Lee\Scripts\Data\MonsterDropTable.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\BaseUI.cs" />
+    <Compile Include="Assets\WorkSpase\Lee\Scripts\Data\DropList.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\Managers\ResourceManager.cs" />
     <Compile Include="Assets\Define\SingleTon.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\Managers\UIManager.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\WindowUI.cs" />
     <Compile Include="Assets\Define\ResourceManager.cs" />
+    <Compile Include="Assets\WorkSpase\Lee\Scripts\Item\BaseItem.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\Managers\PoolManager.cs" />
   </ItemGroup>
   <ItemGroup>

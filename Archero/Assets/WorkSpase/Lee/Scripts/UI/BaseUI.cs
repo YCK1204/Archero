@@ -33,7 +33,6 @@ namespace Lee.Scripts
 
                 transforms.Add(key, child);
 
-
                 Button button = child.GetComponent<Button>();
                 if (button != null)
                     buttons.Add(key, button);

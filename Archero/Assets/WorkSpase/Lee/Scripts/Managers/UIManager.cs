@@ -9,12 +9,22 @@ namespace Lee.Scripts
     public class UIManager : MonoBehaviour
     {
         private Canvas windowCanvas;
+        private Canvas popUpCanvas;
+        private Stack<PopUpUI> popUpStack;
 
         private void Awake()
         {
             windowCanvas = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
             windowCanvas.gameObject.name = "WindowCanvas";
             windowCanvas.sortingOrder = 10;
+
+            popUpCanvas = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
+            popUpCanvas.gameObject.name = "PopUpCanvas";
+            popUpCanvas.sortingOrder = 100;
+
+            popUpStack = new Stack<PopUpUI>();
+
+
         }
 
         public void Recreated()
@@ -22,6 +32,12 @@ namespace Lee.Scripts
             windowCanvas = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
             windowCanvas.gameObject.name = "WindowCanvas";
             windowCanvas.sortingOrder = 10;
+
+            popUpCanvas = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
+            popUpCanvas.gameObject.name = "PopUpCanvas";
+            popUpCanvas.sortingOrder = 100;
+
+            popUpStack = new Stack<PopUpUI>();
         }
 
         public void Clear()
@@ -51,5 +67,40 @@ namespace Lee.Scripts
         {
             windowUI.transform.SetAsLastSibling();
         }
+
+        public T ShowPopUpUI<T>(T popUpUI) where T : PopUpUI
+        {
+            if (popUpStack.Count > 0)
+            {
+                PopUpUI prevUI = popUpStack.Peek();
+                prevUI.gameObject.SetActive(false);
+            }
+
+            T ui = GameManager.Pool.GetUI(popUpUI);
+            ui.transform.SetParent(popUpCanvas.transform, false);
+
+            popUpStack.Push(ui);
+
+            return ui;
+        }
+
+        public T ShowPopUpUI<T>(string path) where T : PopUpUI
+        {
+            T ui = GameManager.Resource.Load<T>(path);
+            return ShowPopUpUI(ui);
+        }
+
+        public void ClosePopUpUI()
+        {
+            PopUpUI ui = popUpStack.Pop();
+            GameManager.Pool.Release(ui.gameObject);
+
+            if (popUpStack.Count > 0)
+            {
+                PopUpUI curUI = popUpStack.Peek();
+                curUI.gameObject.SetActive(true);
+            }
+        }
+
     }
 }

@@ -15,7 +15,7 @@ namespace Lee.Scripts
         protected override void Awake()
         {
             base.Awake();
-            //characterStats = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterStats>();
+            characterStats = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterStats>();
             buttons["DecideButton"].onClick.AddListener(() => { OnDecideClicked(); });
         }
 
@@ -50,12 +50,19 @@ namespace Lee.Scripts
         }
         private void OnDecideClicked()
         {
+            int current=0;
             if (selectedReward is StatRewardData statData)
             {
                 // 스탯 보너스
-                //  int current = characterStats.(statData.statType); 캐릭터 스탯에서 능력치 가저오기
-                // int gain = GameManager.Reward.CalculateStatBonus(statData, current);  캐릭터 스탯 보너스 수치 연산
-                // characterStats.AddStat(statData.statType, gain); 캐릭터 스탯 보너스 추가
+                switch (statData.statType)
+                {
+                    case StatType.Health:
+                        current = characterStats.CurrentHealth;
+                        break;
+                }
+                 
+                int gain = GameManager.Reward.CalculateStatBonus(statData, current);  //캐릭터 스탯 보너스 수치 연산
+                characterStats.CurrentHealth += gain; //캐릭터 스탯 보너스 추가
                 Debug.Log($"이것은{statData}입니다");
             }
             else if(selectedReward is SkillRewardData skillData)
@@ -66,5 +73,8 @@ namespace Lee.Scripts
             gameObject.SetActive(false);
             //GameManager.UI.ClosePopUpUI();
         }
+
+
+
     }
 }

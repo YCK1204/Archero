@@ -17,12 +17,15 @@ public class MobProjectile : MonoBehaviour
         this.speed = speed;
         this.damage = damage;
         currTime = 0f;
+
+        transform.position = shooterPos;
     }
     // Update is called once per frame
     void Update()
     {
         currTime += Time.deltaTime;
         if (currTime >= 5f) { BattleManager.GetInstance.normalMobProjectile.EnQueue(this);  return; }
+        transform.position += dir * (Time.deltaTime*speed);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -32,4 +35,5 @@ public class MobProjectile : MonoBehaviour
             BattleManager.GetInstance.Attack(collision, damage, shooterPos);
         }
     }
+
 }

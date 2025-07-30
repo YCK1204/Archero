@@ -9,8 +9,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{6614962A-3EDF-6A0F-598B-4CEDB4C53E8D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -64,12 +63,13 @@
     <Compile Include="Assets\Yoon\Scripts\TestScripts\EnemyNavTest.cs" />
     <Compile Include="Assets\Yoon\Handler\IHandler.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\DamagedState.cs" />
+    <Compile Include="Assets\Yoon\Handler\RangeHandle.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\Interface\IStateMachine.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\Interface\IState.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\PatrolState.cs" />
-    <Compile Include="Assets\Scripts\PlayerCollision.cs" />
     <Compile Include="Assets\Yoon\Scripts\MobProjectile.cs" />
+    <Compile Include="Assets\Scripts\PlayerCollision.cs" />
     <Compile Include="Assets\Yoon\Scripts\MonsterStat.cs" />
     <Compile Include="Assets\Scripts\Stat.cs" />
     <Compile Include="Assets\Scripts\Item\WeaponItemData.cs" />

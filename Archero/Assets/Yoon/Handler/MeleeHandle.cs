@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Define;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,19 +9,24 @@ namespace Handler
 {
     public class MeleeHandle : IAttackHandler
     {
-        public void Attack(int dmg, Vector3 dir)
+        public void AttackUpdate(int dmg, Vector3 position, Vector3 target)
         {
-            throw new NotImplementedException();
+            
         }
 
         public bool DelayCheck(float goal, float curr)
         {
-            throw new NotImplementedException();
+            return goal <= curr;
         }
-
+        //근접은 무조건 붙어야함
         public bool RangeCheck(float range, float dist)
         {
-            throw new NotImplementedException();
+            return false; //range >= dist;
+        }
+
+        public void OnCollision(Collider2D collider, int dmg, Vector3 dir)
+        {
+            BattleManager.GetInstance.Attack(collider, dmg, dir);
         }
     }
 } 

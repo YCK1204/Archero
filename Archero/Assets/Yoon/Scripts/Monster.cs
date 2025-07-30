@@ -12,28 +12,45 @@ public class Monster : MonoBehaviour
     MonsterStat stat;
     NavMeshAgent agent;
     [SerializeField]Vector3[] patrolPositions;
-    int patrolIndex = 0;
     [SerializeField]Transform target;
+    
     IAttackHandler attackHandle;
+    [SerializeField] MobType attackType;
+
+    int patrolIndex = 0;
+    float attackTimer = 0f;
     void Start()
     {
         fsm = new MonsterStateMachine(GetComponent<Animator>());
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
-        stat = new MonsterStat(100,10,5f,3f,1f);
+        stat = new MonsterStat(100,10,5f,7f,5f,1);
         agent.speed = stat.GetMoveSpeed;
         fsm.Init();
         BattleManager.GetInstance.RegistHitInfo(GetComponent<Collider2D>(), Damaged);
+        attackHandle = TypeFactory(attackType);
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        attackTimer = Mathf.Clamp(attackTimer+Time.deltaTime,0,stat.GetAttackDelay);
         if (stat.GetDetectRange > GetDistance())
         {
+            if (attackHandle.RangeCheck(stat.GetAtkRange, GetDistance()))
+            {
+                agent.ResetPath();
+                agent.velocity = Vector3.zero;
+                if (attackHandle.DelayCheck(stat.GetAttackDelay, attackTimer))
+                {
+                    attackHandle.AttackUpdate(stat.GetATK, transform.position,target.position);
+                    attackTimer = 0f;
+                }
+                return;
+            }
+
             agent.SetDestination(target.transform.position);
             fsm.Chage(StateTypes.Trace);
         }
@@ -50,8 +67,8 @@ public class Monster : MonoBehaviour
     //루트계산 스킵,stat의 range들은 n을 입력시 생성자에서 n의 재곱으로 치환됨
     private float GetDistance()
     {
-        return Mathf.Abs(Mathf.Pow(target.position.x - transform.position.x, 2) -
-            Mathf.Pow(target.position.y - transform.position.y, 2));
+        return Mathf.Pow(target.position.x - transform.position.x, 2) +
+            Mathf.Pow(target.position.y - transform.position.y, 2);
     }
     void OnDrawGizmosSelected()
     {
@@ -62,11 +79,22 @@ public class Monster : MonoBehaviour
             Gizmos.DrawSphere(patrolPositions[i],0.5f);
         }
     }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (attackHandle.DelayCheck(stat.GetAttackDelay, attackTimer))
+        {
+            attackHandle.OnCollision(collision.collider,stat.GetATK, transform.position);
+            attackTimer = 0f;
+        }
+    }
+
     private void PatrolLoop()
     {
         
         if (agent.remainingDistance < 0.1f)
         {
+            agent.velocity = Vector3.zero;
+
             agent.SetDestination(patrolPositions[patrolIndex]);
             patrolIndex++;
             if (patrolIndex >= patrolPositions.Length) patrolIndex = 0;
@@ -80,5 +108,17 @@ public class Monster : MonoBehaviour
         Vector3 knockbackDir = direction.normalized;
         agent.velocity = knockbackDir * 3f;
         stat.GetDamage(damage);
+    }
+    private IAttackHandler TypeFactory(MobType type)
+    {
+        switch (type)
+        {
+            case MobType.melee:
+                return new MeleeHandle();
+            case MobType.Ranged:
+                return new RangeHandle();
+
+        }
+        return new MeleeHandle();
     }
 }

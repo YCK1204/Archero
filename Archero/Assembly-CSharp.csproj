@@ -65,7 +65,9 @@
     <Compile Include="Assets\Yoon\Scripts\StateMachine\DamagedState.cs" />
     <Compile Include="Assets\Yoon\Handler\RangeHandle.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\Managers\GameManager.cs" />
+    <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\RewardSelect_PopUpUI.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\Interface\IStateMachine.cs" />
+    <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\Base\WindowUI.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\Interface\IState.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\PatrolState.cs" />
     <Compile Include="Assets\Yoon\Scripts\MobProjectile.cs" />
@@ -77,8 +79,7 @@
     <Compile Include="Assets\Scripts\Stat.cs" />
     <Compile Include="Assets\Scripts\Item\WeaponItemData.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\TraceState.cs" />
-    <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\BaseUI.cs" />
-    <Compile Include="Assets\WorkSpase\Lee\Scripts\Data\DropList.cs" />
+    <Compile Include="Assets\WorkSpase\Lee\Scripts\Data\StatRewardData.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\CharacterStats.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\Managers\ResourceManager.cs" />
@@ -86,13 +87,16 @@
     <Compile Include="Assets\Scripts\DataManager.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\Managers\UIManager.cs" />
     <Compile Include="Assets\Scripts\PlayerInputHandler.cs" />
+    <Compile Include="Assets\WorkSpase\Lee\Scripts\Data\Base\RewardData.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\AttackState.cs" />
+    <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\Base\PopUpUI.cs" />
     <Compile Include="Assets\Scripts\Item\ArmorItemData.cs" />
     <Compile Include="Assets\Scripts\Item\ItemData.cs" />
-    <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\WindowUI.cs" />
+    <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\Base\BaseUI.cs" />
     <Compile Include="Assets\Scripts\Item\Item.cs" />
     <Compile Include="Assets\Define\ResourceManager.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\DieState.cs" />
+    <Compile Include="Assets\WorkSpase\Lee\Scripts\Data\SkillRewardData.cs" />
     <Compile Include="Assets\Scripts\Item\Potion.cs" />
     <Compile Include="Assets\Define\BattleManager.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\PopUpUI.cs" />
@@ -101,6 +105,29 @@
     <Compile Include="Assets\Yoon\Scripts\StateMachine\MonsterStateMachine.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\Managers\PoolManager.cs" />
     <Compile Include="Assets\Scripts\Item\EXPItemData.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
+    <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -1135,12 +1162,12 @@
       <HintPath>Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.InputSystem">
-      <HintPath>Library\ScriptAssemblies\Unity.InputSystem.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.InputSystem.ForUI">
       <HintPath>Library\ScriptAssemblies\Unity.InputSystem.ForUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.InputSystem">
+      <HintPath>Library\ScriptAssemblies\Unity.InputSystem.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.VisualScripting.SettingsProvider.Editor">

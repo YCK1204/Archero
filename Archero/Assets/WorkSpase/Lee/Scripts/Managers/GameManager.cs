@@ -23,6 +23,10 @@ namespace Lee.Scripts
         private static PoolManager poolManager;
         public static PoolManager Pool { get { return poolManager; } }
 
+        private static RewardManager rewardManager;
+        public static RewardManager Reward { get { return rewardManager; } }
+
+
         private void Awake()
         {
             if (instance != null)
@@ -57,6 +61,11 @@ namespace Lee.Scripts
             uiObj.name = "UIManager";
             uiObj.transform.parent = transform;
             uiManager = uiObj.AddComponent<UIManager>();
+
+            GameObject reObj = new GameObject();
+            reObj.name = "RewardManager";
+            reObj.transform.parent = transform;
+            rewardManager = reObj.AddComponent<RewardManager>();
         }
     }
 }

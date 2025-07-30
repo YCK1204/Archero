@@ -16,14 +16,9 @@ namespace Lee.Scripts
             buttons["DecideButton"].onClick.AddListener(() => {  });
         }
 
-        private void Start()
-        {
-            StartCoroutine(StartRountine());
-        }
-
         private void OnDisable()
         {
-            Debug.Log("시간은 움직인다");
+            StartCoroutine(StartRountine());
         }
 
         IEnumerator StartRountine()

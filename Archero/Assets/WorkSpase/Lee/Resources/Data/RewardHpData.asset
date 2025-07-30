@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   prefab: {fileID: 5427350499359506132, guid: 5f13e18e8abd4e740bd797af6085d90a, type: 3}
-  rewarName: 
-  description: 
+  rewarName: "\uCCB4\uB825\uBCF4\uB108\uC2A4"
+  description: "\uD604\uC7AC\uAC00\uC9C4 \uCCB4\uB825\uC5D0 \uCD94\uAC00 \uCCB4\uB825
+    \uBCF4\uB108\uC2A4"

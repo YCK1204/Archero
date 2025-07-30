@@ -35,4 +35,6 @@ public abstract class EquippableItemData : BaseItemData
 {
     public abstract void Equip();
     public abstract void UnEquip();
+    //public abstract void Equip(Player player);
+    //public abstract void UnEquip(Player player);
 }

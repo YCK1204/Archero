@@ -1,55 +1,94 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
 {
-    [Header("±âº» ½ºÅÈ ¼³Á¤")]
-    [SerializeField] private Stat baseStats;
+    [Header("ê¸°ë³¸ ìŠ¤íƒ¯ ì„¤ì •")]
 
-    // ÇöÀç ´É·ÂÄ¡ (½ÇÁ¦ °ÔÀÓ¿¡¼­ º¯µ¿µÇ´Â °ªµé)
-    public int CurrentHealth { get; private set; }
-    public int FinalAttack { get; private set; } // ÃÖÁ¾ °ø°İ·Â (¹«±â, ¹öÇÁ µîÀÌ ¸ğµÎ °è»êµÈ)
-    public int FinalDefense { get; private set; }
-    public float FinalMoveSpeed { get; private set; }
-    public float FinalDashSpeed { get; private set; }
+    [SerializeField] private Stat baseStats;
+Â  Â  // í˜„ì¬ ëŠ¥ë ¥ì¹˜ (ì‹¤ì œ ê²Œì„ì—ì„œ ë³€ë™ë˜ëŠ” ê°’ë“¤)
+Â  Â  public Stat TotalStats { get; private set; }
+
+    [Header("ìºë¦­í„° ì •ë³´")]
+    public int Level;
+    public int CurrentHealth;
+    public int FinalAttack;
+    public int FinalDefense;
+    public float MoveSpeed;
+    public float DashSpeed;
 
     void Awake()
     {
-        // °ÔÀÓ ½ÃÀÛ ½Ã, ±âº» ½ºÅÈÀ» ¹ÙÅÁÀ¸·Î ÇöÀç ´É·ÂÄ¡¸¦ ÃÊ±âÈ­
-        CurrentHealth = baseStats.maxHealth;
-        FinalDefense = baseStats.defense;
-        FinalMoveSpeed = baseStats.moveSpeed;
-        FinalDashSpeed = baseStats.dashSpeed;
-
-        // ÃÖÁ¾ °ø°İ·ÂÀº ÀÏ´Ü 1À¸·Î ½ÃÀÛ (¹«±â ÀåÂø ½Ã ¾÷µ¥ÀÌÆ® ¿¹Á¤)
-        FinalAttack = 1;
+Â  Â  Â  Â  // ê²Œì„ ì‹œì‘ ì‹œ, ìµœì¢… ìŠ¤íƒ¯ì„ ê¸°ë³¸ ìŠ¤íƒ¯ìœ¼ë¡œ ì´ˆê¸°í™”
+        // new Stat(ê³µê²©ë ¥, ë°©ì–´ë ¥, ìµœëŒ€ì²´ë ¥, ì´ë™ì†ë„, ëŒ€ì‰¬ì†ë„)
+        baseStats = new Stat(1, 5, 100, 5f, 15f);
+        TotalStats = baseStats;
+        CurrentHealth = TotalStats.MaxHealth;
+        FinalAttack = TotalStats.Attack;
+        FinalDefense = TotalStats.Defense;
     }
 
-    /// <summary>
-    /// ÃÖÁ¾ °ø°İ·ÂÀ» ¾÷µ¥ÀÌÆ®ÇÏ´Â ÇÔ¼ö. ¹«±â ÀåÂø/ÇØÁ¦ ½ºÅ©¸³Æ®¿¡¼­ ÀÌ ÇÔ¼ö¸¦ È£Ãâ
-    /// </summary>
-    /// <param name="newAttack">ÃÖÁ¾ °ø°İ·Â</param>
-    public void UpdateFinalAttack(int newAttack)
+Â  Â  /// <summary>
+Â  Â  /// ìµœì¢… ê³µê²©ë ¥ì„ ì—…ë°ì´íŠ¸í•˜ëŠ” í•¨ìˆ˜. ë¬´ê¸° ì¥ì°©/í•´ì œ ìŠ¤í¬ë¦½íŠ¸ì—ì„œ ì´ í•¨ìˆ˜ë¥¼ í˜¸ì¶œ
+Â  Â  /// </summary>
+Â  Â  /// <param name="newAttack">ìµœì¢… ê³µê²©ë ¥</param>
+Â  Â  public void UpdateFinalAttack(int newAttack)
     {
         FinalAttack = newAttack;
-        // °ö¿¬»êÀ¸·Î
+Â  Â  Â  Â  // ê³±ì—°ì‚°ìœ¼ë¡œ
+Â  Â  }
+    /// <summary>
+Â  Â  /// ìµœì¢… ë°©ì–´ë ¥ì„ ì—…ë°ì´íŠ¸í•˜ëŠ” í•¨ìˆ˜. ë°©ì–´êµ¬ ì¥ì°©/í•´ì œ ìŠ¤í¬ë¦½íŠ¸ì—ì„œ ì´ í•¨ìˆ˜ë¥¼ í˜¸ì¶œ
+Â  Â  /// </summary>
+Â  Â  /// <param name="newDefense">ìµœì¢… ë°©ì–´ë ¥</param>
+Â  Â  public void UpdateFinalDefense(int newDefense)
+    {
+        FinalDefense = newDefense;
+Â  Â  Â  Â  // ê³±ì—°ì‚°ìœ¼ë¡œ
+Â  Â  }
+    public void LevelUp()
+    {
+        Level++;
+        Stat levelUpBonus = new Stat(2, 1, 10, 0f, 0f); // ë ˆë²¨ì—… ì‹œ ì˜¤ë¥´ëŠ” ìŠ¤íƒ¯ ( ê³µê²©ë ¥, ë°©ì–´ë ¥, ì²´ë ¥ )
+Â  Â  Â  Â  TotalStats += levelUpBonus;
+
+Â  Â  Â  Â  // ì²´ë ¥ 3ë¶„ì˜ 1 íšŒë³µ
+Â  Â  Â  Â  if (CurrentHealth + TotalStats.MaxHealth / 3 < TotalStats.MaxHealth)
+        {
+            CurrentHealth += TotalStats.MaxHealth / 3;
+        }
+        else
+        {
+            CurrentHealth = TotalStats.MaxHealth;
+        }
     }
 
-    /// <summary>
-    /// µ¥¹ÌÁö¸¦ ¹Ş´Â ÇÔ¼ö
-    /// </summary>
-    /// <param name="damage">¹ŞÀº µ¥¹ÌÁö</param>
-    public void TakeDamage(int damage)
+Â  Â  /// <summary>
+Â  Â  /// ë°ë¯¸ì§€ë¥¼ ë°›ëŠ” í•¨ìˆ˜
+Â  Â  /// </summary>
+Â  Â  /// <param name="damage">ë°›ì€ ë°ë¯¸ì§€</param>
+Â  Â  public void TakeDamage(int damage)
     {
-        // ¹æ¾î·ÂÀ» °í·ÁÇÑ ÃÖÁ¾ µ¥¹ÌÁö °è»ê
-        int finalDamage = damage - FinalDefense;
-        if (finalDamage < 1) finalDamage = 1; // ÃÖ¼Ò 1ÀÇ µ¥¹ÌÁö´Â ¹Şµµ·Ï ¼³Á¤
+Â  Â  Â  Â  // 1. ë°©ì–´ë ¥ì„ ê³ ë ¤í•œ ìµœì¢… ë°ë¯¸ì§€ ê³„ì‚°
+         int finalDamage = damage - TotalStats.Defense;
 
+        // 2. ìµœì†Œ 1ì˜ ë°ë¯¸ì§€ëŠ” ë°›ë„ë¡ ë³´ì •
+        if (finalDamage < 1)
+        {
+            finalDamage = 1;
+        }
+
+        // 3. í˜„ì¬ ì²´ë ¥ì—ì„œ ìµœì¢… ë°ë¯¸ì§€ë§Œí¼ ì‹¤ì œ ê°ì†Œ ì ìš©
         CurrentHealth -= finalDamage;
-        
+
+        // 4. ë°ë¯¸ì§€ë¥¼ ë°›ì€ í›„ ë‚¨ì€ ì²´ë ¥ì„ ë¡œê·¸ë¡œ ì¶œë ¥í•˜ì—¬ í™•ì¸
+        Debug.Log($"[ë°ë¯¸ì§€ ê³„ì‚°] {gameObject.name}ì´(ê°€) {finalDamage}ì˜ ë°ë¯¸ì§€ë¥¼ ì…ì—ˆìŠµë‹ˆë‹¤. ë‚¨ì€ ì²´ë ¥: {CurrentHealth}");
+
+        // 5. ì²´ë ¥ì´ 0ë³´ë‹¤ ì•„ë˜ë¡œ ë‚´ë ¤ê°€ì§€ ì•Šë„ë¡ ë³´ì •
         if (CurrentHealth <= 0)
         {
             CurrentHealth = 0;
-            // ¿©±â¿¡ Ä³¸¯ÅÍ »ç¸Á ±¸Çö
+            // ì—¬ê¸°ì— ìºë¦­í„° ì‚¬ë§ ë¡œì§ êµ¬í˜„
+            Debug.Log(gameObject.name + "ì´(ê°€) ì‚¬ë§í–ˆìŠµë‹ˆë‹¤.");
         }
     }
 }

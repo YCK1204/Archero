@@ -9,7 +9,7 @@ namespace Lee.Scripts
 {
     public class RewardSelect_PopUpUI : PopUpUI
     {
-        public List<Button> curRewardList = new List<Button>();
+        public List<RectTransform> curRewardList = new List<RectTransform>();
         protected override void Awake()
         {
             base.Awake();
@@ -30,19 +30,40 @@ namespace Lee.Scripts
         IEnumerator StartRountine()
         {
             yield return new WaitForSeconds(0.2f);
+            curRewardList.Add(rectTransform["RewardSlot1"]);
+            curRewardList.Add(rectTransform["RewardSlot2"]);
+            curRewardList.Add(rectTransform["RewardSlot3"]);
             Time.timeScale = 0f;
-
-
+            yield return new WaitForSeconds(0.2f);
+            RandomReward();
         }
 
         private void RandomReward()
         {
             // 전체 섞기
+            var allTypes = GameManager.Reward.AllRewardTypes.ToList();
             Shuffle(GameManager.Reward.AllRewardTypes.ToList());
+            var picks = allTypes.Take(curRewardList.Count).ToArray();
+            for (int i = 0; i < 3; i++)
+            {
+                var slotBtn = curRewardList[i];
+                var slotTf = slotBtn.transform as RectTransform;
+
+                foreach (Transform child in slotTf)
+                    Destroy(child.gameObject);
 
 
+                var data = GameManager.Reward.GetData(picks[i]);
+                var go = GameManager.Resource.Instantiate(data.prefab);
 
+  
+                go.transform.SetParent(slotTf, false);// 로컬 포지션
 
+                if (go.TryGetComponent<RectTransform>(out var rt))
+                {
+                    rt.position = slotTf.position;
+                }
+            }
         }
 
         private void Shuffle<T>(IList<T> list)

@@ -9,7 +9,7 @@ namespace Lee.Scripts
 
     public class BaseUI : MonoBehaviour
     {
-        protected Dictionary<string, RectTransform> transforms;
+        protected Dictionary<string, RectTransform> rectTransform;
         protected Dictionary<string, Button> buttons;
         protected Dictionary<string, TMP_Text> texts;
         protected virtual void Awake()
@@ -19,7 +19,7 @@ namespace Lee.Scripts
 
         private void BindChildren()
         {
-            transforms = new Dictionary<string, RectTransform>();
+            rectTransform = new Dictionary<string, RectTransform>();
             buttons = new Dictionary<string, Button>();
             texts = new Dictionary<string, TMP_Text>();
 
@@ -28,10 +28,10 @@ namespace Lee.Scripts
             {
                 string key = child.gameObject.name;
 
-                if (transforms.ContainsKey(key))
+                if (rectTransform.ContainsKey(key))
                     continue;
 
-                transforms.Add(key, child);
+                rectTransform.Add(key, child);
 
                 Button button = child.GetComponent<Button>();
                 if (button != null)

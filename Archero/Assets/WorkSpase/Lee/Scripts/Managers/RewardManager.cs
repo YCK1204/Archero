@@ -8,13 +8,20 @@ namespace Lee.Scripts
     public class RewardManager : MonoBehaviour
     {
         [Header("생성한 RewardData 에셋들")]
-        public List<RewardData> rewardDatas;
+        [SerializeField]
+         private List<RewardData> rewardDatas = new List<RewardData>();
 
         private Dictionary<RewardType, RewardData> dataDict;
 
         void Awake()
         {
-            dataDict = rewardDatas.ToDictionary(d => d.type, d => d);
+            if (rewardDatas == null || rewardDatas.Count == 0)
+            {
+                // Resources/Rewards 폴더 안에 있는 모든 RewardData를 로드
+                var loaded = Resources.LoadAll<RewardData>("Data");
+                rewardDatas = new List<RewardData>(loaded);
+            }
+
         }
 
         // 모든 보상 타입 반환

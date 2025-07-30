@@ -8,16 +8,9 @@ namespace Lee.Scripts
 
     public class PopUpUI : BaseUI
     {
-        // Start is called before the first frame update
-        void Start()
+        protected override void Awake()
         {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
+            base.Awake();
         }
     }
 }

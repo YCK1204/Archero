@@ -23,7 +23,6 @@ namespace Lee.Scripts
 
         private void OnDisable()
         {
-            Time.timeScale = 1f;
             Debug.Log("시간은 움직인다");
         }
 
@@ -33,7 +32,6 @@ namespace Lee.Scripts
             curRewardList.Add(rectTransform["RewardSlot1"]);
             curRewardList.Add(rectTransform["RewardSlot2"]);
             curRewardList.Add(rectTransform["RewardSlot3"]);
-            Time.timeScale = 0f;
             yield return new WaitForSeconds(0.2f);
             RandomReward();
         }
@@ -42,7 +40,7 @@ namespace Lee.Scripts
         {
             // 전체 섞기
             var allTypes = GameManager.Reward.AllRewardTypes.ToList();
-            Shuffle(GameManager.Reward.AllRewardTypes.ToList());
+            Shuffle(allTypes);
             var picks = allTypes.Take(curRewardList.Count).ToArray();
             for (int i = 0; i < 3; i++)
             {

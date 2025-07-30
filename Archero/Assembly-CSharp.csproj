@@ -9,7 +9,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{6614962A-3EDF-6A0F-598B-4CEDB4C53E8D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -61,19 +62,41 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Yoon\Scripts\TestScripts\EnemyNavTest.cs" />
-    <Compile Include="Assets\Yoon\Scripts\StateMachine\DIeState.cs" />
+    <Compile Include="Assets\Yoon\Handler\IHandler.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\DamagedState.cs" />
+    <Compile Include="Assets\WorkSpase\Lee\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\Interface\IStateMachine.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\Interface\IState.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\PatrolState.cs" />
+    <Compile Include="Assets\Scripts\PlayerCollision.cs" />
+    <Compile Include="Assets\Yoon\Scripts\MobProjectile.cs" />
     <Compile Include="Assets\Yoon\Scripts\MonsterStat.cs" />
+    <Compile Include="Assets\Scripts\Stat.cs" />
+    <Compile Include="Assets\Scripts\Item\WeaponItemData.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\TraceState.cs" />
+    <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\BaseUI.cs" />
+    <Compile Include="Assets\WorkSpase\Lee\Scripts\Data\DropList.cs" />
+    <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\CharacterStats.cs" />
+    <Compile Include="Assets\WorkSpase\Lee\Scripts\Managers\ResourceManager.cs" />
     <Compile Include="Assets\Define\SingleTon.cs" />
+    <Compile Include="Assets\Scripts\DataManager.cs" />
+    <Compile Include="Assets\WorkSpase\Lee\Scripts\Managers\UIManager.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\AttackState.cs" />
+    <Compile Include="Assets\Scripts\Item\ArmorItemData.cs" />
+    <Compile Include="Assets\Scripts\Item\ItemData.cs" />
+    <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\WindowUI.cs" />
+    <Compile Include="Assets\Scripts\Item\Item.cs" />
     <Compile Include="Assets\Define\ResourceManager.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\DieState.cs" />
+    <Compile Include="Assets\Scripts\Item\Potion.cs" />
+    <Compile Include="Assets\Define\BattleManager.cs" />
+    <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\PopUpUI.cs" />
     <Compile Include="Assets\Yoon\Scripts\Monster.cs" />
+    <Compile Include="Assets\Yoon\Handler\MeleeHandle.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\MonsterStateMachine.cs" />
+    <Compile Include="Assets\WorkSpase\Lee\Scripts\Managers\PoolManager.cs" />
+    <Compile Include="Assets\Scripts\Item\EXPItemData.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

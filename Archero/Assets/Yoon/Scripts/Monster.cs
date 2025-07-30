@@ -1,3 +1,5 @@
+using Assets.Define;
+using Handler;
 using System.Collections;
 using System.Collections.Generic;
 using Unit.State;
@@ -12,6 +14,7 @@ public class Monster : MonoBehaviour
     [SerializeField]Vector3[] patrolPositions;
     int patrolIndex = 0;
     [SerializeField]Transform target;
+    IAttackHandler attackHandle;
     void Start()
     {
         fsm = new MonsterStateMachine(GetComponent<Animator>());
@@ -21,6 +24,7 @@ public class Monster : MonoBehaviour
         stat = new MonsterStat(100,10,5f,3f,1f);
         agent.speed = stat.GetMoveSpeed;
         fsm.Init();
+        BattleManager.GetInstance.RegistHitInfo(GetComponent<Collider2D>(), Damaged);
         
     }
 
@@ -68,8 +72,13 @@ public class Monster : MonoBehaviour
             if (patrolIndex >= patrolPositions.Length) patrolIndex = 0;
         }
     }
-    public void Damaged()
+    public void Damaged(int damage,Vector3 attackerPos)
     {
-        
+
+        // ≥ÀπÈ πÊ«‚
+        Vector3 direction = transform.position - attackerPos;
+        Vector3 knockbackDir = direction.normalized;
+        agent.velocity = knockbackDir * 3f;
+        stat.GetDamage(damage);
     }
 }

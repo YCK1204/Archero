@@ -15,7 +15,7 @@ MonoBehaviour:
   prefab: {fileID: 347546657772550210, guid: faa22d3a409d1284f842edd33e51863a, type: 3}
   rewarName: "\uACE8\uB4DC \uBCF4\uB108\uC2A4"
   description: "\uD604\uC7AC\uAC00\uC9C4 \uACE8\uB4DC\uC758 10\uD37C\uC13C\uD2B8\uC758
-    \uCD94\uAC00 \uBCF4\uB108\uC2A4 \uBCF4"
+    \uCD94\uAC00 \uBCF4\uB108\uC2A4 \uBCF4\uB108\uC2A4"
   baseWeight: 1
   statType: 0
   percentageIncrease: 0.1

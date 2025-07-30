@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1f196857fbe6f43a6c746b05aca7a8, type: 3}
   m_Name: HpRewardData
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
-  rewarName: 
-  description: 
+  prefab: {fileID: 5427350499359506132, guid: 5f13e18e8abd4e740bd797af6085d90a, type: 3}
+  rewarName: "\uCCB4\uB825 \uBCF4\uB108\uC2A4"
+  description: "\uD604\uC7AC\uC758 \uCCB4\uB825\uC758 10\uD37C\uC13C\uD2B8\uC758
+    \uBCF4\uB108\uC2A4 \uBCF4\uC0C1"
   baseWeight: 1
   statType: 0
   percentageIncrease: 0.1

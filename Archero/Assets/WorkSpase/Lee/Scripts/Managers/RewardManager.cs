@@ -28,6 +28,8 @@ namespace Lee.Scripts
         // 모든 보상 타입 반환
         public List<RewardData> AllRewardDatas => rewardDatas;
 
+        // 플레이어가 가지고 있는 스킬들 탐색후 스킬레벨 int값 반환하는 로직 필요
+
         public List<RewardData> GetRandomRewards(int count)// 스킬레벨 생길시 구문으로 변경(Func<RewardData, int> getSkillLevel, int count)
         {
             // 스킬 보상만 필터링

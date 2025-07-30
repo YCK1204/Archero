@@ -15,10 +15,7 @@ namespace Lee.Scripts
         protected override void Awake()
         {
             base.Awake();
-            characterStats = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterStats>();
-
-
-
+            //characterStats = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterStats>();
             buttons["DecideButton"].onClick.AddListener(() => { OnDecideClicked(); });
         }
 
@@ -51,7 +48,6 @@ namespace Lee.Scripts
                 }
             }
         }
-
         private void OnDecideClicked()
         {
             if (selectedReward is StatRewardData statData)
@@ -67,7 +63,6 @@ namespace Lee.Scripts
                 // 스킬 적용 로직
                 Debug.Log($"이것은{skillData}입니다");
             }
-
             gameObject.SetActive(false);
             //GameManager.UI.ClosePopUpUI();
         }

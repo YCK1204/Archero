@@ -61,11 +61,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Yoon\Scripts\TestScripts\EnemyNavTest.cs" />
+    <Compile Include="Assets\Yoon\Handler\IHandler.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\DamagedState.cs" />
+    <Compile Include="Assets\Yoon\Handler\RangeHandle.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\Interface\IStateMachine.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\Interface\IState.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\PatrolState.cs" />
+    <Compile Include="Assets\Yoon\Scripts\MobProjectile.cs" />
     <Compile Include="Assets\Scripts\PlayerCollision.cs" />
     <Compile Include="Assets\Scripts\SceneManager.cs" />
     <Compile Include="Assets\Scripts\PlayerMovingHandler.cs" />
@@ -91,8 +94,10 @@
     <Compile Include="Assets\Define\ResourceManager.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\DieState.cs" />
     <Compile Include="Assets\Scripts\Item\Potion.cs" />
+    <Compile Include="Assets\Define\BattleManager.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\PopUpUI.cs" />
     <Compile Include="Assets\Yoon\Scripts\Monster.cs" />
+    <Compile Include="Assets\Yoon\Handler\MeleeHandle.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\MonsterStateMachine.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\Managers\PoolManager.cs" />
     <Compile Include="Assets\Scripts\Item\EXPItemData.cs" />

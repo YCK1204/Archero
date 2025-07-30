@@ -16,11 +16,44 @@ namespace Lee.Scripts
 
             T resource = Resources.Load<T>(path);
 
-            if (resource == null) Debug.LogWarning($"ResourceManager2D: 리소스 로드 실패 - {key}");
+            if (resource == null) Debug.LogWarning($"ResourceManager: 리소스 로드 실패 - {key}");
 
             else resources.Add(key, resource);
 
             return resource;
+        }
+
+        public T[] LoadAll<T>(string path) where T : Object
+        {
+            // 1) Resources.LoadAll로 에셋 배열 로드
+            T[] assets = Resources.LoadAll<T>(path);
+            if (assets == null || assets.Length == 0)
+            {
+                Debug.LogWarning($"ResourceManager: LoadAll 실패 또는 에셋 없음 - {typeof(T)} @ \"{path}\"");
+                return assets;
+            }
+
+            // 2) (선택) 개별 에셋을 캐시 딕셔너리에 등록
+            foreach (var asset in assets)
+            {
+                string key = $"{typeof(T)}.{path}/{asset.name}";
+                if (!resources.ContainsKey(key))
+                    resources.Add(key, asset);
+            }
+
+            return assets;
+        }
+
+        public List<T> InstantiateAll<T>(string path, Transform parent = null) where T : Object
+        {
+            var assets = LoadAll<T>(path);
+            var instances = new List<T>();
+            foreach (var a in assets)
+            {
+                var inst = Object.Instantiate(a, parent);
+                instances.Add(inst);
+            }
+            return instances;
         }
 
         public T Instantiate<T>(T original, Vector3 position, Quaternion rotation, Transform parent, bool pooling = false) where T : Object

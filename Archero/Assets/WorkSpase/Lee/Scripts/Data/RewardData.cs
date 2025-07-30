@@ -6,15 +6,8 @@ namespace Lee.Scripts
 {
     public enum RewardType
     {
-        Health,
-        Damage,
-        Shield,
-        Speed,
-        Gold,
-        Exp,
-        // 보상생길시 추가로 입력
-
-
+        Stat,
+        Skill,
     }
 
 
@@ -29,6 +22,8 @@ namespace Lee.Scripts
         public string rewarName;
         [Header("(선택)보상 설명")]
         [TextArea] public string description;  // (선택) 보상 설명
+        public float baseWeight = 1f;
+
     }
 
 }

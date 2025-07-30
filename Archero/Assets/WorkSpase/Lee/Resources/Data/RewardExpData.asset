@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fbf69d38d967854c9cfae93dae833ed, type: 3}
-  m_Name: RewardHpData
+  m_Name: RewardExpData
   m_EditorClassIdentifier: 
-  type: 0
-  prefab: {fileID: 5427350499359506132, guid: 5f13e18e8abd4e740bd797af6085d90a, type: 3}
-  rewarName: 
-  description: 
+  type: 5
+  prefab: {fileID: 2629710952058088987, guid: 31bea670d15558f4695fe72f684608df, type: 3}
+  rewarName: "\uACBD\uD5D8\uCE58 \uBCF4\uB108\uC2A4"
+  description: "\uCD94\uAC00 \uACBD\uD5D8\uCE58 \uBCF4\uB108\uC2A4"

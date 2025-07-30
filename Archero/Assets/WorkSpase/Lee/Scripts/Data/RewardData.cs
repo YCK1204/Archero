@@ -4,13 +4,14 @@ using UnityEngine;
 
 namespace Lee.Scripts
 {
-    public enum DropItemType 
+    public enum RewardType
     {
         Health,
         Damage,
         Shield,
         Speed,
         Gold,
+        Exp,
         // 보상생길시 추가로 입력
 
 

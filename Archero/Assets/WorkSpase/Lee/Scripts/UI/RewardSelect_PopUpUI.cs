@@ -6,12 +6,8 @@ using UnityEngine.UI;
 
 namespace Lee.Scripts
 {
-
     public class RewardSelect_PopUpUI : PopUpUI
     {
-
-
-
         public List<Button> curRewardList = new List<Button>();
         protected override void Awake()
         {

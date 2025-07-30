@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SingleTon<T> where T : class, new()
+public class SingleTon<T> where T : SingleTon<T>, new()
 {
 
     protected static T instance;
@@ -10,7 +10,11 @@ public class SingleTon<T> where T : class, new()
     {
         get
         {
-            if (instance == null) instance = new T();
+            if (instance == null) 
+            { 
+                instance = new T();
+                instance.Init();
+            }
             return instance;
         }
     }

@@ -18,7 +18,7 @@ namespace Lee.Scripts
             if (rewardDatas == null || rewardDatas.Count == 0)
             {
                 // Resources/Rewards 폴더 안에 있는 모든 RewardData를 로드
-                var loaded = Resources.LoadAll<RewardData>("Data");
+                var loaded = GameManager.Resource.LoadAll<RewardData>("Data");
                 rewardDatas = new List<RewardData>(loaded);
             }
 

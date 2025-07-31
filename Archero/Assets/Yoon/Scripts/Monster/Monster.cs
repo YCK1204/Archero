@@ -10,17 +10,16 @@ using UnityEngine.Experimental.Rendering.RenderGraphModule;
 public class Monster : MonoBehaviour
 {
     protected IStateMachine fsm;
-    MonsterStat stat;
-    NavMeshAgent agent;
-    [SerializeField]Vector3[] patrolPositions;
-    [SerializeField]Transform target;
-    
-    IAttackHandler attackHandle;
-    [SerializeField] MobType attackType;
+    protected MonsterStat stat;
+    protected NavMeshAgent agent;
+    [SerializeField]protected Transform target;
 
-    int patrolIndex = 0;
-    float attackTimer = 0f;
-    void Start()
+    protected IAttackHandler attackHandle;
+    [SerializeField] protected MobType attackType;
+
+
+    protected float attackTimer = 0f;
+    protected virtual void Start()
     {
         fsm = new MonsterStateMachine(GetComponent<Animator>());
         agent = GetComponent<NavMeshAgent>();
@@ -38,59 +37,44 @@ public class Monster : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
-        if (stat.isDie()) 
+        BaseUpdate();
+    }
+    protected virtual bool BaseUpdate()
+    {
+        if (stat.isDie())
         {
             if (fsm.GetCurrentState != StateTypes.Die)
             {
                 fsm.Chage(StateTypes.Die);
                 BattleManager.GetInstance.monsterPool.EnQueue(this);
             }
-            return;
+            return false;
         }
-        attackTimer = Mathf.Clamp(attackTimer+Time.deltaTime,0,stat.GetAttackDelay);
-        if (stat.GetDetectRange > GetDistance())
+        attackTimer = Mathf.Clamp(attackTimer + Time.deltaTime, 0, stat.GetAttackDelay);
+        if (stat.GetDetectRange > GetDistance(transform.position, target.position))
         {
-            if (attackHandle.RangeCheck(stat.GetAtkRange, GetDistance()))
+            if (attackHandle.RangeCheck(stat.GetAtkRange, GetDistance(transform.position, target.position)))
             {
                 agent.ResetPath();
                 agent.velocity = Vector3.zero;
                 if (attackHandle.DelayCheck(stat.GetAttackDelay, attackTimer))
                 {
-                    attackHandle.AttackUpdate(stat.GetATK, transform.position,target.position);
+                    attackHandle.AttackUpdate(stat.GetATK, transform.position, target.position);
                     attackTimer = 0f;
                 }
-                return;
+                return false;
             }
-
-            agent.SetDestination(target.transform.position);
-            fsm.Chage(StateTypes.Trace);
+            return false;
         }
-        else
-        {
-            if(fsm.GetCurrentState != StateTypes.Patrol)
-            {
-                agent.ResetPath();
-                fsm.Chage(StateTypes.Patrol);
-            }
-            PatrolLoop();
-        }
+        return true;
     }
     //루트계산 스킵,stat의 range들은 n을 입력시 생성자에서 n의 재곱으로 치환됨
-    private float GetDistance()
+    protected float GetDistance(Vector3 from, Vector3 to)
     {
-        return Mathf.Pow(target.position.x - transform.position.x, 2) +
-            Mathf.Pow(target.position.y - transform.position.y, 2);
-    }
-    void OnDrawGizmosSelected()
-    {
-        
-        for (int i = 0; i < patrolPositions.Length; i++)
-        {
-            Gizmos.color = new Color(1f, 0f, 1f);
-            Gizmos.DrawSphere(patrolPositions[i],0.5f);
-        }
+        return Mathf.Pow(from.x - to.x, 2) +
+            Mathf.Pow(from.y - to.y, 2);
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
@@ -98,19 +82,6 @@ public class Monster : MonoBehaviour
         {
             attackHandle.OnCollision(collision.collider,stat.GetATK, transform.position);
             attackTimer = 0f;
-        }
-    }
-
-    private void PatrolLoop()
-    {
-        if (patrolPositions.Length == 0) return;//패트롤 없으면 제자리 대기
-        if (agent.remainingDistance < 0.1f)
-        {
-            agent.velocity = Vector3.zero;
-
-            agent.SetDestination(patrolPositions[patrolIndex]);
-            patrolIndex++;
-            if (patrolIndex >= patrolPositions.Length) patrolIndex = 0;
         }
     }
     public void Damaged(int damage,Vector3 attackerPos)
@@ -123,9 +94,8 @@ public class Monster : MonoBehaviour
         stat.GetDamage(damage);
     }
 
-    public void Spawn(MobType type , Vector3[] patrolPos , MonsterStat stat)
+    public virtual void Spawn(MobType type , Vector3[] patrolPos , MonsterStat stat)
     {
-        patrolPositions = patrolPos;
         this.stat = stat;
         TypeFactory(type);
         fsm.ForceChange(StateTypes.Patrol);

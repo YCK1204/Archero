@@ -20,8 +20,8 @@ namespace Assets.Define
 
             normalMobProjectile = new Pool<MobProjectile>("MonsterArrow");
             normalMobProjectile.Init();
-            monsterPool = new Pool<Monster>("MonsterBase");
-            monsterPool.Init();
+/*            monsterPool = new Pool<Monster>("NormalMonster");
+            monsterPool.Init();*/
         }
         public void Attack(Collider2D target,int damage,Vector3 attackerPos)
         {

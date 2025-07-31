@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 284991752}
   - component: {fileID: 284991751}
   - component: {fileID: 284991753}
+  - component: {fileID: 284991754}
   m_Layer: 0
   m_Name: NavigationSurface
   m_TagString: Untagged
@@ -203,6 +204,19 @@ MonoBehaviour:
   m_UseMeshPrefab: {fileID: 0}
   m_CompressBounds: 0
   m_OverrideVector: {x: 1, y: 1, z: 1}
+--- !u!114 &284991754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284991750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8352fb3bc6d4d74f89e853d44b8c096, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surfaces: {fileID: 284991751}
 --- !u!1 &439377918
 GameObject:
   m_ObjectHideFlags: 0

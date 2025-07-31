@@ -12,6 +12,7 @@ namespace Assets.Define
     {
         Dictionary<Collider2D, Action<int, Vector3>> unitDict = new Dictionary<Collider2D, Action<int, Vector3>>();
         public Pool<MobProjectile> normalMobProjectile;
+        public Pool<Monster> monsterPool;
         public override void Init()
         {
             base.Init();
@@ -19,6 +20,8 @@ namespace Assets.Define
 
             normalMobProjectile = new Pool<MobProjectile>("MonsterArrow");
             normalMobProjectile.Init();
+            monsterPool = new Pool<Monster>("MonsterBase");
+            monsterPool.Init();
         }
         public void Attack(Collider2D target,int damage,Vector3 attackerPos)
         {
@@ -32,38 +35,39 @@ namespace Assets.Define
         }
         
     }
-    public class Pool<T> where T : MonoBehaviour
+    
+}
+public class Pool<T> where T : MonoBehaviour
+{
+    private Stack<T> stack;
+    private T prefab;
+    public void Init()
     {
-        private Stack<T> stack;
-        private T prefab;
-        public void Init()
+        stack = new Stack<T>();
+    }
+    public Pool(string str)
+    {
+        ResourceManager.GetInstance.LoadAsync<GameObject>(str, (result) =>
         {
-            stack = new Stack<T>();
-        }
-        public Pool(string str)
+            prefab = result.GetComponent<T>();
+        });
+    }
+    public void EnQueue(T obj)
+    {
+        obj.gameObject.SetActive(false);
+        stack.Push(obj);
+    }
+    public T DeQueue()
+    {
+        if (stack.Count <= 0)//큐언더플로우 방지
         {
-            ResourceManager.GetInstance.LoadAsync<GameObject>(str, (result) =>
-            {
-                prefab = result.GetComponent<T>();
-            });
+            GameObject gameObj = GameObject.Instantiate(prefab.gameObject);
+            if (!gameObj.TryGetComponent(typeof(T), out Component result))
+                result = gameObj.AddComponent<T>();
+            return (T)result;
         }
-        public void EnQueue(T obj)
-        {
-            obj.gameObject.SetActive(false);
-            stack.Push(obj);
-        }
-        public T DeQueue()
-        {
-            if(stack.Count <= 0)//큐언더플로우 방지
-            {
-                GameObject gameObj = GameObject.Instantiate(prefab.gameObject);
-                if (!gameObj.TryGetComponent(typeof(T), out Component result))
-                    result = gameObj.AddComponent<T>();
-                return (T)result;
-            }
-            T obj = stack.Pop();
-            obj.gameObject.SetActive(true);
-            return obj;
-        }
+        T obj = stack.Pop();
+        obj.gameObject.SetActive(true);
+        return obj;
     }
 }

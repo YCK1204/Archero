@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Unit.State;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Experimental.Rendering.RenderGraphModule;
 
 public class Monster : MonoBehaviour
 {
@@ -30,12 +31,24 @@ public class Monster : MonoBehaviour
         fsm.Init();
         BattleManager.GetInstance.RegistHitInfo(GetComponent<Collider2D>(), Damaged);
         attackHandle = TypeFactory(attackType);
-        
+    }
+    public void Init()
+    {
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (stat.isDie()) 
+        {
+            if (fsm.GetCurrentState != StateTypes.Die)
+            {
+                fsm.Chage(StateTypes.Die);
+                BattleManager.GetInstance.monsterPool.EnQueue(this);
+            }
+            return;
+        }
         attackTimer = Mathf.Clamp(attackTimer+Time.deltaTime,0,stat.GetAttackDelay);
         if (stat.GetDetectRange > GetDistance())
         {
@@ -90,7 +103,7 @@ public class Monster : MonoBehaviour
 
     private void PatrolLoop()
     {
-        
+        if (patrolPositions.Length == 0) return;//패트롤 없으면 제자리 대기
         if (agent.remainingDistance < 0.1f)
         {
             agent.velocity = Vector3.zero;
@@ -109,6 +122,15 @@ public class Monster : MonoBehaviour
         agent.velocity = knockbackDir * 3f;
         stat.GetDamage(damage);
     }
+
+    public void Spawn(MobType type , Vector3[] patrolPos , MonsterStat stat)
+    {
+        patrolPositions = patrolPos;
+        this.stat = stat;
+        TypeFactory(type);
+        fsm.ForceChange(StateTypes.Patrol);
+    }
+
     private IAttackHandler TypeFactory(MobType type)
     {
         switch (type)

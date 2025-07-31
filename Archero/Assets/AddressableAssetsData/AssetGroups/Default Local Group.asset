@@ -23,6 +23,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Item
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 86a4b4fa59b1ac44389e3071d52de575
+    m_Address: MonsterArrow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b642e8be898014b4ea4f7dbf8d767f63, type: 2}
   m_SchemaSet:

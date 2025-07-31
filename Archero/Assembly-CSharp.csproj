@@ -68,6 +68,7 @@
     <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\RewardSelect_PopUpUI.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\Interface\IStateMachine.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\Base\WindowUI.cs" />
+    <Compile Include="Assets\Scripts\WeaponScripts\Projectile.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\Interface\IState.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\PatrolState.cs" />
     <Compile Include="Assets\Yoon\Scripts\MobProjectile.cs" />
@@ -91,9 +92,13 @@
     <Compile Include="Assets\Yoon\Scripts\StateMachine\AttackState.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\Base\PopUpUI.cs" />
     <Compile Include="Assets\Scripts\Item\ArmorItemData.cs" />
+    <Compile Include="Assets\Scripts\WeaponScripts\WeaponBase.cs" />
     <Compile Include="Assets\Scripts\Item\ItemData.cs" />
+    <Compile Include="Assets\Scripts\WeaponScripts\WeaponHolder.cs" />
+    <Compile Include="Assets\Scripts\WeaponScripts\MeleeWeapon.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\Base\BaseUI.cs" />
     <Compile Include="Assets\Scripts\Item\Item.cs" />
+    <Compile Include="Assets\Scripts\WeaponScripts\RangedWeapon.cs" />
     <Compile Include="Assets\Define\ResourceManager.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\DieState.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\Data\SkillRewardData.cs" />
@@ -104,6 +109,7 @@
     <Compile Include="Assets\Yoon\Handler\MeleeHandle.cs" />
     <Compile Include="Assets\Yoon\Scripts\StateMachine\MonsterStateMachine.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\Managers\PoolManager.cs" />
+    <Compile Include="Assets\Scripts\WeaponScripts\WeaponData.cs" />
     <Compile Include="Assets\Scripts\Item\EXPItemData.cs" />
   </ItemGroup>
   <ItemGroup>

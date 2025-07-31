@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Lee.Scripts;
+using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
 {
@@ -60,6 +61,7 @@ public class CharacterStats : MonoBehaviour
         {
             CurrentHealth = TotalStats.MaxHealth;
         }
+        Lee.Scripts.GameManager.UI.ShowPopUpUI<RewardSelect_PopUpUI>("Prefabs/UI/RewardUI");
     }
 
     /// <summary>

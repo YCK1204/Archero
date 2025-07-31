@@ -1,5 +1,6 @@
 ﻿using Assets.Define;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,14 +12,12 @@ namespace Handler
     {
         public void AttackUpdate(int dmg, Vector3 position,Vector3 target)
         {
-            /*Vector2 tempVec = target - position;
+            Vector2 tempVec = target - position;
             float rad = Mathf.Atan2(tempVec.y, tempVec.x);
-            float degree = rad * (180f / MathF.PI);//각도가 아니라 주석처리*/
-            Vector2 rel = target - position;
-            rel = rel.normalized;
-
+            float degree = rad * (180f / MathF.PI);
+            degree -= 90f;
             BattleManager.GetInstance.normalMobProjectile.DeQueue().
-                Init(rel.normalized, position, 10f,dmg);
+                Init(new Vector3(0,0,degree), position, 10f,dmg);
         }
 
         public bool DelayCheck(float goal, float curr)
@@ -34,6 +33,11 @@ namespace Handler
         public void OnCollision(Collider2D collider, int dmg, Vector3 dir)
         {
             
+        }
+
+        public IEnumerator OnCoroutine(Vector3 firePos, Vector3 targetPos)
+        {
+            yield return null;
         }
     }
 } 

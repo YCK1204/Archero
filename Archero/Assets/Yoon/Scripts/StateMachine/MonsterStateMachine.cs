@@ -36,7 +36,7 @@ namespace Unit.State
             currState.Enter();
         }
 
-        private void ForceChange(StateTypes type)
+        public void ForceChange(StateTypes type)
         {
             currState = stateDict[type];
             currState.Enter();

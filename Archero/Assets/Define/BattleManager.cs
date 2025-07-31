@@ -11,6 +11,7 @@ namespace Assets.Define
     class BattleManager :SingleTon<BattleManager>
     {
         Dictionary<Collider2D, Action<int, Vector3>> unitDict = new Dictionary<Collider2D, Action<int, Vector3>>();
+        public Dictionary<Collider2D, Action<int, Vector3>> GetUnitDIct { get { return unitDict; } }
         public Pool<MobProjectile> normalMobProjectile;
         public Pool<Monster> monsterPool;
         public override void Init()
@@ -32,6 +33,10 @@ namespace Assets.Define
         public void RegistHitInfo(Collider2D target, Action<int, Vector3> action)
         {
             unitDict.Add(target, action);
+        }
+        public void RemoveHitInfo(Collider2D target)
+        {
+            unitDict.Remove(target);
         }
         
     }

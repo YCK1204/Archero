@@ -1,5 +1,7 @@
 using Assets.Define;
+using Assets.Yoon.Handler;
 using Handler;
+using Handler.Barrages;
 using System.Collections;
 using System.Collections.Generic;
 using Unit.State;
@@ -16,7 +18,7 @@ public class Monster : MonoBehaviour
 
     protected IAttackHandler attackHandle;
     [SerializeField] protected MobType attackType;
-
+    protected Collider2D col;
 
     protected float attackTimer = 0f;
     protected virtual void Start()
@@ -28,6 +30,7 @@ public class Monster : MonoBehaviour
         stat = new MonsterStat(100,10,5f,7f,5f,1);
         agent.speed = stat.GetMoveSpeed;
         fsm.Init();
+        col = GetComponent<Collider2D>();
         BattleManager.GetInstance.RegistHitInfo(GetComponent<Collider2D>(), Damaged);
         attackHandle = TypeFactory(attackType);
     }
@@ -91,7 +94,9 @@ public class Monster : MonoBehaviour
         Vector3 direction = transform.position - attackerPos;
         Vector3 knockbackDir = direction.normalized;
         agent.velocity = knockbackDir * 3f;
+        
         stat.GetDamage(damage);
+        if(stat.isDie()) BattleManager.GetInstance.RemoveHitInfo(col);
     }
 
     public virtual void Spawn(MobType type , Vector3[] patrolPos , MonsterStat stat)
@@ -105,11 +110,12 @@ public class Monster : MonoBehaviour
     {
         switch (type)
         {
-            case MobType.melee:
+            case MobType.Melee:
                 return new MeleeHandle();
             case MobType.Ranged:
                 return new RangeHandle();
-
+            case MobType.Boss:
+                return new BossHandle(new Handler.Barrages.Barrages[3]{new MultiShot(0.2f,2f,45f,90,8), new MultiShot(0.1f, 2f, 5f, 90, 8), new MultiShot(0.2f, 2f, 15f, 90, 3) });
         }
         return new MeleeHandle();
     }

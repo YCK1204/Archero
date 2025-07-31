@@ -11,14 +11,15 @@ public class BossMonster : Monster
 
     }
 
-    IEnumerator ee()
-    {
-        yield return null;
-    }
     // Update is called once per frame
     protected override void Update()
     {
-        base.Update();
+        attackTimer += Time.deltaTime;
+        if (attackHandle.DelayCheck(3f,attackTimer))
+        {
+            StartCoroutine(attackHandle.OnCoroutine(transform.position,target.position));
+            attackTimer = 0f;
+        }
     }
 }
 

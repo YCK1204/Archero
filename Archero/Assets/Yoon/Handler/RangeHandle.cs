@@ -35,7 +35,7 @@ namespace Handler
             
         }
 
-        public IEnumerator OnCoroutine()
+        public IEnumerator OnCoroutine(Vector3 firePos, Vector3 targetPos)
         {
             yield return null;
         }

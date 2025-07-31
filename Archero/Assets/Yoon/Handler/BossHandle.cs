@@ -1,5 +1,6 @@
 ﻿using Assets.Define;
 using Handler;
+using Handler.Barrages;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,17 +8,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
+using UnityEngine.UIElements;
 
 namespace Assets.Yoon.Handler
 {
     class BossHandle : IAttackHandler
     {
+        Barrages[] barrages;
 
-        public void Init()
+        public BossHandle(Barrages[] barrages)
         {
-
+            this.barrages = barrages;
         }
-
 
         public void AttackUpdate(int dmg, Vector3 dir, Vector3 target)
         {
@@ -38,9 +41,34 @@ namespace Assets.Yoon.Handler
         {
             BattleManager.GetInstance.Attack(collider, dmg, dir);
         }
-        public IEnumerator OnCoroutine()
+        public IEnumerator OnCoroutine(Vector3 firePos,Vector3 targetPos)
         {
-            yield return null;
+            Barrages currBarrage = barrages[1];
+            float totalTime = 0f;
+            float fireTime = 0f;
+
+            float duration = currBarrage.ShotDuration();
+            float delay = currBarrage.ShetDelay();
+
+            while (totalTime < currBarrage.ShotDuration())
+            {
+                totalTime += Time.deltaTime;
+                fireTime += Time.deltaTime;
+
+                if (fireTime >= delay)
+                {
+
+
+                    float rad = Mathf.Atan2(targetPos.y - firePos.y, targetPos.x - firePos.x);
+                    float angle = rad*(180f/Mathf.PI);
+                    angle -= 90f;
+                    currBarrage.OnShot(firePos,angle);
+                    fireTime = 0f;
+                    currBarrage.Reset();
+                }
+
+                yield return null;
+            }
         }
     }
 }

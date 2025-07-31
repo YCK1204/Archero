@@ -30,7 +30,7 @@ namespace Handler
             BattleManager.GetInstance.Attack(collider, dmg, dir);
         }
 
-        public IEnumerator OnCoroutine()
+        public IEnumerator OnCoroutine(Vector3 firePos, Vector3 targetPos)
         {
             yield return null;
         }

@@ -12,7 +12,6 @@ namespace Assets.Define
     {
         Dictionary<Collider2D, Action<int, Vector3>> unitDict = new Dictionary<Collider2D, Action<int, Vector3>>();
         public Pool<MobProjectile> normalMobProjectile;
-
         public override void Init()
         {
             base.Init();
@@ -35,11 +34,11 @@ namespace Assets.Define
     }
     public class Pool<T> where T : MonoBehaviour
     {
-        private Queue<T> queue;
+        private Stack<T> stack;
         private T prefab;
         public void Init()
         {
-            queue = new Queue<T>();
+            stack = new Stack<T>();
         }
         public Pool(string str)
         {
@@ -51,18 +50,18 @@ namespace Assets.Define
         public void EnQueue(T obj)
         {
             obj.gameObject.SetActive(false);
-            queue.Enqueue(obj);
+            stack.Push(obj);
         }
         public T DeQueue()
         {
-            if(queue.Count <= 0)//큐언더플로우 방지
+            if(stack.Count <= 0)//큐언더플로우 방지
             {
                 GameObject gameObj = GameObject.Instantiate(prefab.gameObject);
                 if (!gameObj.TryGetComponent(typeof(T), out Component result))
                     result = gameObj.AddComponent<T>();
                 return (T)result;
             }
-            T obj = queue.Dequeue();
+            T obj = stack.Pop();
             obj.gameObject.SetActive(true);
             return obj;
         }

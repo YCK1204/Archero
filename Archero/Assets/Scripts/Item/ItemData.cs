@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,14 +22,15 @@ public abstract class CollectableItemData : BaseItemData
 {
     public void Collect()
     {
+        Debug.Log($"아이템 수집 완료 : {Name}");
         OnCollected?.Invoke();
     }
     //public void Collect(Player player)
     //{
     // OnCollected?.Invoke(player);
     //}
-    public UnityEvent OnCollected;
-    //public UnityEvent<Player> OnCollected;
+    protected Action OnCollected;
+    //protected UnityEvent<Player> OnCollected;
 }
 
 public abstract class EquippableItemData : BaseItemData

@@ -15,19 +15,8 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_Data:
     m_SerializedData: []
-  m_GUID: 01c1c1cc255f14a49993cb047dfe2121
-  m_SerializeEntries:
-  - m_GUID: 9a7a1d07a1dd17d4ebd24fe640332490
-    m_Address: Assets/ItemPrefab.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Item
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 86a4b4fa59b1ac44389e3071d52de575
-    m_Address: MonsterArrow
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_GUID: 29268d472d301c94fb58394608d143b7
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b642e8be898014b4ea4f7dbf8d767f63, type: 2}
   m_SchemaSet:

@@ -32,6 +32,7 @@ namespace Lee.Scripts
             curRewardList.Add(rectTransform["RewardSlot3"]);
             yield return new WaitForSeconds(0.2f);
             var picks = GameManager.Reward.GetRandomRewards(curRewardList.Count);
+
             for (int i = 0; i < picks.Count; i++)
             {
                 var data = picks[i];
@@ -39,6 +40,7 @@ namespace Lee.Scripts
 
                 foreach (Transform c in slotTf) Destroy(c.gameObject);             // 기존꺼 삭제
                 var go = GameManager.Resource.Instantiate(data.prefab);
+
                 go.transform.SetParent(slotTf, false); // 로컬포인트
 
                 if (go.TryGetComponent<Button>(out var btn))

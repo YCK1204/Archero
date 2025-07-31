@@ -97,6 +97,7 @@
     <Compile Include="Assets\Scripts\WeaponScripts\WeaponHolder.cs" />
     <Compile Include="Assets\Scripts\WeaponScripts\MeleeWeapon.cs" />
     <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\Base\BaseUI.cs" />
+    <Compile Include="Assets\WorkSpase\Lee\Scripts\UI\NextSceneButton.cs" />
     <Compile Include="Assets\Scripts\Item\Item.cs" />
     <Compile Include="Assets\Scripts\WeaponScripts\RangedWeapon.cs" />
     <Compile Include="Assets\Define\ResourceManager.cs" />

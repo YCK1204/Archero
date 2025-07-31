@@ -136,8 +136,9 @@ GameObject:
   - component: {fileID: 86921282}
   - component: {fileID: 86921281}
   - component: {fileID: 86921284}
+  - component: {fileID: 86921285}
   m_Layer: 5
-  m_Name: StartImage
+  m_Name: StartImageButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -207,7 +208,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 86921282}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 86921285}
+        m_TargetAssemblyTypeName: Lee.Scripts.NextSceneButton, Assembly-CSharp
+        m_MethodName: StartSceneButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &86921282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,6 +280,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &86921285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 86921279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbec8074124c4ff4e8fd08cbf33ba9e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &560716129
 GameObject:
   m_ObjectHideFlags: 0

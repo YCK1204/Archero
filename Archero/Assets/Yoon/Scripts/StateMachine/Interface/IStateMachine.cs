@@ -8,5 +8,6 @@ public interface IStateMachine
     void Init();
     void Update();
     void Chage(StateTypes type);
+    void ForceChange(StateTypes type);
 }
 public enum StateTypes { Patrol,Die,Attack,Damaged,Trace}

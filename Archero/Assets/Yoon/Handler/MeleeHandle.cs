@@ -1,5 +1,6 @@
 ﻿using Assets.Define;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,11 @@ namespace Handler
         public void OnCollision(Collider2D collider, int dmg, Vector3 dir)
         {
             BattleManager.GetInstance.Attack(collider, dmg, dir);
+        }
+
+        public IEnumerator OnCoroutine(Vector3 firePos, Vector3 targetPos)
+        {
+            yield return null;
         }
     }
 } 

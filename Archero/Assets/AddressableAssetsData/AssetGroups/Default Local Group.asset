@@ -15,44 +15,12 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_Data:
     m_SerializedData: []
-  m_GUID: 01c1c1cc255f14a49993cb047dfe2121
+  m_GUID: 959b6e6bc9a50e94a8258cb24ccfc4d1
   m_SerializeEntries:
-  - m_GUID: 9a7a1d07a1dd17d4ebd24fe640332490
-    m_Address: Assets/ItemPrefab.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Item
-    FlaggedDuringContentUpdateRestriction: 0
-<<<<<<< HEAD
-  - m_GUID: 58ac0240a8cba544499b6de2a74ca19e
-    m_Address: Assets/New Weapon Item Data.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Item
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a815db93a5f4ea64abace585b4da9235
-    m_Address: Assets/New Armor Item Data.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Item
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 0447e14641601634f839bf1b5ef039c2
-    m_Address: Assets/New EXP Item Data.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Item
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 07759517983d6434bb294dc27f70194a
-    m_Address: Assets/New Potion Item Data.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Item
-=======
   - m_GUID: 86a4b4fa59b1ac44389e3071d52de575
-    m_Address: MonsterArrow
+    m_Address: Assets/Yoon/Prefab/MonsterArrow.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
->>>>>>> develop
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b642e8be898014b4ea4f7dbf8d767f63, type: 2}

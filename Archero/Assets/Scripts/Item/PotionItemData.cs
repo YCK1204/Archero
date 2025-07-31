@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
-[CreateAssetMenu(menuName = "ScriptableObjects/ItemData/Collectable/EXP")]
-public class EXPItemData : CollectableItemData
+[CreateAssetMenu(menuName = "ScriptableObjects/ItemData/Collectable/Potion")]
+public class PotionItemData : CollectableItemData
 {
-    public int EXPAmount; // È¸º¹·®
-    EXPItemData()
+    public int HealAmount;
+    PotionItemData()
     {
         OnCollected += OnCollect;
     }
@@ -17,7 +16,7 @@ public class EXPItemData : CollectableItemData
         //Player player = FindObjectOfType<Player>();
         //if (player != null)
         //{
-        //    player.AddExperience(EXPAmount);
+        //    player.Heal(HealAmount);
         //}
     }
 }

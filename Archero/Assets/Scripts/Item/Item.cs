@@ -4,32 +4,19 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    BaseItemData itemData;
-    public Animator Animator => itemData.Animator;
-    public Sprite Icon => itemData.Icon;
-    public string Name => itemData.Name;
-    ItemType Type => itemData.Type;
-    public Item(BaseItemData data)
-    {
-        itemData = data;
-    }
+    protected BaseItemData _itemData;
+    public Animator Animator => _itemData.Animator;
+    public Sprite Icon => _itemData.Icon;
+    public string Name => _itemData.Name;
+    ItemType Type => _itemData.Type;
+
     /// <summary>
     /// 아이템을 타입에 따라 사용합니다.
     /// </summary>
     /// <param name = "player">플레이어</param>
-    public void Use(/*Player player*/)
+    public virtual void Use(/*Player player*/) { }
+    public virtual void Init(BaseItemData data)
     {
-        switch (Type)
-        {
-            case ItemType.Collectable:
-                CollectableItemData collectableItem = itemData as CollectableItemData;
-                collectableItem.Collect();
-                //collectableItem.Collect(player);
-                break;
-            case ItemType.Equippable:
-                EquippableItemData equippableItem = itemData as EquippableItemData;
-                // equip 또는 unequip toggle로
-                break;
-        }
+        _itemData = data;
     }
 }

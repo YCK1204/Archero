@@ -652,6 +652,7 @@ MonoBehaviour:
   Level: 1
   CurrentHealth: 100
   FinalAttack: 1
+  FinalDefense: 0
   MoveSpeed: 5
   DashSpeed: 15
 --- !u!1 &797609174

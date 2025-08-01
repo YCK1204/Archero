@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerCollision : MonoBehaviour
 {
     [Header("데미지 설정")]
-    [SerializeField] private int attackDamage = 5;      // 몬스터가 플레이어에게 입힐 데미지 양
+    [SerializeField] private int attackDamage = 1;      // 몬스터가 플레이어에게 입힐 데미지 양
     [SerializeField] private float damageInterval = 2f; // 데미지를 주는 시간 간격 (2초)
 
     // 현재 실행 중인 데미지 코루틴을 저장하기 위한 변수

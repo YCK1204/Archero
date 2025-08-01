@@ -7,51 +7,56 @@ public class WeaponHolder : MonoBehaviour
     [SerializeField] private WeaponData startingWeaponData;
     [SerializeField] private GameObject startingWeaponPrefab;
 
-    private List<WeaponBase> equippedWeapons = new List<WeaponBase>();
+    private List<WeaponBase> equippedWeapons = new();
+    private CharacterStats ownerStats;
 
+    private void Awake()
+    {
+        ownerStats = GetComponent<CharacterStats>();
+    }
     private void Start()
     {
         // 게임 시작 시 초기 무기 장착
         EquipWeapon(startingWeaponData, startingWeaponPrefab);
     }
 
+
     private void Update()
     {
-        RotateTowardNearestMonster(GetMaxWeaponRange());
         foreach (var weapon in equippedWeapons)
         {
-            if (weapon != null)
-                weapon.TickAttack(); // 각 무기의 자동 공격 처리
+            weapon?.Activate(); // 무기가 스스로 공격/회전/틱딜 등 처리
         }
     }
 
+
     /// <summary>
-    /// 무기를 추가 장착하는 메서드 (스킬 카드 등에서 호출됨)
+    /// 스킬 카드 획득 등으로 무기 장착
     /// </summary>
     public void EquipWeapon(WeaponData data, GameObject prefab)
     {
         if (data == null || prefab == null)
         {
-            Debug.LogWarning("WeaponHolder: 무기 데이터 또는 프리팹이 null입니다.");
+            Debug.LogWarning("WeaponHolder: 무기 데이터나 프리팹이 null입니다.");
             return;
         }
 
-        GameObject weaponObj = Instantiate(prefab, transform); // 무기를 Header 자식으로 생성
+        GameObject weaponObj = Instantiate(prefab, transform);
         WeaponBase weapon = weaponObj.GetComponent<WeaponBase>();
 
         if (weapon == null)
         {
-            Debug.LogError("WeaponHolder: 무기 프리팹에 WeaponBase가 없음");
+            Debug.LogError("WeaponHolder: 프리팹에 WeaponBase가 없습니다.");
             Destroy(weaponObj);
             return;
         }
 
-        weapon.Init(data);
+        weapon.Init(data, ownerStats, this);
         equippedWeapons.Add(weapon);
     }
 
     /// <summary>
-    /// 현재 장착된 모든 무기를 제거
+    /// 전체 무기 제거 (예: 사망? 혹은 뭐 챕터 포기? 여튼 리셋에 쓰시지요)
     /// </summary>
     public void ClearWeapons()
     {
@@ -60,7 +65,6 @@ public class WeaponHolder : MonoBehaviour
             if (weapon != null)
                 Destroy(weapon.gameObject);
         }
-
         equippedWeapons.Clear();
     }
 
@@ -84,28 +88,5 @@ public class WeaponHolder : MonoBehaviour
         }
 
         return nearest;
-    }
-
-    private float GetMaxWeaponRange()          // 현재 보유중인 스킬의 모든 무기 중에서 가장 긴 사거리를 가진 무기를 찾아옴
-    {
-        float max = 0f;
-        foreach (var w in equippedWeapons)
-        {
-            if (w != null)
-                max = Mathf.Max(max, w.WeaponData.Range);
-        }
-        return max;
-    }
-    /// <summary>
-    /// 회전 로직
-    /// </summary>
-    private void RotateTowardNearestMonster(float radius)
-    {
-        Transform target = FindNearestMonster(radius);
-        if (target == null) return;
-
-        Vector2 dir = (target.position - transform.position).normalized;
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0f, 0f, angle);
     }
 }

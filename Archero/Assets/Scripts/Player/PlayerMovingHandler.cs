@@ -1,10 +1,11 @@
-using UnityEngine;
+using System;
 using System.Collections;
+using UnityEngine;
 
 public class PlayerMovingHandler : MonoBehaviour
 {
-    //[SerializeField] private float moveSpeed = 5f; 
-    //[SerializeField] private float dashSpeed = 15f;
+    private float moveSpeed; 
+    private float dashSpeed;
     [SerializeField] private float dashDuration = 0.2f;
     [SerializeField] private float dashCooldown = 1f;
     [SerializeField] private float acceleration = 15f;
@@ -21,14 +22,21 @@ public class PlayerMovingHandler : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         characterStats = GetComponent<CharacterStats>();
+
+        characterStats.OnStatChanged += UpdateMoveStats;
         currentSpeed = characterStats.TotalStats.MoveSpeed;
+    }
+    private void UpdateMoveStats()
+    {
+        moveSpeed = characterStats.TotalStats.MoveSpeed;
+        dashSpeed = characterStats.TotalStats.DashSpeed;
     }
 
     public void HandleMove(Vector2 input)
     {
-        float targetSpeed = isDashing ? characterStats.TotalStats.DashSpeed : characterStats.TotalStats.MoveSpeed;
-        currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, Time.fixedDeltaTime * acceleration); // 현재 속도를 목표 속도로 부드럽게 보간
-        rb.velocity = input * currentSpeed; // 실제 이동
+        float targetSpeed = isDashing ? dashSpeed : moveSpeed;
+        currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, Time.fixedDeltaTime * acceleration);
+        rb.velocity = input * currentSpeed;
     }
 
     public bool CanDash(Vector2 input)

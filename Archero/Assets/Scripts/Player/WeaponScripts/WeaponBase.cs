@@ -1,27 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.WSA;
 
 public abstract class WeaponBase : MonoBehaviour
 {
     protected WeaponData weaponData;
-    protected float lastAttackTime;
-    public WeaponData WeaponData => weaponData;
+    protected CharacterStats ownerStats;
+    protected WeaponHolder holder;
 
-    public virtual void Init(WeaponData data)
+    public WeaponData WeaponData => weaponData;
+    public virtual void Init(WeaponData data, CharacterStats stats, WeaponHolder weaponHolder)
     {
         weaponData = data;
-        lastAttackTime = -Mathf.Infinity;
+        ownerStats = stats;
+        holder = weaponHolder;
     }
 
-    public virtual void TickAttack()
-    {
-        if (Time.time - lastAttackTime >= weaponData.Cooldown)
-        {
-            PerformAttack();
-            lastAttackTime = Time.time;
-        }
-    }
-
-    protected abstract void PerformAttack();
+    /// <summary>
+    /// WeaponHolder가 매 프레임 호출해서 무기가 알아서 동작하게 함.
+    /// 투사체 발사, 범위공격, 회전 등 무기마다 내부에서 처리.
+    /// </summary>
+    public abstract void Activate();
 }

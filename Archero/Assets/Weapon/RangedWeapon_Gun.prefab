@@ -26,8 +26,8 @@ Transform:
   m_GameObject: {fileID: 1027155188447436315}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.8, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 2, z: 1}
+  m_LocalPosition: {x: 0.8, y: 0.15, z: 0}
+  m_LocalScale: {x: 1.8, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 787332039893781363}
@@ -93,9 +93,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 787332039893781363}
-  - component: {fileID: 3367269840965148787}
+  - component: {fileID: 4935828815348727874}
   m_Layer: 0
-  m_Name: RangedWeapon_BasicBow
+  m_Name: RangedWeapon_Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,7 +118,7 @@ Transform:
   - {fileID: 875030561806773876}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3367269840965148787
+--- !u!114 &4935828815348727874
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

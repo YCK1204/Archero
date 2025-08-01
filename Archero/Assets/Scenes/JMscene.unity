@@ -370,8 +370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc6366f54d3c207488b8cc885dd3f5ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Level: 1
-  CurrentHealth: 0
+  currentHp: 0
 --- !u!114 &341592178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -384,8 +383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da6788e642e8023439989270354b6d0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: {fileID: 0}
-  level: 1
+  playerLevel: 1
   currentExp: 0
   baseExpToLevelUp: 40
   expGrowthFactor: 1.5

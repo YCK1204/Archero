@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
 {
     private Stat baseStats;
     public Stat TotalStats { get; private set; }
-
+    public event Action OnStatChanged;
     [Header("캐릭터 정보")]
     // 아이작이나 건전처럼 CurrentHealth 1 당 하트 반 칸 (최대 체력 = MaxHp * 2)
     [SerializeField] private int currentHp;
@@ -35,6 +36,7 @@ public class CharacterStats : MonoBehaviour
                 break;
         }
         TotalStats = newStats; // 변경된 복사본을 다시 원본에 할당합니다.
+        OnStatChanged?.Invoke();
         Debug.Log($"{statType} 스탯이 {multiplier}배 만큼 적용! 현재 공격력: {TotalStats.AttackPower}");
     }
     // 최대 체력을 곱연산으로 강화하는 함수
@@ -44,6 +46,7 @@ public class CharacterStats : MonoBehaviour
         newStats.MaxHp = (int)(newStats.MaxHp * multiplier);
         TotalStats = newStats;
         Heal(TotalStats.MaxHp); // 체력도 최대치에 맞게 보정
+        OnStatChanged?.Invoke();
     }
     // 최대 체력을 고정 수치만큼 감소시키는 함수 (악마 거래용)
     public void DecreaseMaxHealth(int amount)
@@ -57,6 +60,8 @@ public class CharacterStats : MonoBehaviour
         {
             currentHp = TotalStats.MaxHp;
         }
+
+        OnStatChanged?.Invoke();
     }
     /// <summary>
     /// 데미지를 받는 함수 (체력 1칸 감소)
@@ -92,4 +97,5 @@ public class CharacterStats : MonoBehaviour
     {
         // 사망 로직 추가
     }
+
 }

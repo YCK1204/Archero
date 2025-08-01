@@ -3,14 +3,14 @@ using UnityEngine;
 [System.Serializable]
 public struct Stat
 {
-    public float AttackPower;
+    public int AttackPower;
     // public int Defense; // 방어력 삭제
     public int MaxHp; // 1 Heart per 2Hp
     public float AttackSpeed;    // 공격 속도 스탯 추가
     public float MoveSpeed;
     public float DashSpeed;
 
-    public Stat(float attackPower, int maxHp, float attackSpeed, float moveSpeed, float dashSpeed)
+    public Stat(int attackPower, int maxHp, float attackSpeed, float moveSpeed, float dashSpeed)
     {
         AttackPower = attackPower;
         MaxHp = maxHp;

@@ -48,7 +48,7 @@ public class GunWeapon : WeaponBase
             Vector2 dir = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
 
             GameObject proj = Instantiate(projectilePrefab, firePoint.position, Quaternion.Euler(0, 0, angle));
-            proj.GetComponent<Projectile>()?.Init(dir, weaponData, ownerStats.TotalStats.AttackPower);
+            proj.AddComponent<Projectile>()?.Init(dir, weaponData, ownerStats.TotalStats.AttackPower);
         }
     }
 

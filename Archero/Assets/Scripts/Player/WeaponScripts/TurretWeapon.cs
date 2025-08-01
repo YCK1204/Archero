@@ -45,8 +45,8 @@ public class TurretWeapon : WeaponBase
             GameObject proj = Instantiate(projectilePrefab, firePoint.position, Quaternion.Euler(0, 0, angle));
 
             // 공격력은 25%만 적용
-            float turretAttackPower = ownerStats.TotalStats.AttackPower * 0.25f;
-            proj.GetComponent<Projectile>()?.Init(dir, weaponData, turretAttackPower);
+            int turretAttackPower = ownerStats.TotalStats.AttackPower /4;
+            proj.AddComponent<Projectile>()?.Init(dir, weaponData, turretAttackPower);
         }
     }
 }

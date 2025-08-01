@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Define;
+using System;
 using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
@@ -17,7 +18,8 @@ public class CharacterStats : MonoBehaviour
         baseStats = new Stat(10, 6, 1f, 5f, 15f); // 기본 스탯: 공격력 10, 하트 3칸, 공속 1
         TotalStats = baseStats;
         currentHp = TotalStats.MaxHp;
-
+        
+        BattleManager.GetInstance.RegistHitInfo(GetComponent<Collider2D>(),TakeDamage);
         OnStatChanged?.Invoke();
     }
 
@@ -68,7 +70,7 @@ public class CharacterStats : MonoBehaviour
     /// <summary>
     /// 데미지를 받는 함수 (체력 1칸 감소)
     /// </summary>
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage,Vector3 z)
     {
         currentHp -= damage;
         Debug.Log($"피해 {damage}! 남은 체력: {CurrentHp}");

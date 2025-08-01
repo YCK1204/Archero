@@ -41,9 +41,9 @@ namespace Assets.Yoon.Handler
         {
             BattleManager.GetInstance.Attack(collider, dmg, dir);
         }
-        public IEnumerator OnCoroutine(Vector3 firePos,Vector3 targetPos)
+        public IEnumerator OnCoroutine(Transform firePos,Vector3 targetPos)
         {
-            Barrages currBarrage = barrages[1];
+            Barrages currBarrage = barrages[new System.Random().Next(0, barrages.Length)];
             float totalTime = 0f;
             float fireTime = 0f;
 
@@ -59,10 +59,10 @@ namespace Assets.Yoon.Handler
                 {
 
 
-                    float rad = Mathf.Atan2(targetPos.y - firePos.y, targetPos.x - firePos.x);
+                    float rad = Mathf.Atan2(targetPos.y - firePos.position.y, targetPos.x - firePos.position.x);
                     float angle = rad*(180f/Mathf.PI);
                     angle -= 90f;
-                    currBarrage.OnShot(firePos,angle);
+                    currBarrage.OnShot(firePos.position,angle);
                     fireTime = 0f;
                     currBarrage.Reset();
                 }

@@ -12,31 +12,36 @@ using UnityEngine.Experimental.Rendering.RenderGraphModule;
 public class Monster : MonoBehaviour
 {
     protected IStateMachine fsm;
-    protected MonsterStat stat;
+    [SerializeField]protected MonsterStat stat;
     protected NavMeshAgent agent;
     [SerializeField]protected Transform target;
 
     protected IAttackHandler attackHandle;
     [SerializeField] protected MobType attackType;
+
+    protected IMoveHandler moveHandler;
+    [SerializeField]protected MoveType moveType;
+
     protected Collider2D col;
 
     protected float attackTimer = 0f;
+    protected float playerDist = 0f;
     protected virtual void Start()
     {
         fsm = new MonsterStateMachine(GetComponent<Animator>());
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
-        stat = new MonsterStat(100,10,5f,7f,5f,1);
         agent.speed = stat.GetMoveSpeed;
         fsm.Init();
         col = GetComponent<Collider2D>();
-        BattleManager.GetInstance.RegistHitInfo(GetComponent<Collider2D>(), Damaged);
-        attackHandle = TypeFactory(attackType);
+        attackHandle = IAttackHandler.TypeFactory(attackType);
+        moveHandler = IMoveHandler.Factory(moveType,agent);
+        Init();
     }
     public void Init()
     {
-
+        BattleManager.GetInstance.RegistHitInfo(col, Damaged);
     }
 
     // Update is called once per frame
@@ -55,13 +60,12 @@ public class Monster : MonoBehaviour
             }
             return false;
         }
+        playerDist = GetDistance(transform.position, target.position);
         attackTimer = Mathf.Clamp(attackTimer + Time.deltaTime, 0, stat.GetAttackDelay);
-        if (stat.GetDetectRange > GetDistance(transform.position, target.position))
+        if (stat.GetDetectRange > playerDist)
         {
-            if (attackHandle.RangeCheck(stat.GetAtkRange, GetDistance(transform.position, target.position)))
+            if (attackHandle.RangeCheck(stat.GetAtkRange, playerDist))
             {
-                agent.ResetPath();
-                agent.velocity = Vector3.zero;
                 if (attackHandle.DelayCheck(stat.GetAttackDelay, attackTimer))
                 {
                     attackHandle.AttackUpdate(stat.GetATK, transform.position, target.position);
@@ -102,21 +106,10 @@ public class Monster : MonoBehaviour
     public virtual void Spawn(MobType type , Vector3[] patrolPos , MonsterStat stat)
     {
         this.stat = stat;
-        TypeFactory(type);
+        attackHandle = IAttackHandler.TypeFactory(attackType);
         fsm.ForceChange(StateTypes.Patrol);
+        Init();
     }
 
-    private IAttackHandler TypeFactory(MobType type)
-    {
-        switch (type)
-        {
-            case MobType.Melee:
-                return new MeleeHandle();
-            case MobType.Ranged:
-                return new RangeHandle();
-            case MobType.Boss:
-                return new BossHandle(new Handler.Barrages.Barrages[3]{new MultiShot(0.2f,2f,45f,90,8), new MultiShot(0.1f, 2f, 5f, 90, 8), new MultiShot(0.2f, 2f, 15f, 90, 3) });
-        }
-        return new MeleeHandle();
-    }
+
 }

@@ -21,8 +21,7 @@ namespace Assets.Define
 
             normalMobProjectile = new Pool<MobProjectile>("MonsterArrow");
             normalMobProjectile.Init();
-/*            monsterPool = new Pool<Monster>("NormalMonster");
-            monsterPool.Init();*/
+            monsterPool = new Pool<Monster>(string.Empty/*NormalMonster*/);
         }
         public void Attack(Collider2D target,int damage,Vector3 attackerPos)
         {
@@ -52,6 +51,8 @@ public class Pool<T> where T : MonoBehaviour
     }
     public Pool(string str)
     {
+        Init();
+        if (str == string.Empty) return;
         ResourceManager.GetInstance.LoadAsync<GameObject>(str, (result) =>
         {
             prefab = result.GetComponent<T>();

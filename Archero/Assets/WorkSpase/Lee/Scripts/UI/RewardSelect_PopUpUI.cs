@@ -20,9 +20,9 @@ namespace Lee.Scripts
 
         private void OnEnable()
         {
-            //StartCoroutine(OpenRountine());
+            StartCoroutine(OpenRountine());
         }
-/*
+
         IEnumerator OpenRountine()
         {
             yield return new WaitForSeconds(0.2f);
@@ -52,7 +52,7 @@ namespace Lee.Scripts
         private void OnDecideClicked()
         {
             int current=0;
-            if (selectedReward is StatRewardData statData)
+            if (selectedReward is StageRewardData statData)
             {
                 // Ω∫≈» ∫∏≥ Ω∫
                 switch (statData.statType)
@@ -74,6 +74,6 @@ namespace Lee.Scripts
             gameObject.SetActive(false);
             //GameManager.UI.ClosePopUpUI();
         }
-*/
+
     }
 }

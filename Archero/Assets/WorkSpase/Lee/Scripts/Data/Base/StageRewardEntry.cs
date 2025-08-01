@@ -24,13 +24,6 @@ public class StageRewardEntry
     [Tooltip("값이 클수록 뽑힐 확률이 높아짐")]
     public float baseWeight = 1f;
 
-    [Header("기본 퍼센트 증가 비율")]
-    [Tooltip("예: 0.1 = 현재 스탯의 10% 만큼 추가")]
-    public float percentageIncrease = 0.1f;
-
-    [Header("현재 스탯값에 따른 추가 보정 커브")]
-    public AnimationCurve extraCurve = AnimationCurve.Constant(0f, 100f, 0.05f);
-
     [Header("(선택)보상 설명")]
     [TextArea] public string description;  // (선택) 보상 설명
 }

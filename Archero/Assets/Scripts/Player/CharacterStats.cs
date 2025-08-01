@@ -3,21 +3,20 @@ using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
 {
-    private Stat baseStats;
+    [Header("기본 능력치")]
+    [SerializeField] private Stat baseStats = new Stat(10, 6, 1f, 5f, 15f);  // 인스펙터에서 조정 가능
+
     public Stat TotalStats { get; private set; }
-    public event Action OnStatChanged;
-    [Header("캐릭터 정보")]
-    // 아이작이나 건전처럼 CurrentHealth 1 당 하트 반 칸 (최대 체력 = MaxHp * 2)
-    [SerializeField] private int currentHp;
     public int CurrentHp => currentHp;
     public int Level => GetComponent<PlayerExpHandler>().CurrentPlayerLevel;
+    public event Action OnStatChanged;
+
+    [SerializeField] private int currentHp;
+
     void Awake()
     {
-        // Stat(공격력, 최대하트, 공속, 이속, 대쉬속도)
-        baseStats = new Stat(10, 6, 1f, 5f, 15f); // 기본 스탯: 공격력 10, 하트 3칸, 공속 1
         TotalStats = baseStats;
         currentHp = TotalStats.MaxHp;
-
         OnStatChanged?.Invoke();
     }
 

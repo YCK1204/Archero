@@ -1,5 +1,7 @@
+using Assets.Define;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -25,6 +27,11 @@ namespace Lee.Scripts
 
         private static RewardManager rewardManager;
         public static RewardManager Reward { get { return rewardManager; } }
+
+        // Clear변수
+        int clearCount = 0;
+        public int _clearCount { get => clearCount; set => clearCount = value; }
+
 
 
         private void Awake()
@@ -66,6 +73,30 @@ namespace Lee.Scripts
             reObj.name = "RewardManager";
             reObj.transform.parent = transform;
             rewardManager = reObj.AddComponent<RewardManager>();
+        }
+
+        public void CheckStageClear()
+        {
+            var unitDict = BattleManager.GetInstance.GetUnitDIct;
+     
+            if (unitDict.Count == 1)
+            {
+                var last = unitDict.Last().Key.gameObject;
+                if (last.CompareTag("Player"))
+                {
+                    uiManager.ShowPopUpUI<PopUpUI>("//");  // UI 만들고 수정
+                }
+                else if (last.CompareTag("Monster"))
+                {
+                    uiManager.ShowPopUpUI<PopUpUI>("//");  // UI 만들고 수정
+                    clearCount--;
+                    if(clearCount == 0)
+                    {
+                        // UI 만들고 수정
+                    }
+                }
+            }
+
         }
     }
 }

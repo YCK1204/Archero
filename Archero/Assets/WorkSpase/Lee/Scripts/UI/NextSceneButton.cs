@@ -7,6 +7,7 @@ namespace Lee.Scripts
 {
     public class NextSceneButton : MonoBehaviour
     {
+        public Animator animator;
         public void StartSceneButton() 
         {
             SceneManager.LoadScene("MainScene");

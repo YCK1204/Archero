@@ -28,6 +28,10 @@ namespace Lee.Scripts
         private static RewardManager rewardManager;
         public static RewardManager Reward { get { return rewardManager; } }
 
+        private static SkillManager skillManager;
+        public static SkillManager SkillReward { get { return skillManager; } }
+
+
         // Clearº¯¼ö
         int clearCount = 0;
         public int _clearCount { get => clearCount; set => clearCount = value; }
@@ -73,6 +77,11 @@ namespace Lee.Scripts
             reObj.name = "RewardManager";
             reObj.transform.parent = transform;
             rewardManager = reObj.AddComponent<RewardManager>();
+
+            GameObject skillObj = new GameObject();
+            skillObj.name = "SkillManager";
+            skillObj.transform.parent = transform;
+            skillManager = skillObj.AddComponent<SkillManager>();
         }
 
         public void CheckStageClear()

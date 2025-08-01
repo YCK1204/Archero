@@ -165,4 +165,16 @@ public class SkillManager : MonoBehaviour
         }
         return 1f; // 기본값
     }
+
+    //  리스트 접근 함수 추가
+    public List<Skill> GetAllSkills()
+    {
+        return allSkills;
+    }
+    // 스킬 검색 함수 추가
+    public Skill GetSkillInfo(string effectID, ESkillGrade grade, ESkillCategory category)
+    {
+        return allSkills.FirstOrDefault(skill => skill.EffectID == effectID && skill.Grade == grade &&skill.Category == category);
+    }
+
 }

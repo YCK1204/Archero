@@ -12,4 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac4f97c6909febc488645c98de2fe8ed, type: 3}
   m_Name: StageRewardData
   m_EditorClassIdentifier: 
-  rewardEntries: []
+  rewardEntries:
+  - clearCount: 0
+    rewardInfo: 
+    skillEffectID: 
+    skillGrade: 0
+    skillCategory: 0

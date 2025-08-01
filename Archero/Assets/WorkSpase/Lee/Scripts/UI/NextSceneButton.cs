@@ -12,5 +12,17 @@ namespace Lee.Scripts
             SceneManager.LoadScene("MainScene");
         }
 
+        public void DugeonSceneButton()
+        {
+            GameManager.Instance._clearCount = 0;
+            SceneManager.LoadScene("DungeonScene");
+        }
+
+
+        public void CountClearTest()
+        {
+            GameManager.Instance.CheckStageClear();
+        }
+
     }
 }

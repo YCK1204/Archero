@@ -787,7 +787,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1033372903
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -889,11 +889,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad93dcd1a899c4a4aba73b60d7f3d0fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patrolPositions:
-  - {x: -2.85, y: 2.86, z: 0}
-  - {x: -2.98, y: -2.86, z: 0}
-  - {x: 2.36, y: -2.73, z: 0}
-  - {x: 2.36, y: 2.99, z: 0}
   target: {fileID: 1975167829}
   attackType: 1
 --- !u!95 &1033372907
@@ -1589,6 +1584,7 @@ GameObject:
   - component: {fileID: 1503414979}
   - component: {fileID: 1503414978}
   - component: {fileID: 1503414977}
+  - component: {fileID: 1503414980}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -1660,9 +1656,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1975167821}
-        m_TargetAssemblyTypeName: CharacterStats, Assembly-CSharp
-        m_MethodName: LevelUp
+      - m_Target: {fileID: 1503414980}
+        m_TargetAssemblyTypeName: Lee.Scripts.NextSceneButton, Assembly-CSharp
+        m_MethodName: CountClearTest
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1710,6 +1706,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1503414975}
   m_CullTransparentMesh: 1
+--- !u!114 &1503414980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503414975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbec8074124c4ff4e8fd08cbf33ba9e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1955648893
 GameObject:
   m_ObjectHideFlags: 0
@@ -1893,18 +1901,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc6366f54d3c207488b8cc885dd3f5ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseStats:
-    Attack: 0
-    Defense: 0
-    MaxHealth: 0
-    MoveSpeed: 0
-    DashSpeed: 0
   Level: 1
   CurrentHealth: 100
-  FinalAttack: 1
-  FinalDefense: 0
-  MoveSpeed: 5
-  DashSpeed: 15
 --- !u!114 &1975167822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2151,55 +2149,10 @@ Transform:
   - {fileID: 1265998736}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2137665172
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2137665174}
-  - component: {fileID: 2137665173}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2137665173
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2137665172}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d270f3da036703d4f8960be9e4eeba24, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &2137665174
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2137665172}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.2551258, y: 0.13561262, z: 0.020360801}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 2137665174}
   - {fileID: 274513177}
   - {fileID: 1166655925}
   - {fileID: 1988682495}

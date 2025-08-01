@@ -4,13 +4,12 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
   m_Scenes:
   - enabled: 1
-    path: Assets/WorkSpase/Lee/Scenes/StartScene.unity
+    path: Assets/Scenes/MainScene/StartScene.unity
     guid: 82e09ed87fac2e14b87b72ec5001ed68
   - enabled: 1
-    path: Assets/WorkSpase/Lee/Scenes/MainScene.unity
+    path: Assets/Scenes/MainScene/MainScene.unity
     guid: 5a2065b662b5a5043ae809184e0f4cf9
   - enabled: 1
     path: Assets/Scenes/MainScene/DungeonScene.unity

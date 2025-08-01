@@ -88,6 +88,16 @@ public class SkillManager : MonoBehaviour
 
     private void ShowSkillSelectionUI(List<Skill> skillsToShow) { /* UI 로직 */ }
 
+    //  리스트 접근 함수 추가
+    public List<Skill> GetAllSkills()
+    {
+        return allSkills;
+    }
+    public Skill GetSkillInfo(string effectID, ESkillGrade grade, ESkillCategory category)
+    {
+        return allSkills.FirstOrDefault(skill => skill.EffectID == effectID &&skill.Grade == grade && skill.Category == category);
+    }
+
     // UI에서 스킬을 선택하면 이 함수를 호출
     public void SelectSkill(Skill selectedSkill)
     {
@@ -165,4 +175,6 @@ public class SkillManager : MonoBehaviour
         }
         return 1f; // 기본값
     }
+
+
 }

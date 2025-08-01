@@ -1,16 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[Serializable]
 public class MonsterStat
 {
-    private int currHP;
-    private int maxHP;
-    private int attackDamage;
-    private float moveSpeed;
-    private float attackDelay;
-    private float detectRange;
-    private float attackRange;
+    [SerializeField]private int currHP;
+    [SerializeField] private int maxHP;
+    [SerializeField] private int attackDamage;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float attackDelay;
+    [SerializeField] private float detectRange;
+    [SerializeField] private float attackRange;
     public int GetATK { get { return attackDamage; } }
     public float GetMoveSpeed { get { return moveSpeed; } }
     public float GetDetectRange { get { return detectRange; } }
@@ -28,6 +29,11 @@ public class MonsterStat
         detectRange = detRange * detRange;
         attackRange = atkRange * atkRange;
         this.attackDelay = attackDelay;
+    }
+    public void Init()
+    {
+        detectRange = detectRange * detectRange;
+        attackRange = attackRange * attackRange;
     }
     public void GetDamage(int damage)
     {

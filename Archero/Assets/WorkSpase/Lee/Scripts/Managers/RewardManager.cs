@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -9,54 +10,96 @@ namespace Lee.Scripts
     public class RewardManager : MonoBehaviour
     {
         [Header("생성한 RewardData 에셋들")]
-        [SerializeField] List<RewardData> rewardDatas;
-
-        [Header("스킬 최대 레벨")]
-        public int maxSkillLevel = 3;
+        [SerializeField] List<StageRewardData> rewardDatas;
+        string commonUIPath = "Prefabs/UI/RewardUI";
+        string VkrUIPath = "Prefabs/UI/VkrRewardUI";
+        string AngleUIPath = "Prefabs/UI/AngleRewardUI";
+        string DevilUIPath = "Prefabs/UI/DevilRewardUI";
 
         void Awake()
         {
             // 인스펙터 비어있으면 Resources 폴더에서 로드
             if (rewardDatas == null || rewardDatas.Count == 0)
             {
-                var loaded = Resources.LoadAll<RewardData>("Data");
-                rewardDatas = new List<RewardData>(loaded);
-                Debug.Log($"RewardManager: {rewardDatas.Count}개의 RewardData 로드");
+                var loaded = Resources.LoadAll<StageRewardData>("Data");
+                rewardDatas = new List<StageRewardData>(loaded);
+                Debug.Log($"RewardManager: {rewardDatas.Count}개의 StageRewardData 로드");
             }
         }
 
-        // 모든 보상 타입 반환
-        public List<RewardData> AllRewardDatas => rewardDatas;
-
-        // 플레이어가 가지고 있는 스킬들 탐색후 스킬레벨 int값 반환하는 로직 필요
-
-        public List<RewardData> GetRandomRewards(int count)// 스킬레벨 생길시 구문으로 변경(Func<RewardData, int> getSkillLevel, int count)
+        public void ShowReward(ESkillGrade grade, ESkillCategory category, int pickCount)
         {
-            // 스킬 보상만 필터링
-           // var skillCandidates = rewardDatas.OfType<SkillRewardData>().Where(d => getSkillLevel(d) < maxSkillLevel).Cast<RewardData>().ToList();
+            // 모든 스킬 엔트리 보기
+            var candidates = rewardDatas.SelectMany(so => so.rewardEntries).Where(e => e.skillGrade == grade && e.skillCategory == category).ToList();
 
-            // 스킬 보상
-            var skillCandidates = rewardDatas.OfType<SkillRewardData>().Cast<RewardData>().ToList();
-            // 모든 스탯 보상 후보
-            var statCandidates = rewardDatas.OfType<StatRewardData>().Cast<RewardData>().ToList();
+            //가중치에 따른 랜덤 샘플링(중복없이)
+            var picks = ReawrdSampling(candidates, pickCount);
 
-            // 둘다 셔플
-            Shuffle(skillCandidates);
-            Shuffle(statCandidates);
-
-            //덱 픽
-            var picks = new List<RewardData>();
-
-            // 스킬보상 부터 최대 Count까지 추가
-            picks.AddRange(skillCandidates.Take(count));
-
-            // 스킬보상이 부족하면 스탯보상으로 채우기
-            if (picks.Count < count)
-                picks.AddRange(statCandidates.Take(count - picks.Count));
-
-            // 다시 섞기
+            //셔플
             Shuffle(picks);
-            return picks;
+
+           switch(category)
+            {
+                case ESkillCategory.LevelUp:
+                    {
+                        // common 방 전용 UI
+                        GameManager.UI.ShowPopUpUI<RewardSelect_PopUpUI>(commonUIPath).Initialize(picks, ChoseReward);
+                    }
+                    break;
+
+                case ESkillCategory.Valkyrie:
+                    {
+                        // 발키리 방 전용 UI
+                        GameManager.UI.ShowPopUpUI<VkrRewardSelect_PopUpUI>(VkrUIPath).Initialize(picks, ChoseReward);
+                    }
+                    break;
+
+                case ESkillCategory.Angel:
+                    {
+                        // 천사 방 전용 UI
+                        GameManager.UI.ShowPopUpUI<AngleRewardSelect_PopUpUI>(AngleUIPath).Initialize(picks, ChoseReward);
+                    }
+                    break;
+
+                case ESkillCategory.Devil:
+                    {
+                        // 악마 방 전용 UI
+                        GameManager.UI.ShowPopUpUI<DevilRewardSelect_PopUpUI>(DevilUIPath).Initialize(picks, ChoseReward);
+                    }
+                    break;
+            };
+        }
+
+        // UI 결정 버튼 클릭시 적용되는 함수
+        private void ChoseReward(StageRewardEntry entry)
+        {
+            var skill = SkillManager.Instance.GetSkillInfo(entry.skillEffectID, entry.skillGrade, entry.skillCategory);
+            if (skill != null) SkillManager.Instance.SelectSkill(skill);
+        }
+
+        private List<StageRewardEntry> ReawrdSampling(List<StageRewardEntry> source, int count)
+        {
+            var pool = new List<StageRewardEntry>(source);
+            var result = new List<StageRewardEntry>();
+
+            for(int i = 0; i < count && pool.Count > 0; i++)
+        {
+                float totalWeight = pool.Sum(e => e.baseWeight);
+                float roll = UnityEngine.Random.Range(0f, totalWeight);
+                float acc = 0f;
+
+                foreach (var e in pool)
+                {
+                    acc += e.baseWeight;
+                    if (roll <= acc)
+                    {
+                        result.Add(e);
+                        pool.Remove(e);
+                        break;
+                    }
+                }
+            }
+            return result;
         }
 
         private void Shuffle<T>(IList<T> list)
@@ -67,14 +110,5 @@ namespace Lee.Scripts
                 (list[i], list[j]) = (list[j], list[i]);
             }
         }
-
-        // 플레이어 스탯 보상량 계산
-        public int CalculateStatBonus(StatRewardData data, int currentStat)
-        {
-            float bonus = currentStat * data.percentageIncrease;        // 현재 플레이어 스탯에서 x퍼센트만큼 계산(ex. 현재스탯의 10퍼센트 계산)
-            bonus += data.extraCurve.Evaluate(currentStat) * currentStat;   //ex.Evaluate(75) = 0.15 * 75
-            return Mathf.RoundToInt(bonus); // 반환형 int인 소수점 첫째짜리까지 반올림함
-        }
     }
-
 }

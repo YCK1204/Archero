@@ -9,10 +9,6 @@ public class TurretWeapon : WeaponBase
 
     private float lastAttackTime = -Mathf.Infinity;
 
-    private void Awake()
-    {
-        holder = GetComponentInParent<WeaponHolder>();
-    }
 
     public override void Activate()
     {

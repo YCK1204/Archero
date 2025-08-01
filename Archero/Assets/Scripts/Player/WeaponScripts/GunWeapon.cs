@@ -9,8 +9,17 @@ public class GunWeapon : WeaponBase
 
     private float lastAttackTime = -Mathf.Infinity;
 
+    private void Update()
+    {
+        RotateTowardNearestMonster();
+    }
+
     public override void Activate()
     {
+        //if (weaponData == null) Debug.LogWarning("weaponData is null");
+        //if (ownerStats == null) Debug.LogWarning("ownerStats is null");
+        //if (holder == null) Debug.LogWarning("holder is null");
+
         if (weaponData == null || ownerStats == null || holder == null)
             return;
         if (Time.time - lastAttackTime < weaponData.Cooldown / ownerStats.TotalStats.AttackSpeed)
@@ -18,10 +27,6 @@ public class GunWeapon : WeaponBase
 
         Transform target = holder.FindNearestMonster(weaponData.Range);
         if (target == null) return;
-
-        Vector2 dir = (target.position - transform.position).normalized; 
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle);
 
         FireAt(target.position);
         lastAttackTime = Time.time;
@@ -45,5 +50,30 @@ public class GunWeapon : WeaponBase
             GameObject proj = Instantiate(projectilePrefab, firePoint.position, Quaternion.Euler(0, 0, angle));
             proj.GetComponent<Projectile>()?.Init(dir, weaponData, ownerStats.TotalStats.AttackPower);
         }
+    }
+
+    private void RotateTowardNearestMonster()
+    {
+        if (holder == null || weaponData == null) return;
+
+        Transform target = holder.FindNearestMonster(weaponData.Range);
+        if (target == null) return;
+
+        Vector2 dir = (target.position - transform.position).normalized;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+        // 좌우 판별
+        bool flip = dir.x < 0;
+
+        // Flip 처리 (Sprite 좌우 반전)
+        var scale = transform.localScale;
+        scale.x = Mathf.Abs(scale.x) * (flip ? -1 : 1);
+        transform.localScale = scale;
+
+        // 회전 방향 보정 (flip되었으면 z축도 반대로)
+        if (flip)
+            angle += 180f;
+
+        transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 }

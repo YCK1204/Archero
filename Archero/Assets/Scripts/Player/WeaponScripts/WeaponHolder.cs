@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,11 +13,11 @@ public class WeaponHolder : MonoBehaviour
 
     private void Awake()
     {
-        ownerStats = GetComponent<CharacterStats>();
+        ownerStats = GetComponentInParent<CharacterStats>();
     }
     private void Start()
     {
-        // 게임 시작 시 초기 무기 장착
+        //yield return null;           // 으헝ㅇ으엉ㅇ으어허헝
         EquipWeapon(startingWeaponData, startingWeaponPrefab);
     }
 

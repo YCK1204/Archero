@@ -17,6 +17,8 @@ public class CharacterStats : MonoBehaviour
         baseStats = new Stat(10, 6, 1f, 5f, 15f); // 기본 스탯: 공격력 10, 하트 3칸, 공속 1
         TotalStats = baseStats;
         currentHp = TotalStats.MaxHp;
+
+        OnStatChanged?.Invoke();
     }
 
     // 스탯을 곱연산으로 강화하는 함수

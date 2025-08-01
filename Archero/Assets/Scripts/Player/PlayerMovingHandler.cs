@@ -24,7 +24,7 @@ public class PlayerMovingHandler : MonoBehaviour
         characterStats = GetComponent<CharacterStats>();
 
         characterStats.OnStatChanged += UpdateMoveStats;
-        currentSpeed = characterStats.TotalStats.MoveSpeed;
+        UpdateMoveStats();
     }
     private void UpdateMoveStats()
     {

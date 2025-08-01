@@ -93,6 +93,7 @@ namespace Lee.Scripts
             if (unitDict.Count == 1)
             {
                 var last = unitDict.Last().Key.gameObject;
+
                 if (last.CompareTag("Player"))
                 {
                     uiManager.ShowPopUpUI<GameOverUI>("Prefabs/UI/GameOverUI");  // UI 만들고 수정

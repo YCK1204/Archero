@@ -27,20 +27,32 @@ namespace Lee.Scripts
 
         public void Recreated()
         {
-            windowCanvas = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
-            windowCanvas.gameObject.name = "WindowCanvas";
-            windowCanvas.sortingOrder = 10;
+            if (windowCanvas == null)
+            {
+                Debug.Log("¿Ã∞≈ Ω««‡µ ");
+                windowCanvas = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
+                windowCanvas.gameObject.name = "WindowCanvas";
+                windowCanvas.sortingOrder = 10;
+            }
+            if( popUpCanvas == null)
+            {
+                popUpCanvas = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
+                popUpCanvas.gameObject.name = "PopUpCanvas";
+                popUpCanvas.sortingOrder = 100;
 
-            popUpCanvas = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
-            popUpCanvas.gameObject.name = "PopUpCanvas";
-            popUpCanvas.sortingOrder = 100;
-
-            popUpStack = new Stack<PopUpUI>();
+                popUpStack = new Stack<PopUpUI>();
+            }
+            else
+            {
+                return;
+            }
         }
 
         public void Clear()
         {
             GameManager.Resource.Destroy(windowCanvas);
+            GameManager.Resource.Destroy(popUpCanvas);
+            popUpStack.Clear();
         }
 
         public T ShowWindowUI<T>(T windowUI) where T : WindowUI

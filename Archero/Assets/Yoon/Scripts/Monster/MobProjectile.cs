@@ -8,6 +8,7 @@ public class MobProjectile : MonoBehaviour
     float speed;
     int damage;
     float currTime;
+
     public void Init(Vector3 rot,Vector3 shooterPos,float speed,int damage)
     {
         transform.eulerAngles = rot;
@@ -32,6 +33,7 @@ public class MobProjectile : MonoBehaviour
             BattleManager.GetInstance.normalMobProjectile.EnQueue(this);
             BattleManager.GetInstance.Attack(collision, damage, transform.position);
         }
+        else if (collision.gameObject.layer == 3) BattleManager.GetInstance.normalMobProjectile.EnQueue(this);
     }
 
 }

@@ -1,4 +1,5 @@
 using Assets.Define;
+using Handler;
 using System.Collections;
 using System.Collections.Generic;
 using Unit.State;
@@ -15,7 +16,8 @@ public class BossMonster : Monster
         fsm.Init();
         col = GetComponent<Collider2D>();
         BattleManager.GetInstance.RegistHitInfo(GetComponent<Collider2D>(), Damaged);
-        attackHandle = TypeFactory(attackType);
+        attackHandle = IAttackHandler.TypeFactory(MobType.Boss);
+        moveHandler = IMoveHandler.Factory(MoveType.none,null);
     }
 
     // Update is called once per frame

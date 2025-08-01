@@ -1747,7 +1747,7 @@ GameObject:
   - component: {fileID: 1533881633}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2218,7 +2218,7 @@ MonoBehaviour:
     attackRange: 7
   target: {fileID: 1533881642}
   attackType: 1
-  moveType: 2
+  moveType: 1
   patrolPositions:
   - {x: -2.87, y: 2.64, z: 0}
   - {x: 2.28, y: 2.83, z: 0}

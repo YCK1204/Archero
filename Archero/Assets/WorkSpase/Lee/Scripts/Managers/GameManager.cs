@@ -78,7 +78,7 @@ namespace Lee.Scripts
         public void CheckStageClear()
         {
             var unitDict = BattleManager.GetInstance.GetUnitDIct;
-     
+
             if (unitDict.Count == 1)
             {
                 var last = unitDict.Last().Key.gameObject;
@@ -90,14 +90,20 @@ namespace Lee.Scripts
                 {
                     uiManager.ShowPopUpUI<PopUpUI>("//");  // UI 만들고 수정
                     clearCount--;
-                    if(clearCount == 0)
+                    if (clearCount > 0)
                     {
-                        // UI 만들고 수정
+                        
+                                
+                    }
+
+
+
+
                     }
                 }
-            }
 
+            }
         }
     }
-}
+
 

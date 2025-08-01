@@ -30,6 +30,11 @@ public class MonsterStat
         attackRange = atkRange * atkRange;
         this.attackDelay = attackDelay;
     }
+    public void Init()
+    {
+        detectRange = detectRange * detectRange;
+        attackRange = attackRange * attackRange;
+    }
     public void GetDamage(int damage)
     {
         if (isDie()) return;

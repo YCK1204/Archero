@@ -42,6 +42,7 @@ public class Monster : MonoBehaviour
     public void Init()
     {
         BattleManager.GetInstance.RegistHitInfo(col, Damaged);
+        stat.Init();
     }
 
     // Update is called once per frame

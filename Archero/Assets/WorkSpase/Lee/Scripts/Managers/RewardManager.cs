@@ -9,7 +9,7 @@ namespace Lee.Scripts
     public class RewardManager : MonoBehaviour
     {
         [Header("생성한 RewardData 에셋들")]
-        [SerializeField] List<RewardData> rewardDatas;
+        [SerializeField] List<StageRewardData> rewardDatas;
 
         [Header("스킬 최대 레벨")]
         public int maxSkillLevel = 3;
@@ -19,18 +19,18 @@ namespace Lee.Scripts
             // 인스펙터 비어있으면 Resources 폴더에서 로드
             if (rewardDatas == null || rewardDatas.Count == 0)
             {
-                var loaded = Resources.LoadAll<RewardData>("Data");
-                rewardDatas = new List<RewardData>(loaded);
-                Debug.Log($"RewardManager: {rewardDatas.Count}개의 RewardData 로드");
+                var loaded = Resources.LoadAll<StageRewardData>("Data");
+                rewardDatas = new List<StageRewardData>(loaded);
+                Debug.Log($"RewardManager: {rewardDatas.Count}개의 StageRewardData 로드");
             }
         }
 
         // 모든 보상 타입 반환
-        public List<RewardData> AllRewardDatas => rewardDatas;
+        public List<StageRewardData> AllRewardDatas => rewardDatas;
 
         // 플레이어가 가지고 있는 스킬들 탐색후 스킬레벨 int값 반환하는 로직 필요
-
-        public List<RewardData> GetRandomRewards(int count)// 스킬레벨 생길시 구문으로 변경(Func<RewardData, int> getSkillLevel, int count)
+/*
+        public List<StageRewardData> GetRandomRewards(int count)// 스킬레벨 생길시 구문으로 변경(Func<RewardData, int> getSkillLevel, int count)
         {
             // 스킬 보상만 필터링
            // var skillCandidates = rewardDatas.OfType<SkillRewardData>().Where(d => getSkillLevel(d) < maxSkillLevel).Cast<RewardData>().ToList();
@@ -45,7 +45,7 @@ namespace Lee.Scripts
             Shuffle(statCandidates);
 
             //덱 픽
-            var picks = new List<RewardData>();
+            var picks = new List<StageRewardData>();
 
             // 스킬보상 부터 최대 Count까지 추가
             picks.AddRange(skillCandidates.Take(count));
@@ -58,7 +58,7 @@ namespace Lee.Scripts
             Shuffle(picks);
             return picks;
         }
-
+*/
         private void Shuffle<T>(IList<T> list)
         {
             for (int i = list.Count - 1; i > 0; i--)
@@ -69,7 +69,7 @@ namespace Lee.Scripts
         }
 
         // 플레이어 스탯 보상량 계산
-        public int CalculateStatBonus(StatRewardData data, int currentStat)
+        public int CalculateStatBonus(StageRewardEntry data, int currentStat)
         {
             float bonus = currentStat * data.percentageIncrease;        // 현재 플레이어 스탯에서 x퍼센트만큼 계산(ex. 현재스탯의 10퍼센트 계산)
             bonus += data.extraCurve.Evaluate(currentStat) * currentStat;   //ex.Evaluate(75) = 0.15 * 75

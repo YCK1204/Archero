@@ -10,20 +10,19 @@ namespace Lee.Scripts
     public class RewardSelect_PopUpUI : PopUpUI
     {
         public List<RectTransform> curRewardList = new List<RectTransform>();
-         RewardData selectedReward;// 최종 선택 보상
         CharacterStats characterStats;
         protected override void Awake()
         {
             base.Awake();
             characterStats = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterStats>();
-            buttons["DecideButton"].onClick.AddListener(() => { OnDecideClicked(); });
+           // buttons["DecideButton"].onClick.AddListener(() => { OnDecideClicked(); });
         }
 
         private void OnEnable()
         {
-            StartCoroutine(OpenRountine());
+            //StartCoroutine(OpenRountine());
         }
-
+/*
         IEnumerator OpenRountine()
         {
             yield return new WaitForSeconds(0.2f);
@@ -75,8 +74,6 @@ namespace Lee.Scripts
             gameObject.SetActive(false);
             //GameManager.UI.ClosePopUpUI();
         }
-
-
-
+*/
     }
 }

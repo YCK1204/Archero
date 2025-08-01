@@ -106,7 +106,7 @@ public class Monster : MonoBehaviour
         fsm.ForceChange(StateTypes.Patrol);
     }
 
-    private IAttackHandler TypeFactory(MobType type)
+    protected IAttackHandler TypeFactory(MobType type)
     {
         switch (type)
         {
@@ -115,7 +115,7 @@ public class Monster : MonoBehaviour
             case MobType.Ranged:
                 return new RangeHandle();
             case MobType.Boss:
-                return new BossHandle(new Handler.Barrages.Barrages[3]{new MultiShot(0.2f,2f,45f,90,8), new MultiShot(0.1f, 2f, 5f, 90, 8), new MultiShot(0.2f, 2f, 15f, 90, 3) });
+                return new BossHandle(new Handler.Barrages.Barrages[3]{new MultiShot(0.2f,2f,45f,90f,8), new MultiShot(0.1f, 2f, 5f, 90f, 8), new MultiShot(0.2f, 2f, 90f, 90f, 4) });
         }
         return new MeleeHandle();
     }

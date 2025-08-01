@@ -22,7 +22,7 @@ public class MobProjectile : MonoBehaviour
     void Update()
     {
         currTime += Time.deltaTime;
-        if (currTime >= 5f) { BattleManager.GetInstance.normalMobProjectile.EnQueue(this);  return; }
+        if (currTime >= 2f) { BattleManager.GetInstance.normalMobProjectile.EnQueue(this);  return; }
         transform.position += transform.up * (Time.deltaTime*speed);
     }
     private void OnTriggerEnter2D(Collider2D collision)

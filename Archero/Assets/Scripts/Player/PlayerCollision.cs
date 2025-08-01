@@ -57,7 +57,7 @@ public class PlayerCollision : MonoBehaviour
         while (true)
         {
             // 1. 먼저 데미지를 한 번 주고
-            playerStats.TakeDamage(attackDamage);
+            playerStats.TakeDamage(attackDamage,Vector3.zero);
 
             // 2. damageInterval 만큼 기다림 (예: 2초)
             yield return new WaitForSeconds(damageInterval);

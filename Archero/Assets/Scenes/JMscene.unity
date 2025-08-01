@@ -140,6 +140,7 @@ GameObject:
   - component: {fileID: 341592175}
   - component: {fileID: 341592174}
   - component: {fileID: 341592177}
+  - component: {fileID: 341592178}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -354,8 +355,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a3d36737f52ca47a293c3d04ce3e1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  dashSpeed: 15
   dashDuration: 0.2
   dashCooldown: 1
   acceleration: 15
@@ -371,11 +370,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc6366f54d3c207488b8cc885dd3f5ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseStats:
-    maxHealth: 100
-    defense: 5
-    moveSpeed: 20
-    dashSpeed: 15
+  Level: 1
+  CurrentHealth: 0
+--- !u!114 &341592178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341592168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da6788e642e8023439989270354b6d0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 0}
+  level: 1
+  currentExp: 0
+  baseExpToLevelUp: 40
+  expGrowthFactor: 1.5
 --- !u!1 &714446306
 GameObject:
   m_ObjectHideFlags: 0

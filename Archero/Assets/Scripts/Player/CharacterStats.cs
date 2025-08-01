@@ -6,19 +6,17 @@ public class CharacterStats : MonoBehaviour
     public Stat TotalStats { get; private set; }
 
     [Header("캐릭터 정보")]
-    public int Level = 1;
-    // 아이작 스타일: CurrentHealth는 하트 반 칸의 개수를 의미 (최대 체력 = MaxHeartContainers * 2)
-    public int CurrentHealth;
-    public int CurrentExp { get; private set; }
-    public int MaxExp { get; private set; } = 100; // 예시: 레벨업에 필요한 경험치
-
+    // 아이작이나 건전처럼 CurrentHealth 1 당 하트 반 칸 (최대 체력 = MaxHeartContainers * 2)
+    [SerializeField] private int currentHealth;
+    public int CurrentHealth => currentHealth;
+    public int Level => GetComponent<PlayerExpHandler>().CurrentPlayerLevel;
     void Awake()
     {
         // Stat(공격력, 최대하트, 공속, 이속, 대쉬속도)
         baseStats = new Stat(10, 3, 1f, 5f, 15f); // 기본 스탯: 공격력 10, 하트 3칸, 공속 1
         TotalStats = baseStats;
         // 현재 체력을 최대 하트 칸의 2배로 설정 (하트 한 칸 = 체력 2)
-        CurrentHealth = TotalStats.MaxHeartContainers * 2;
+        currentHealth = TotalStats.MaxHeartContainers * 2;
     }
 
     // 스탯을 곱연산으로 강화하는 함수
@@ -90,33 +88,6 @@ public class CharacterStats : MonoBehaviour
             CurrentHealth = TotalStats.MaxHeartContainers * 2;
         }
     }
-
-    /// <summary>
-    /// 경험치를 획득하는 함수
-    /// </summary>
-    public void AddExperience(int amount)
-    {
-        CurrentExp += amount;
-        Debug.Log($"경험치 {amount} 획득! 현재 경험치: {CurrentExp}/{MaxExp}");
-        if (CurrentExp >= MaxExp)
-        {
-            LevelUp();
-        }
-    }
-
-    public void LevelUp()
-    {
-        Level++;
-        CurrentExp -= MaxExp; // 남은 경험치 이월
-        MaxExp += 50; // ex) 다음 레벨업에 필요한 경험치 증가
-
-        // 레벨업 시 스탯 보너스 적용 로직 추가
-        Stat levelUpBonus = new Stat(0.5f, 1, 0.5f, 0f, 0f);
-
-        // TODO: SkillManager를 호출하여 스킬 선택 창을 띄웁니다.
-        // SkillManager.Instance.ShowSkillSelectionUI();
-    }
-
     // 사망 관련 함수
     private void Die()
     {

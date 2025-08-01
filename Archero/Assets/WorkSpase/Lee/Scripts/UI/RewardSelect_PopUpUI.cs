@@ -52,27 +52,27 @@ namespace Lee.Scripts
         }
         private void OnDecideClicked()
         {
-            int current=0;
-            if (selectedReward is StatRewardData statData)
-            {
-                // 스탯 보너스
-                switch (statData.statType)
-                {
-                    case StatType.Health:
-                        current = characterStats.CurrentHealth;
-                        break;
-                }
+            //int current=0;
+            //if (selectedReward is StatRewardData statData)
+            //{
+            //    // 스탯 보너스
+            //    switch (statData.statType)
+            //    {
+            //        case StatType.Health:
+            //            current = characterStats.CurrentHealth;
+            //            break;
+            //    }
                  
-                int gain = GameManager.Reward.CalculateStatBonus(statData, current);  //캐릭터 스탯 보너스 수치 연산
-                characterStats.CurrentHealth += gain; //캐릭터 스탯 보너스 추가
-                Debug.Log($"이것은{statData}입니다");
-            }
-            else if(selectedReward is SkillRewardData skillData)
-            {
-                // 스킬 적용 로직
-                Debug.Log($"이것은{skillData}입니다");
-            }
-            gameObject.SetActive(false);
+            //    int gain = GameManager.Reward.CalculateStatBonus(statData, current);  //캐릭터 스탯 보너스 수치 연산
+            //    characterStats.CurrentHealth += gain; //캐릭터 스탯 보너스 추가
+            //    Debug.Log($"이것은{statData}입니다");
+            //}
+            //else if(selectedReward is SkillRewardData skillData)
+            //{
+            //    // 스킬 적용 로직
+            //    Debug.Log($"이것은{skillData}입니다");
+            //}
+            //gameObject.SetActive(false);
             //GameManager.UI.ClosePopUpUI();
         }
 

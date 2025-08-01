@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 89897821884717153}
   - component: {fileID: 7230996199658232008}
   - component: {fileID: 4974588796134555656}
-  - component: {fileID: 5769242612274527234}
+  - component: {fileID: 2388877651893643541}
   m_Layer: 5
   m_Name: AngleRewardUI
   m_TagString: Untagged
@@ -188,8 +188,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 782358980632208692}
-  - {fileID: 8796168936111038449}
   - {fileID: 4780036155725614097}
+  - {fileID: 8796168936111038449}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -235,7 +235,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5769242612274527234
+--- !u!114 &2388877651893643541
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -244,10 +244,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4302888483895716684}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1e31425952c8534d9a6a50280d553f2, type: 3}
+  m_Script: {fileID: 11500000, guid: f851f00530d3dac4a97c00809c9ab0a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  curRewardList: []
+  rewardSlots:
+  - {fileID: 4780036155725614097}
+  - {fileID: 8796168936111038449}
 --- !u!1 &6670766764130506466
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 using Lee.Scripts;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,71 +10,63 @@ namespace Lee.Scripts
 {
     public class RewardSelect_PopUpUI : PopUpUI
     {
-        public List<RectTransform> curRewardList = new List<RectTransform>();
-        CharacterStats characterStats;
+        [SerializeField] List<RectTransform> rewardSlots = new List<RectTransform>();
+        private List<StageRewardEntry> entries;
+        private Action<StageRewardEntry> onChosen;
+        private StageRewardEntry selectedEntry;
         protected override void Awake()
         {
             base.Awake();
-            characterStats = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterStats>();
-           // buttons["DecideButton"].onClick.AddListener(() => { OnDecideClicked(); });
+            buttons["DecideButton"].onClick.AddListener(() => { OnDecideClicked(); });
         }
 
-        private void OnEnable()
+        public void Initialize(List<StageRewardEntry> entries, Action<StageRewardEntry> onChosen)
         {
+            this.entries = entries;
+            this.onChosen = onChosen;
+            this.selectedEntry = null;
             StartCoroutine(OpenRountine());
         }
-
         IEnumerator OpenRountine()
         {
-            yield return new WaitForSeconds(0.2f);
-            curRewardList.Add(rectTransform["RewardSlot1"]);
-            curRewardList.Add(rectTransform["RewardSlot2"]);
-            curRewardList.Add(rectTransform["RewardSlot3"]);
-            yield return new WaitForSeconds(0.2f);
-            var picks = GameManager.Reward.GetRandomRewards(curRewardList.Count);
+            // 애니메이션이 있다면 초변경
+            yield return new WaitForSeconds(0.1f);
 
-            for (int i = 0; i < picks.Count; i++)
+            // 슬롯초기화 (자식오브젝트들 삭제)
+            foreach (var slot in rewardSlots)
             {
-                var data = picks[i];
-                var slotTf = curRewardList[i].transform as RectTransform;
-
-                foreach (Transform c in slotTf) Destroy(c.gameObject);             // 기존꺼 삭제
-                var go = GameManager.Resource.Instantiate(data.prefab);
-
-                go.transform.SetParent(slotTf, false); // 로컬포인트
-
-                if (go.TryGetComponent<Button>(out var btn))
+                foreach (Transform child in slot)
                 {
-                    btn.onClick.RemoveAllListeners();       // 버튼 이벤트 초기화
-                    btn.onClick.AddListener(() =>{selectedReward = data;});  // 보상 클릭시 해당 보상에 대한 데이터 입력
+                    GameManager.Resource.Destroy(child.gameObject);
+                }
+            }
+
+            for (int i = 0; i < entries.Count && i < rewardSlots.Count; i++)
+            {
+                var entry = entries[i];
+                var slot = rewardSlots[i];
+
+                if (entry.uiPrefab != null)
+                {
+                    GameObject obj = GameManager.Resource.Instantiate(entry.uiPrefab, slot);
+                    obj.transform.localPosition = Vector3.zero;
+
+                    // 보상을 선택할시 해당 보상에 대한 정보 가저오기
+                    if (obj.TryGetComponent<Button>(out var btn))
+                    {
+                        btn.onClick.RemoveAllListeners();
+                        btn.onClick.AddListener(() => selectedEntry = entry);
+                    }
                 }
             }
         }
-        private void OnDecideClicked()
+
+        void OnDecideClicked()
         {
-            int current=0;
-            if (selectedReward is StageRewardData statData)
-            {
-                // 스탯 보너스
-                switch (statData.statType)
-                {
-                    case StatType.Health:
-                        current = characterStats.CurrentHealth;
-                        break;
-                }
-                 
-                int gain = GameManager.Reward.CalculateStatBonus(statData, current);  //캐릭터 스탯 보너스 수치 연산
-                characterStats.CurrentHealth += gain; //캐릭터 스탯 보너스 추가
-                Debug.Log($"이것은{statData}입니다");
-            }
-            else if(selectedReward is SkillRewardData skillData)
-            {
-                // 스킬 적용 로직
-                Debug.Log($"이것은{skillData}입니다");
-            }
-            gameObject.SetActive(false);
-            //GameManager.UI.ClosePopUpUI();
+            var result = selectedEntry ?? (entries.Count > 0 ? entries[0] : null);
+            // 버튼 클릭시 선택된 보상 적용
+            onChosen?.Invoke(result);
+            GameManager.UI.ClosePopUpUI();
         }
-
     }
 }

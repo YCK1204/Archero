@@ -23,8 +23,6 @@ namespace Lee.Scripts
             popUpCanvas.sortingOrder = 100;
 
             popUpStack = new Stack<PopUpUI>();
-
-
         }
 
         public void Recreated()

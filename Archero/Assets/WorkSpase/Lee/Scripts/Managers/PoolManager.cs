@@ -207,7 +207,6 @@ namespace Lee.Scripts
                 return null;
             }
         }
-
         public T GetUI<T>(T original) where T : Object
         {
             if (original is GameObject)

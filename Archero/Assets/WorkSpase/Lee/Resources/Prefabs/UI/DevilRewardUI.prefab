@@ -301,7 +301,7 @@ GameObject:
   - component: {fileID: 6317748463610094557}
   - component: {fileID: 3660282927363580788}
   - component: {fileID: 1412737690633763764}
-  - component: {fileID: 468990913693190078}
+  - component: {fileID: 2227716179787224647}
   m_Layer: 5
   m_Name: DevilRewardUI
   m_TagString: Untagged
@@ -368,7 +368,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &468990913693190078
+--- !u!114 &2227716179787224647
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -377,7 +377,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 7864596743072239856}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1e31425952c8534d9a6a50280d553f2, type: 3}
+  m_Script: {fileID: 11500000, guid: a9ede747fce5a7b448244e052d74b1b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  curRewardList: []
+  rewardSlots:
+  - {fileID: 3206565535676605517}

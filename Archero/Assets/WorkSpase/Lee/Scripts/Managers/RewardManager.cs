@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -15,8 +16,6 @@ namespace Lee.Scripts
         string AngleUIPath = "Prefabs/UI/AngleRewardUI";
         string DevilUIPath = "Prefabs/UI/DevilRewardUI";
 
-
-
         void Awake()
         {
             // 인스펙터 비어있으면 Resources 폴더에서 로드
@@ -28,37 +27,80 @@ namespace Lee.Scripts
             }
         }
 
-        // 모든 보상 타입 반환
-        public List<StageRewardData> AllRewardDatas => rewardDatas;
-
-        public void ShowRewardSelection(ESkillGrade grade, ESkillCategory category, int pickCount)
+        public void ShowReward(ESkillGrade grade, ESkillCategory category, int pickCount)
         {
+            // 모든 스킬 엔트리 보기
+            var candidates = rewardDatas.SelectMany(so => so.rewardEntries).Where(e => e.skillGrade == grade && e.skillCategory == category).ToList();
 
+            //가중치에 따른 랜덤 샘플링(중복없이)
+            var picks = ReawrdSampling(candidates, pickCount);
+
+            //셔플
+            Shuffle(picks);
+
+           switch(category)
+            {
+                case ESkillCategory.LevelUp:
+                    {
+                        // common 방 전용 UI
+                        GameManager.UI.ShowPopUpUI<RewardSelect_PopUpUI>(commonUIPath).Initialize(picks, ChoseReward);
+                    }
+                    break;
+
+                case ESkillCategory.Valkyrie:
+                    {
+                        // 발키리 방 전용 UI
+                        GameManager.UI.ShowPopUpUI<VkrRewardSelect_PopUpUI>(VkrUIPath).Initialize(picks, ChoseReward);
+                    }
+                    break;
+
+                case ESkillCategory.Angel:
+                    {
+                        // 천사 방 전용 UI
+                        GameManager.UI.ShowPopUpUI<AngleRewardSelect_PopUpUI>(AngleUIPath).Initialize(picks, ChoseReward);
+                    }
+                    break;
+
+                case ESkillCategory.Devil:
+                    {
+                        // 악마 방 전용 UI
+                        GameManager.UI.ShowPopUpUI<DevilRewardSelect_PopUpUI>(DevilUIPath).Initialize(picks, ChoseReward);
+                    }
+                    break;
+            };
         }
 
-        private void OnRewardChosen(StageRewardEntry entry)
+        // UI 결정 버튼 클릭시 적용되는 함수
+        private void ChoseReward(StageRewardEntry entry)
         {
-            // 1) 스킬 적용
             var skill = SkillManager.Instance.GetSkillInfo(entry.skillEffectID, entry.skillGrade, entry.skillCategory);
             if (skill != null) SkillManager.Instance.SelectSkill(skill);
         }
 
+        private List<StageRewardEntry> ReawrdSampling(List<StageRewardEntry> source, int count)
+        {
+            var pool = new List<StageRewardEntry>(source);
+            var result = new List<StageRewardEntry>();
 
+            for(int i = 0; i < count && pool.Count > 0; i++)
+        {
+                float totalWeight = pool.Sum(e => e.baseWeight);
+                float roll = UnityEngine.Random.Range(0f, totalWeight);
+                float acc = 0f;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                foreach (var e in pool)
+                {
+                    acc += e.baseWeight;
+                    if (roll <= acc)
+                    {
+                        result.Add(e);
+                        pool.Remove(e);
+                        break;
+                    }
+                }
+            }
+            return result;
+        }
 
         private void Shuffle<T>(IList<T> list)
         {
@@ -69,15 +111,4 @@ namespace Lee.Scripts
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 }

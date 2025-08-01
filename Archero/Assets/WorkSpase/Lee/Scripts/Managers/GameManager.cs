@@ -1,6 +1,8 @@
 using Assets.Define;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEditor.EditorTools;
 using UnityEngine;
@@ -33,7 +35,7 @@ namespace Lee.Scripts
 
 
         // Clear변수
-        int clearCount = 0;
+        int clearCount = 23;
         public int _clearCount { get => clearCount; set => clearCount = value; }
 
 
@@ -93,26 +95,48 @@ namespace Lee.Scripts
                 var last = unitDict.Last().Key.gameObject;
                 if (last.CompareTag("Player"))
                 {
-                    uiManager.ShowPopUpUI<PopUpUI>("//");  // UI 만들고 수정
+                    uiManager.ShowPopUpUI<GameOverUI>("Prefabs/UI/GameOverUI");  // UI 만들고 수정
+                    return;
                 }
-                else if (last.CompareTag("Monster"))
+
+                if (last.CompareTag("Monster"))
                 {
-                    uiManager.ShowPopUpUI<PopUpUI>("//");  // UI 만들고 수정
                     clearCount--;
                     if (clearCount > 0)
                     {
-                        
-                                
+                        int roomsCleared = 23 - clearCount;
+                        int[] groupSizes = { 3, 1, 2, 1, 1 };
+                        ESkillCategory[] categories = { ESkillCategory.LevelUp,   ESkillCategory.Valkyrie, ESkillCategory.LevelUp,    ESkillCategory.Angel,   ESkillCategory.Devil};
+                        int cycleLength = groupSizes.Sum();
+                        int posInCycle = (roomsCleared - 1) % cycleLength;
+                        int cumulative = 0, groupIndex = 0;
+                        for (int i = 0; i < groupSizes.Length; i++)
+                        {
+                            cumulative += groupSizes[i];
+                            if (posInCycle < cumulative)
+                            {
+                                groupIndex = i;
+                                break;
+                            }
+                        }
+                        int pickCount = groupSizes[groupIndex];
+                        ESkillCategory cat = categories[groupIndex];
+                        var grades = Enum.GetValues(typeof(ESkillGrade)).Cast<ESkillGrade>().ToArray();
+                        var randomGrade = grades[UnityEngine.Random.Range(0, grades.Length)];
+                        Reward.ShowReward(randomGrade,  cat, pickCount);
+                    }
+                    else
+                    {
+                        // 클리어 UI띄우기
                     }
 
-
-
-
-                    }
                 }
 
             }
         }
+
     }
+
+}
 
 

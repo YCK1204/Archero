@@ -8,16 +8,11 @@ using System.Threading.Tasks;
 using UnityEngine;
 namespace Handler
 {
-    public class RangeHandle : IAttackHandler
+    public class MeleeHandle : IAttackHandler
     {
-        public void AttackUpdate(int dmg, Vector3 position,Vector3 target)
+        public void AttackUpdate(int dmg, Vector3 position, Vector3 target)
         {
-            Vector2 tempVec = target - position;
-            float rad = Mathf.Atan2(tempVec.y, tempVec.x);
-            float degree = rad * (180f / MathF.PI);
-            degree -= 90f;
-            BattleManager.GetInstance.normalMobProjectile.DeQueue().
-                Init(new Vector3(0,0,degree), position, 10f,dmg);
+            
         }
 
         public bool DelayCheck(float goal, float curr)
@@ -27,15 +22,15 @@ namespace Handler
         //근접은 무조건 붙어야함
         public bool RangeCheck(float range, float dist)
         {
-            return range > dist;
+            return false; //range >= dist;
         }
 
         public void OnCollision(Collider2D collider, int dmg, Vector3 dir)
         {
-            
+            BattleManager.GetInstance.Attack(collider, dmg, dir);
         }
 
-        public IEnumerator OnCoroutine(Vector3 firePos, Vector3 targetPos)
+        public IEnumerator OnCoroutine(Transform firePos, Vector3 targetPos)
         {
             yield return null;
         }

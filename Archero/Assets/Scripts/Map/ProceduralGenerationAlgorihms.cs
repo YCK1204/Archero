@@ -49,7 +49,7 @@ public static class Direction2D
     {
         return CardinalDirectionsList[Random.Range(0, CardinalDirectionsList.Count)];
     }
-    public static Vector2Int GetRandomCardinalDirectionExceptPrevDirection(Vector2 prevDirection)
+    public static Vector2Int GetRandomCardinalDirectionExcluding(Vector2 prevDirection)
     {
         while (true)
         {

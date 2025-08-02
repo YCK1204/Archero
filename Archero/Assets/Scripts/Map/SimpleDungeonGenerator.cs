@@ -74,7 +74,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
 
         while (roomPositions.Contains(nextMapPosition))
         {
-            direction = Direction2D.GetRandomCardinalDirectionExceptPrevDirection(direction);
+            direction = Direction2D.GetRandomCardinalDirectionExcluding(direction);
             nextMapPosition = mapPos + direction * RoomSpacing;
         }
         return new Tuple<Vector2Int, Vector2Int>(nextMapPosition, direction);
@@ -111,7 +111,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         var candidates = roomPositions
             .Where(pos => (direction.x != 0 && pos.y == centerPosition.y) ||
                           (direction.y != 0 && pos.x == centerPosition.x))
-            .OrderBy(pos => (direction.x != 0) ? pos.y : pos.x);
+            .OrderBy(pos => (direction.x != 0) ? pos.x : pos.y);
 
         Vector2Int curRoomBorderPosOfDirection = direction switch
         {
@@ -141,7 +141,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         var candidates = nextRoomPositions
             .Where(pos => (direction.x != 0 && pos.y == nextRoomCenterPos.y) ||
                           (direction.y != 0 && pos.x == nextRoomCenterPos.x))
-            .OrderBy(pos => (direction.x != 0) ? pos.y : pos.x);
+            .OrderBy(pos => (direction.x != 0) ? pos.x : pos.y);
 
         Vector2Int nextRoomBorderPosOfDirection = direction switch
         {
@@ -168,6 +168,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
     {
         Vector2Int curPos = FindStartCorridorPosition(curRoomPositions, direction);
         Vector2Int endPos = FindEndCorridorPosition(direction, nextRoomPositions);
+
         HashSet<Vector2Int> corridorPositions = new HashSet<Vector2Int>();
 
         while (curPos != endPos)

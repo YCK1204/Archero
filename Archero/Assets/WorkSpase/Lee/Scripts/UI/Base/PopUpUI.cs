@@ -12,5 +12,9 @@ namespace Lee.Scripts
         {
             base.Awake();
         }
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+        }
     }
 }

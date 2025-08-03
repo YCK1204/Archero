@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 2067563775230564990}
   - component: {fileID: 8779696418731612887}
   - component: {fileID: 6379170736248799767}
-  - component: {fileID: 5593013674848239133}
+  - component: {fileID: 3196506626347822974}
   m_Layer: 5
   m_Name: VkrRewardUI
   m_TagString: Untagged
@@ -187,9 +187,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1681364944152110891}
   - {fileID: 6906285791054188046}
   - {fileID: 7465933336581053934}
+  - {fileID: 1681364944152110891}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -235,7 +235,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5593013674848239133
+--- !u!114 &3196506626347822974
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

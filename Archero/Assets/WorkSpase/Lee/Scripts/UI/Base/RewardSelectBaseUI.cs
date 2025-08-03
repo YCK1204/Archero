@@ -88,25 +88,38 @@ namespace Lee.Scripts
             if (slot == null) return;
 
             // 자식들을 배열로 복사해서 반복 중 수정 방지
-            Transform[] children = new Transform[slot.childCount];
+            List<Transform> childrenToRemove = new List<Transform>();
+            
             for (int i = 0; i < slot.childCount; i++)
             {
-                children[i] = slot.GetChild(i);
+                Transform child = slot.GetChild(i);
+                if (child != null)
+                {
+                    childrenToRemove.Add(child);
+                }
             }
 
-            foreach (Transform child in children)
+            // 모든 자식들을 한 번에 처리
+            foreach (Transform child in childrenToRemove)
             {
                 if (child != null)
                 {
-                    // 풀에서 관리되는 오브젝트는 풀에 반환
-                    if (GameManager.Pool.IsContain(child.gameObject))
+                    try
                     {
-                        GameManager.Pool.Release(child.gameObject);
+                        // 풀에서 관리되는 오브젝트는 풀에 반환
+                        if (GameManager.Pool.IsContain(child.gameObject))
+                        {
+                            GameManager.Pool.Release(child.gameObject);
+                        }
+                        else
+                        {
+                            // 풀에서 관리되지 않는 오브젝트는 파괴
+                            GameManager.Resource.Destroy(child.gameObject);
+                        }
                     }
-                    else
+                    catch (System.Exception e)
                     {
-                        // 풀에서 관리되지 않는 오브젝트는 파괴
-                        GameManager.Resource.Destroy(child.gameObject);
+                        Debug.LogWarning($"자식 오브젝트 정리 중 오류 발생: {e.Message}");
                     }
                 }
             }

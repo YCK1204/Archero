@@ -34,7 +34,7 @@ namespace Lee.Scripts
         public static SkillManager SkillReward { get { return skillManager; } }
 
 
-        // Clearº¯¼ö
+        // Clearï¿½ï¿½ï¿½ï¿½
         int clearCount = 23;
         public int _clearCount { get => clearCount; set => clearCount = value; }
 
@@ -84,20 +84,30 @@ namespace Lee.Scripts
             skillObj.name = "SkillManager";
             skillObj.transform.parent = transform;
             skillManager = skillObj.AddComponent<SkillManager>();
+
+            // SkillManagerê°€ ì™„ì „íˆ ì´ˆê¸°í™”ë  ë•Œê¹Œì§€ ëŒ€ê¸°
+            StartCoroutine(WaitForSkillManagerInit());
+        }
+
+        private IEnumerator WaitForSkillManagerInit()
+        {
+            while (skillManager == null || SkillManager.Instance == null)
+            {
+                yield return null;
+            }
+            Debug.Log("SkillManager ì´ˆê¸°í™” ì™„ë£Œ");
         }
 
         public void CheckStageClear()
         {
             var unitDict = BattleManager.GetInstance.GetUnitDIct;
-            Debug.Log($"¸ó½ºÅÍ{unitDict}");
             if (unitDict.Count == 1)
             {
-                Debug.Log($"Å¬¸®¾î Ä«¿îÅÍ{clearCount}");
                 var last = unitDict.Last().Key.gameObject;
 
                 if (last.CompareTag("Monster"))
                 {
-                    uiManager.ShowPopUpUI<GameOverUI>("Prefabs/UI/GameOverUI");  // UI ¸¸µé°í ¼öÁ¤
+                    uiManager.ShowPopUpUI<GameOverUI>("Prefabs/UI/GameOverUI");  // UI ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                     return;
                 }
 
@@ -106,7 +116,6 @@ namespace Lee.Scripts
                     clearCount--;
                     if (clearCount > 0)
                     {
-                        Debug.Log($"Å¬¸®¾î Ä«¿îÅÍ{clearCount}");
                         int roomsCleared = 23 - clearCount;
                         int[] groupSizes = { 3, 1, 2, 1, 1 };
                         ESkillCategory[] categories = { ESkillCategory.LevelUp,   ESkillCategory.Valkyrie, ESkillCategory.LevelUp,    ESkillCategory.Angel,   ESkillCategory.Devil};

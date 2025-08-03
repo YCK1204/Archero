@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 namespace Lee.Scripts
 {
 
-    public class GameOverUI : PopUpUI
+    public class ClearGameUI : PopUpUI
     {
         protected override void Awake()
         {
@@ -17,7 +17,8 @@ namespace Lee.Scripts
         void RetryGame()
         {
             GameManager.UI.ClosePopUpUI();
-            SceneManager.LoadScene("StartScene");
+            SceneManager.LoadScene("MainScene");
         }
     }
+
 }

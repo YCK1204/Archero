@@ -9,7 +9,7 @@ namespace Lee.Scripts
 {
     public class RewardManager : MonoBehaviour
     {
-        [Header("»ı¼ºÇÑ RewardData ¿¡¼Âµé")]
+        [Header("ìƒì„±í•œ RewardData ì—ì…‹ë“¤")]
         [SerializeField] List<StageRewardData> rewardDatas;
         string commonUIPath = "Prefabs/UI/RewardUI";
         string VkrUIPath = "Prefabs/UI/VkrRewardUI";
@@ -18,59 +18,59 @@ namespace Lee.Scripts
 
         void Awake()
         {
-            // ÀÎ½ºÆåÅÍ ºñ¾îÀÖÀ¸¸é Resources Æú´õ¿¡¼­ ·Îµå
+            // ì¸ìŠ¤í™í„° ë¹„ì–´ìˆìœ¼ë©´ Resources í´ë”ì—ì„œ ë¡œë“œ
             if (rewardDatas == null || rewardDatas.Count == 0)
             {
                 var loaded = Resources.LoadAll<StageRewardData>("Data");
                 rewardDatas = new List<StageRewardData>(loaded);
-                Debug.Log($"RewardManager: {rewardDatas.Count}°³ÀÇ StageRewardData ·Îµå");
+                Debug.Log($"RewardManager: {rewardDatas.Count}ê°œì˜ StageRewardData ë¡œë“œ");
             }
         }
 
         public void ShowReward(ESkillGrade grade, ESkillCategory category, int pickCount)
         {
-            // ¸ğµç ½ºÅ³ ¿£Æ®¸® º¸±â
-            var candidates = rewardDatas.SelectMany(so => so.rewardEntries).Where(e => e.skillGrade == grade && e.skillCategory == category).ToList();
+            // ëª¨ë“  ìŠ¤í‚¬ í›„ë³´ë“¤ì„ ê°€ì ¸ì˜¤ê¸° (grade ì œí•œ ì œê±°í•˜ì—¬ ëª¨ë“  ë“±ê¸‰ì´ ì„ì—¬ì„œ ë‚˜ì˜¤ë„ë¡)
+            var candidates = rewardDatas.SelectMany(so => so.rewardEntries).Where(e => e.skillCategory == category).ToList();
 
-            //°¡ÁßÄ¡¿¡ µû¸¥ ·£´ı »ùÇÃ¸µ(Áßº¹¾øÀÌ)
+            //ê°€ì¤‘ì¹˜ë¥¼ ì´ìš©í•œ ëœë¤ ì„ íƒ(ì¤‘ë³µì œê±°)
             var picks = ReawrdSampling(candidates, pickCount);
 
-            //¼ÅÇÃ
+            //ì„ê¸°
             Shuffle(picks);
 
            switch(category)
             {
                 case ESkillCategory.LevelUp:
                     {
-                        // common ¹æ Àü¿ë UI
+                        // common ë°© ì „ìš© UI
                         GameManager.UI.ShowPopUpUI<RewardSelect_PopUpUI>(commonUIPath).Initialize(picks, ChoseReward);
                     }
                     break;
 
                 case ESkillCategory.Valkyrie:
                     {
-                        // ¹ßÅ°¸® ¹æ Àü¿ë UI
+                        // ë°œí‚¤ë¦¬ ë°© ì „ìš© UI
                         GameManager.UI.ShowPopUpUI<VkrRewardSelect_PopUpUI>(VkrUIPath).Initialize(picks, ChoseReward);
                     }
                     break;
 
                 case ESkillCategory.Angel:
                     {
-                        // Ãµ»ç ¹æ Àü¿ë UI
+                        // ì²œì‚¬ ë°© ì „ìš© UI
                         GameManager.UI.ShowPopUpUI<AngleRewardSelect_PopUpUI>(AngleUIPath).Initialize(picks, ChoseReward);
                     }
                     break;
 
                 case ESkillCategory.Devil:
                     {
-                        // ¾Ç¸¶ ¹æ Àü¿ë UI
+                        // ì•…ë§ˆ ë°© ì „ìš© UI
                         GameManager.UI.ShowPopUpUI<DevilRewardSelect_PopUpUI>(DevilUIPath).Initialize(picks, ChoseReward);
                     }
                     break;
             };
         }
 
-        // UI °áÁ¤ ¹öÆ° Å¬¸¯½Ã Àû¿ëµÇ´Â ÇÔ¼ö
+        // UI ê²°ì • ë²„íŠ¼ í´ë¦­ì‹œ ì ìš©ë˜ëŠ” í•¨ìˆ˜
         private void ChoseReward(StageRewardEntry entry)
         {
             var skill = SkillManager.Instance.GetSkillInfo(entry.skillEffectID, entry.skillGrade, entry.skillCategory);

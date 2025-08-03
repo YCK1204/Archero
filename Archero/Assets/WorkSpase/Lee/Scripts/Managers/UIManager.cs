@@ -17,10 +17,12 @@ namespace Lee.Scripts
             windowCanvas = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
             windowCanvas.gameObject.name = "WindowCanvas";
             windowCanvas.sortingOrder = 10;
+            DontDestroyOnLoad(windowCanvas.gameObject);
 
             popUpCanvas = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
             popUpCanvas.gameObject.name = "PopUpCanvas";
             popUpCanvas.sortingOrder = 100;
+            DontDestroyOnLoad(popUpCanvas.gameObject);
 
             popUpStack = new Stack<PopUpUI>();
         }
@@ -29,16 +31,17 @@ namespace Lee.Scripts
         {
             if (windowCanvas == null)
             {
-                Debug.Log("¿Ã∞≈ Ω««‡µ ");
                 windowCanvas = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
                 windowCanvas.gameObject.name = "WindowCanvas";
                 windowCanvas.sortingOrder = 10;
+                DontDestroyOnLoad(windowCanvas.gameObject);
             }
             if( popUpCanvas == null)
             {
                 popUpCanvas = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
                 popUpCanvas.gameObject.name = "PopUpCanvas";
                 popUpCanvas.sortingOrder = 100;
+                DontDestroyOnLoad(popUpCanvas.gameObject);
 
                 popUpStack = new Stack<PopUpUI>();
             }
@@ -50,8 +53,6 @@ namespace Lee.Scripts
 
         public void Clear()
         {
-            GameManager.Resource.Destroy(windowCanvas);
-            GameManager.Resource.Destroy(popUpCanvas);
             popUpStack.Clear();
         }
 

@@ -89,22 +89,24 @@ namespace Lee.Scripts
         public void CheckStageClear()
         {
             var unitDict = BattleManager.GetInstance.GetUnitDIct;
-
+            Debug.Log($"몬스터{unitDict}");
             if (unitDict.Count == 1)
             {
+                Debug.Log($"클리어 카운터{clearCount}");
                 var last = unitDict.Last().Key.gameObject;
 
-                if (last.CompareTag("Player"))
+                if (last.CompareTag("Monster"))
                 {
                     uiManager.ShowPopUpUI<GameOverUI>("Prefabs/UI/GameOverUI");  // UI 만들고 수정
                     return;
                 }
 
-                if (last.CompareTag("Monster"))
+                if (last.CompareTag("Player"))
                 {
                     clearCount--;
                     if (clearCount > 0)
                     {
+                        Debug.Log($"클리어 카운터{clearCount}");
                         int roomsCleared = 23 - clearCount;
                         int[] groupSizes = { 3, 1, 2, 1, 1 };
                         ESkillCategory[] categories = { ESkillCategory.LevelUp,   ESkillCategory.Valkyrie, ESkillCategory.LevelUp,    ESkillCategory.Angel,   ESkillCategory.Devil};
@@ -128,7 +130,7 @@ namespace Lee.Scripts
                     }
                     else
                     {
-                        // 클리어 UI띄우기
+                        GameManager.UI.ShowPopUpUI<ClearGameUI>("Prefabs/UI/ClearGameUI");
                     }
 
                 }

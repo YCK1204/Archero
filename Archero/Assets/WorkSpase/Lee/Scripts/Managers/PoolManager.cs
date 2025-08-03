@@ -19,6 +19,7 @@ namespace Lee.Scripts
             poolContainer = new Dictionary<string, Transform>();
             poolRoot = new GameObject("PoolRoot").transform;
             canvasRoot = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
+            DontDestroyOnLoad(canvasRoot.gameObject);
         }
 
         public void Recreated()
@@ -27,11 +28,13 @@ namespace Lee.Scripts
             poolContainer = new Dictionary<string, Transform>();
             poolRoot = new GameObject("PoolRoot").transform;
             canvasRoot = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
+            DontDestroyOnLoad(canvasRoot.gameObject);
         }
 
         public void Clear()
         {
-            GameManager.Resource.Destroy(canvasRoot);
+            // canvasRoot는 DontDestroyOnLoad이므로 파괴하지 않음
+            // GameManager.Resource.Destroy(canvasRoot);
         }
 
         public T Get<T>(T original, Vector3 position, Quaternion rotation, Transform parent) where T : Object
@@ -283,7 +286,10 @@ namespace Lee.Scripts
                 actionOnRelease: (GameObject obj) =>
                 {
                     obj.gameObject.SetActive(false);
-                    obj.transform.SetParent(canvasRoot.transform, false);
+                    if (canvasRoot != null)
+                    {
+                        obj.transform.SetParent(canvasRoot.transform, false);
+                    }
                 },
                 actionOnDestroy: (GameObject obj) =>
                 {

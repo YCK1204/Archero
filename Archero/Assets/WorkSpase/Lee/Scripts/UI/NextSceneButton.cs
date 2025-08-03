@@ -7,10 +7,6 @@ namespace Lee.Scripts
 {
     public class NextSceneButton : MonoBehaviour
     {
-        private void OnEnable()
-        {
-            GameManager.UI.Recreated();
-        }
         public void StartSceneButton() 
         {
             SceneManager.LoadScene("MainScene");
@@ -18,7 +14,7 @@ namespace Lee.Scripts
 
         public void DugeonSceneButton()
         {
-            GameManager.Instance._clearCount = 23;
+            GameManager.Instance._clearCount = 23; // 23개 방을 클리어해야 함
             SceneManager.LoadScene("DungeonScene");
         }
 

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-// ½ºÅ³ µ¥ÀÌÅÍ¸¦ ´ã´Â ¼ø¼ö C# Å¬·¡½º (ÀÌÁ¦ ÀÌ ÆÄÀÏ ¾È¿¡¸¸ Á¸ÀçÇÕ´Ï´Ù)
+// ìŠ¤í‚¬ ë°ì´í„°ë¥¼ ë‹´ëŠ” ìˆœìˆ˜ C# í´ë˜ìŠ¤ (ì´ì œ ì´ íŒŒì¼ ì•ˆì—ë§Œ ì¡´ì¬í•©ë‹ˆë‹¤)
 public class Skill
 {
     public string EffectID { get; }
@@ -20,14 +20,14 @@ public class SkillManager : MonoBehaviour
 {
     public static SkillManager Instance;
 
-    #region µî±Şº° ¹öÇÁ ¼öÄ¡ Å¬·¡½º
+    #region  ë“±ê¸‰ë³„ ë²„í”„ ìˆ˜ì¹˜ í´ë˜ìŠ¤
     [System.Serializable] public class CommonBuffs { public float attackMultiplier = 1.2f; public float attackSpeedMultiplier = 1.2f; public float moveSpeedMultiplier = 1.2f; public float maxHealthMultiplier = 1.5f; [Range(0, 1)] public float healPercent = 0.2f; }
     [System.Serializable] public class RareBuffs { public float attackMultiplier = 1.3f; public float attackSpeedMultiplier = 1.3f; public float moveSpeedMultiplier = 1.3f; public float maxHealthMultiplier = 2.0f; [Range(0, 1)] public float healPercent = 0.3f; }
     [System.Serializable] public class EpicBuffs { public float attackMultiplier = 1.4f; public float attackSpeedMultiplier = 1.4f; public float moveSpeedMultiplier = 1.4f; public float maxHealthMultiplier = 2.5f; [Range(0, 1)] public float healPercent = 0.4f; }
     [System.Serializable] public class LegendaryBuffs { public float attackMultiplier = 1.5f; public float attackSpeedMultiplier = 1.5f; public float moveSpeedMultiplier = 1.5f; public int healthCost = 1; }
     #endregion
 
-    [Header("¹öÇÁ ¼öÄ¡ ¶óÀÌºê·¯¸®")]
+    [Header("ë²„í”„ ìˆ˜ì¹˜ ë¼ì´ë¸ŒëŸ¬ë¦¬")]
     public CommonBuffs commonBuffs;
     public RareBuffs rareBuffs;
     public EpicBuffs epicBuffs;
@@ -39,6 +39,13 @@ public class SkillManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        
+        // ë²„í”„ ë³€ìˆ˜ë“¤ì´ nullì´ë©´ ê¸°ë³¸ê°’ìœ¼ë¡œ ì´ˆê¸°í™”
+        if (commonBuffs == null) commonBuffs = new CommonBuffs();
+        if (rareBuffs == null) rareBuffs = new RareBuffs();
+        if (epicBuffs == null) epicBuffs = new EpicBuffs();
+        if (legendaryBuffs == null) legendaryBuffs = new LegendaryBuffs();
+        
         BuildSkillDatabase();
     }
 
@@ -48,47 +55,47 @@ public class SkillManager : MonoBehaviour
     }
 
     private void BuildSkillDatabase()
-    {
-        // --- ·¹º§¾÷ & ¹ßÅ°¸® ÀÌº¥Æ® ½ºÅ³ (ID, ÀÌ¸§, µî±Ş, Ä«Å×°í¸®) ---
-        allSkills.Add(new Skill("AttackUp", "°ø°İ·Â Áõ°¡", ESkillGrade.Common, ESkillCategory.LevelUp));
-        allSkills.Add(new Skill("AttackUp", "°ø°İ·Â Áõ°¡", ESkillGrade.Rare, ESkillCategory.LevelUp));
-        allSkills.Add(new Skill("AttackUp", "°ø°İ·Â Áõ°¡", ESkillGrade.Epic, ESkillCategory.LevelUp));
-        allSkills.Add(new Skill("AttackSpeedUp", "°ø°İ¼Óµµ Áõ°¡", ESkillGrade.Common, ESkillCategory.LevelUp));
-        allSkills.Add(new Skill("AttackSpeedUp", "°ø°İ¼Óµµ Áõ°¡", ESkillGrade.Rare, ESkillCategory.LevelUp));
-        allSkills.Add(new Skill("AttackSpeedUp", "°ø°İ¼Óµµ Áõ°¡", ESkillGrade.Epic, ESkillCategory.LevelUp));
-        allSkills.Add(new Skill("MoveSpeedUp", "ÀÌµ¿¼Óµµ Áõ°¡", ESkillGrade.Common, ESkillCategory.LevelUp));
-        allSkills.Add(new Skill("MoveSpeedUp", "ÀÌµ¿¼Óµµ Áõ°¡", ESkillGrade.Rare, ESkillCategory.LevelUp));
-        allSkills.Add(new Skill("MoveSpeedUp", "ÀÌµ¿¼Óµµ Áõ°¡", ESkillGrade.Epic, ESkillCategory.LevelUp));
-        allSkills.Add(new Skill("MaxHealthUp", "ÃÖ´ëÃ¼·Â Áõ°¡", ESkillGrade.Common, ESkillCategory.LevelUp));
-        allSkills.Add(new Skill("MaxHealthUp", "ÃÖ´ëÃ¼·Â Áõ°¡", ESkillGrade.Rare, ESkillCategory.LevelUp));
-        allSkills.Add(new Skill("MaxHealthUp", "ÃÖ´ëÃ¼·Â Áõ°¡", ESkillGrade.Epic, ESkillCategory.LevelUp));
-        allSkills.Add(new Skill("Heal", "HP È¸º¹", ESkillGrade.Common, ESkillCategory.LevelUp));
-        allSkills.Add(new Skill("Heal", "HP È¸º¹", ESkillGrade.Rare, ESkillCategory.LevelUp));
-        allSkills.Add(new Skill("Heal", "HP È¸º¹", ESkillGrade.Epic, ESkillCategory.LevelUp));
+        {
+        // --- ë ˆë²¨ì—… & ë°œí‚¤ë¦¬ ì´ë²¤íŠ¸ ìŠ¤í‚¬ (ID, ì´ë¦„, ë“±ê¸‰, ì¹´í…Œê³ ë¦¬) ---
+        allSkills.Add(new Skill("AttackUp", "ê³µê²©ë ¥ ì¦ê°€", ESkillGrade.Common, ESkillCategory.LevelUp));
+        allSkills.Add(new Skill("AttackUp", "ê³µê²©ë ¥ ì¦ê°€", ESkillGrade.Rare, ESkillCategory.LevelUp));
+        allSkills.Add(new Skill("AttackUp", "ê³µê²©ë ¥ ì¦ê°€", ESkillGrade.Epic, ESkillCategory.LevelUp));
+        allSkills.Add(new Skill("AttackSpeedUp", "ê³µê²©ì†ë„ ì¦ê°€", ESkillGrade.Common, ESkillCategory.LevelUp));
+        allSkills.Add(new Skill("AttackSpeedUp", "ê³µê²©ì†ë„ ì¦ê°€", ESkillGrade.Rare, ESkillCategory.LevelUp));
+        allSkills.Add(new Skill("AttackSpeedUp", "ê³µê²©ì†ë„ ì¦ê°€", ESkillGrade.Epic, ESkillCategory.LevelUp));
+        allSkills.Add(new Skill("MoveSpeedUp", "ì´ë™ì†ë„ ì¦ê°€", ESkillGrade.Common, ESkillCategory.LevelUp));
+        allSkills.Add(new Skill("MoveSpeedUp", "ì´ë™ì†ë„ ì¦ê°€", ESkillGrade.Rare, ESkillCategory.LevelUp));
+        allSkills.Add(new Skill("MoveSpeedUp", "ì´ë™ì†ë„ ì¦ê°€", ESkillGrade.Epic, ESkillCategory.LevelUp));
+        allSkills.Add(new Skill("MaxHealthUp", "ìµœëŒ€ì²´ë ¥ ì¦ê°€", ESkillGrade.Common, ESkillCategory.LevelUp));
+        allSkills.Add(new Skill("MaxHealthUp", "ìµœëŒ€ì²´ë ¥ ì¦ê°€", ESkillGrade.Rare, ESkillCategory.LevelUp));
+        allSkills.Add(new Skill("MaxHealthUp", "ìµœëŒ€ì²´ë ¥ ì¦ê°€", ESkillGrade.Epic, ESkillCategory.LevelUp));
+        allSkills.Add(new Skill("Heal", "HP íšŒë³µ", ESkillGrade.Common, ESkillCategory.LevelUp));
+        allSkills.Add(new Skill("Heal", "HP íšŒë³µ", ESkillGrade.Rare, ESkillCategory.LevelUp));
+        allSkills.Add(new Skill("Heal", "HP íšŒë³µ", ESkillGrade.Epic, ESkillCategory.LevelUp));
 
-        // --- Ãµ»ç ÀÌº¥Æ® ½ºÅ³ ---
-        allSkills.Add(new Skill("Heal", "HP È¸º¹", ESkillGrade.Common, ESkillCategory.Angel));
-        allSkills.Add(new Skill("AttackUp", "°ø°İ·Â Áõ°¡", ESkillGrade.Common, ESkillCategory.Angel));
-        allSkills.Add(new Skill("AttackSpeedUp", "°ø°İ¼Óµµ Áõ°¡", ESkillGrade.Common, ESkillCategory.Angel));
-        allSkills.Add(new Skill("MoveSpeedUp", "ÀÌµ¿¼Óµµ Áõ°¡", ESkillGrade.Common, ESkillCategory.Angel));
-        allSkills.Add(new Skill("MaxHealthUp", "ÃÖ´ëÃ¼·Â Áõ°¡", ESkillGrade.Common, ESkillCategory.Angel));
+        // --- ì²œì‚¬ ì´ë²¤íŠ¸ ìŠ¤í‚¬ ---
+        allSkills.Add(new Skill("Heal", "HP íšŒë³µ", ESkillGrade.Common, ESkillCategory.Angel));
+        allSkills.Add(new Skill("AttackUp", "ê³µê²©ë ¥ ì¦ê°€", ESkillGrade.Common, ESkillCategory.Angel));
+        allSkills.Add(new Skill("AttackSpeedUp", "ê³µê²©ì†ë„ ì¦ê°€", ESkillGrade.Common, ESkillCategory.Angel));
+        allSkills.Add(new Skill("MoveSpeedUp", "ì´ë™ì†ë„ ì¦ê°€", ESkillGrade.Common, ESkillCategory.Angel));
+        allSkills.Add(new Skill("MaxHealthUp", "ìµœëŒ€ì²´ë ¥ ì¦ê°€", ESkillGrade.Common, ESkillCategory.Angel));
 
-        // --- ¾Ç¸¶ ÀÌº¥Æ® ½ºÅ³ ---
-        allSkills.Add(new Skill("Devil_AttackUp", "¾Ç¸¶ÀÇ °Å·¡: °ø°İ·Â", ESkillGrade.Legendary, ESkillCategory.Devil));
-        allSkills.Add(new Skill("Devil_AttackSpeedUp", "¾Ç¸¶ÀÇ °Å·¡: °ø¼Ó", ESkillGrade.Legendary, ESkillCategory.Devil));
-        allSkills.Add(new Skill("Devil_MoveSpeedUp", "¾Ç¸¶ÀÇ °Å·¡: ÀÌ¼Ó", ESkillGrade.Legendary, ESkillCategory.Devil));
+        // --- ì•…ë§ˆ ì´ë²¤íŠ¸ ìŠ¤í‚¬ ---
+        allSkills.Add(new Skill("Devil_AttackUp", "ì•…ë§ˆì˜ ê±°ë˜: ê³µê²©ë ¥", ESkillGrade.Legendary, ESkillCategory.Devil));
+        allSkills.Add(new Skill("Devil_AttackSpeedUp", "ì•…ë§ˆì˜ ê±°ë˜: ê³µì†", ESkillGrade.Legendary, ESkillCategory.Devil));
+        allSkills.Add(new Skill("Devil_MoveSpeedUp", "ì•…ë§ˆì˜ ê±°ë˜: ì´ì†", ESkillGrade.Legendary, ESkillCategory.Devil));
     }
 
-    #region ÀÌº¥Æ®º° ½ºÅ³ È£Ãâ ÇÔ¼ö
+    #region ì´ë²¤íŠ¸ë³„ ìŠ¤í‚¬ í˜¸ì¶œ í•¨ìˆ˜
     public void ShowLevelUpSkills() => ShowSkillSelectionUI(allSkills.Where(s => s.Category == ESkillCategory.LevelUp).ToList());
-    public void ShowValkyrieSkills() => ShowSkillSelectionUI(allSkills.Where(s => s.Category == ESkillCategory.LevelUp).ToList()); // ·¹º§¾÷°ú µ¿ÀÏ
+    public void ShowValkyrieSkills() => ShowSkillSelectionUI(allSkills.Where(s => s.Category == ESkillCategory.LevelUp).ToList()); // ë ˆë²¨ì—…ê³¼ ë™ì¼
     public void ShowAngelSkills() => ShowSkillSelectionUI(allSkills.Where(s => s.Category == ESkillCategory.Angel).ToList());
     public void ShowDevilSkills() => ShowSkillSelectionUI(allSkills.Where(s => s.Category == ESkillCategory.Devil).ToList());
     #endregion
 
-    private void ShowSkillSelectionUI(List<Skill> skillsToShow) { /* UI ·ÎÁ÷ */ }
+    private void ShowSkillSelectionUI(List<Skill> skillsToShow) {/* UI ë¡œì§ */}
 
-    //  ¸®½ºÆ® Á¢±Ù ÇÔ¼ö Ãß°¡
+    //  ë¦¬ìŠ¤íŠ¸ ì ‘ê·¼ í•¨ìˆ˜ ì¶”ê°€
     public List<Skill> GetAllSkills()
     {
         return allSkills;
@@ -98,7 +105,7 @@ public class SkillManager : MonoBehaviour
         return allSkills.FirstOrDefault(skill => skill.EffectID == effectID &&skill.Grade == grade && skill.Category == category);
     }
 
-    // UI¿¡¼­ ½ºÅ³À» ¼±ÅÃÇÏ¸é ÀÌ ÇÔ¼ö¸¦ È£Ãâ
+    // UIï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½
     public void SelectSkill(Skill selectedSkill)
     {
         ApplySkillEffect(selectedSkill);
@@ -106,9 +113,20 @@ public class SkillManager : MonoBehaviour
 
     private void ApplySkillEffect(Skill skill)
     {
+        // playerStatsê°€ nullì´ë©´ ë‹¤ì‹œ ì°¾ê¸°
+        if (playerStats == null)
+        {
+            playerStats = FindObjectOfType<CharacterStats>();
+            if (playerStats == null)
+            {
+                Debug.LogWarning("CharacterStatsë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤. ìŠ¤í‚¬ íš¨ê³¼ë¥¼ ì ìš©í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+                return;
+            }
+        }
+
         switch (skill.EffectID)
         {
-            // --- ½ºÅÈ Áõ°¡ ---
+            // --- ì¼ë°˜ ë²„í”„ ---
             case "AttackUp":
                 playerStats.MultiplyStat(EStatType.Attack, GetStatMultiplier(skill.Grade, EStatType.Attack));
                 break;
@@ -125,7 +143,7 @@ public class SkillManager : MonoBehaviour
                 playerStats.HealByPercentage(GetStatMultiplier(skill.Grade, EStatType.Heal));
                 break;
 
-            // --- ¾Ç¸¶ÀÇ °Å·¡ ---
+            // --- ì•…ë§ˆì˜ ê³„ì•½ ---
             case "Devil_AttackUp":
                 playerStats.MultiplyStat(EStatType.Attack, legendaryBuffs.attackMultiplier);
                 playerStats.DecreaseMaxHealth(legendaryBuffs.healthCost);
@@ -141,7 +159,7 @@ public class SkillManager : MonoBehaviour
         }
     }
 
-    // µî±Ş°ú ½ºÅÈ Á¾·ù¿¡ µû¶ó ¿Ã¹Ù¸¥ ¹èÀ²À» Ã£¾ÆÁÖ´Â º¸Á¶ ÇÔ¼ö
+     // ë“±ê¸‰ê³¼ ìŠ¤íƒ¯ ì¢…ë¥˜ì— ë”°ë¼ ì˜¬ë°”ë¥¸ ë°°ìœ¨ì„ ì°¾ì•„ì£¼ëŠ” ë³´ì¡° í•¨ìˆ˜
     private float GetStatMultiplier(ESkillGrade grade, EStatType type)
     {
         switch (grade)
@@ -173,7 +191,7 @@ public class SkillManager : MonoBehaviour
                 if (type == EStatType.MoveSpeed) return legendaryBuffs.moveSpeedMultiplier;
                 break;
         }
-        return 1f; // ±âº»°ª
+        return 1f; // ê¸°ë³¸ê°’
     }
 
 

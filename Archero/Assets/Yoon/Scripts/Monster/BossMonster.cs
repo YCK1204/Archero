@@ -15,9 +15,9 @@ public class BossMonster : Monster
         stat = new MonsterStat(100, 10, 5f, 7f, 5f, 1);
         fsm.Init();
         col = GetComponent<Collider2D>();
-        BattleManager.GetInstance.RegistHitInfo(GetComponent<Collider2D>(), Damaged);
         attackHandle = IAttackHandler.TypeFactory(MobType.Boss);
         moveHandler = IMoveHandler.Factory(MoveType.none,null);
+        base.Init();
     }
 
     // Update is called once per frame

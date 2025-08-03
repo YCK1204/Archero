@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d910ec495227634a8b8b3269b07053b, type: 3}
-  m_Name: WeaponData_BasicBow
+  m_Name: WeaponData_Gun
   m_EditorClassIdentifier: 
-  weaponName: BasicBow
-  attackPower: 1
+  weaponName: Gun
+  attackPower: 10
   cooldown: 1
   knockbackPower: 1
   knockbackTime: 1
-  projectileSpeed: 10
-  range: 10
+  projectileSpeed: 15
+  range: 20
   projectileCount: 1
+  spreadAngle: 5
   isPiercing: 0
   isTracking: 0
   isSplitting: 0

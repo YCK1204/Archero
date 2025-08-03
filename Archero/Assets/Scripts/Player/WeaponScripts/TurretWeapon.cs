@@ -2,27 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RangedWeapon : WeaponBase
+public class TurretWeapon : WeaponBase
 {
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform firePoint;
 
-    private WeaponHolder holder;
-    private void Awake()
-    {
-        holder = GetComponentInParent<WeaponHolder>();
-    }
-    public override void Init(WeaponData data)
-    {
-        base.Init(data);
+    private float lastAttackTime = -Mathf.Infinity;
 
-    }
-    protected override void PerformAttack()
+
+    public override void Activate()
     {
+        if (Time.time - lastAttackTime < weaponData.Cooldown / ownerStats.TotalStats.AttackSpeed)
+            return;
+
         Transform target = holder.FindNearestMonster(weaponData.Range);
         if (target == null) return;
 
-        Vector2 baseDir = (target.position - firePoint.position).normalized;
+        // 터렛 회전
+        Vector2 dir = (target.position - transform.position).normalized;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
+
+        FireAt(target.position);
+        lastAttackTime = Time.time;
+    }
+
+    private void FireAt(Vector2 targetPos)
+    {
+        Vector2 baseDir = (targetPos - (Vector2)firePoint.position).normalized;
         float baseAngle = Mathf.Atan2(baseDir.y, baseDir.x) * Mathf.Rad2Deg;
 
         int count = weaponData.ProjectileCount;
@@ -36,7 +43,11 @@ public class RangedWeapon : WeaponBase
             Vector2 dir = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
 
             GameObject proj = Instantiate(projectilePrefab, firePoint.position, Quaternion.Euler(0, 0, angle));
-            proj.GetComponent<Projectile>()?.Init(dir, weaponData);
+
+            // 공격력은 25%만 적용
+            int turretAttackPower = ownerStats.TotalStats.AttackPower /4;
+            proj.AddComponent<Projectile>()?.Init(dir, weaponData, turretAttackPower);
         }
     }
 }
+

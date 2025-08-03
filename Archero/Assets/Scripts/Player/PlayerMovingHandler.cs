@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovingHandler : MonoBehaviour
 {
+    private Animator animator;
     private float moveSpeed; 
     private float dashSpeed;
     [SerializeField] private float dashDuration = 0.2f;
@@ -11,17 +12,18 @@ public class PlayerMovingHandler : MonoBehaviour
     [SerializeField] private float acceleration = 15f;
 
     private bool isDashing = false;
-    private float currentSpeed; // ÇöÀç Àû¿ë ÁßÀÎ ÀÌµ¿ ¼Óµµ (moveSpeed ¶Ç´Â dashSpeed »çÀÌ¸¦ ºÎµå·´°Ô ÀüÈ¯)
+    private float currentSpeed; // í˜„ì¬ ì ìš© ì¤‘ì¸ ì´ë™ ì†ë„ (moveSpeed ë˜ëŠ” dashSpeed ì‚¬ì´ë¥¼ ë¶€ë“œëŸ½ê²Œ ì „í™˜)
     private float lastDashTime = -Mathf.Infinity;
     private Rigidbody2D rb;
     private CharacterStats characterStats;
 
-    // public bool IsInvincible { get; private set; } = false;       // ÀÓ½Ã·Î ¸¸µç ´ë½¬Áß¹«Àû ºÒ°ª
+    // public bool IsInvincible { get; private set; } = false;       // ì„ì‹œë¡œ ë§Œë“  ëŒ€ì‰¬ì¤‘ë¬´ì  ë¶ˆê°’
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         characterStats = GetComponent<CharacterStats>();
+        animator = GetComponent<Animator>();
 
         characterStats.OnStatChanged += UpdateMoveStats;
         UpdateMoveStats();
@@ -36,7 +38,12 @@ public class PlayerMovingHandler : MonoBehaviour
     {
         float targetSpeed = isDashing ? dashSpeed : moveSpeed;
         currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, Time.fixedDeltaTime * acceleration);
+
+        // Vector2.magnitudeë¥¼ ì‚¬ìš©í•˜ì—¬ ì…ë ¥ ë²¡í„°ì˜ í¬ê¸°ë¡œ ì• ë‹ˆë©”ì´ì…˜ ì†ë„ ê²°ì •
+        float speedValue = input.magnitude > 0.1f ? 1f : 0f;
+        animator.SetFloat("Speed", speedValue);
         rb.velocity = input * currentSpeed;
+
     }
 
     public bool CanDash(Vector2 input)
@@ -47,14 +54,14 @@ public class PlayerMovingHandler : MonoBehaviour
     public void TryDash()
     {
         lastDashTime = Time.time;
-        StartCoroutine(DashRoutine());             // ´ë½¬ ·çÆ¾(ÄÚ·çÆ¾) ½ÃÀÛ
+        StartCoroutine(DashRoutine());             // ëŒ€ì‰¬ ë£¨í‹´(ì½”ë£¨í‹´) ì‹œì‘
     }
 
     private IEnumerator DashRoutine()
     {
         isDashing = true;
       //  IsInvincible = true;
-        yield return new WaitForSeconds(dashDuration); // ÀÏÁ¤ ½Ã°£ µ¿¾È ´ë½¬ À¯Áö
+        yield return new WaitForSeconds(dashDuration); // ì¼ì • ì‹œê°„ ë™ì•ˆ ëŒ€ì‰¬ ìœ ì§€
 
         isDashing = false;
       //  IsInvincible = false;

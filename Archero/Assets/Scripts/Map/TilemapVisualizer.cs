@@ -3,27 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.WSA;
 
 public class TilemapVisualizer : MonoBehaviour
 {
     [SerializeField]
-    private Tilemap FloorTilemap, WallTilemap;
+    public Tilemap FloorTilemap, WallTilemap;
     [SerializeField]
-    private TileBase FloorTile, WallTile;
+    public TileBase FloorTile, WallTile, CorridorTile, TestTile;
     public void PaintFloorTiles(IEnumerable<Vector2Int> floorPos)
     {
-        PaintFloorTiles(floorPos, FloorTilemap, FloorTile);
-    }
-
-    private void PaintFloorTiles(IEnumerable<Vector2Int> floorPos, Tilemap tilemap, TileBase tile)
-    {
         foreach (var position in floorPos)
-        {
-            PaintSingleTile(tilemap, tile, position);
-        }
+            PaintSingleTile(FloorTilemap, FloorTile, position);
     }
-
-    private void PaintSingleTile(Tilemap tilemap, TileBase tile, Vector2Int position)
+    public void PaintSingleTile(Tilemap tilemap, TileBase tile, Vector2Int position)
     {
         var tilePos = tilemap.WorldToCell((Vector3Int)position);
         tilemap.SetTile(tilePos, tile);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -13,6 +14,13 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
     protected SimpleRandomWalkSO SimpleRandomWalkData = null;
     [SerializeField]
     private int RoomSpacing = 50;
+    [Range(1, 9)]
+    [SerializeField]
+    private int CorridorWidth = 3;
+    [SerializeField]
+    bool ShowCorridor;
+    [SerializeField]
+    bool ShowRoom;
     protected override void RunProceduralGeneration()
     {
         CorridorFirstGeneration();
@@ -27,10 +35,17 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         // 5. 겹치지 않으면 맵 위치를 추가하고, 겹치면 2번으로 돌아감
         // 6. 2-5번을 CorridorCount만큼 반복
         // 7. 맵 위치를 기반으로 방을 생성
-        // 8. 방 위치를 기반으로 바닥 타일을 생성
-        // 9. 맵 위치를 기반으로 복도 타일을 생성
-        // 10. 바닥 타일을 기반으로 벽 타일을 생성
+        // 8. 복도 시작 끝점을 현재 맵, 다음 맵 Border위치로 설정
+        // 9. 복도 양옆 min, max + 3 확보(dfs로 입출구로부터 맵의 중심점까지 유효성 검사) 중복된 칸 삭제
+        // 10. 9로 확보하며 유효한 복도 입출구 설정
+        // 11. 삭제되면서 생겼을 수 있는 섬같은 공간 삭제(bfs로 현재 위치로부터 맵까지 이동 가능한지 유효성 검사)
+        // 12. 복도 생성
 
+        if (CorridorWidth % 2 != 1)
+        {
+            Debug.LogError("CorridorWidth 값은 반드시 홀수여야 합니다.");
+            return;
+        }
 
         HashSet<Vector2Int> floorPos = new HashSet<Vector2Int>();
 
@@ -50,20 +65,27 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         }
 
         List<HashSet<Vector2Int>> roomPositions = CreateRooms(roomCenterPositions);
-        foreach (var room in roomPositions)
-        {
-            foreach (var pos in room)
-                floorPos.Add(pos);
-        }
+        List<HashSet<Vector2Int>> corridors = CreateCorridors(roomPositions, mapToMapDirections, roomCenterPositions);
 
-        TilemapVisualizer.PaintFloorTiles(floorPos);
-        List<HashSet<Vector2Int>> corridors = CreateCorridors(roomPositions, mapToMapDirections);
-        foreach (var corridor in corridors)
+#if UNITY_EDITOR
+        if (ShowCorridor)
         {
-            foreach (var pos in corridor)
-                floorPos.Add(pos);
-            Debug.Log($"corridor length: {corridor.Count}");
+            foreach (var corridor in corridors)
+            {
+                foreach (var pos in corridor)
+                    floorPos.Add(pos);
+                Debug.Log($"corridor length: {corridor.Count}");
+            }
         }
+        if (ShowRoom)
+        {
+            foreach (var room in roomPositions)
+            {
+                foreach (var pos in room)
+                    floorPos.Add(pos);
+            }
+        }
+#endif
         TilemapVisualizer.PaintFloorTiles(floorPos);
         TilemapVisualizer.GenerateWalls(floorPos);
     }
@@ -81,7 +103,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
     }
     private List<HashSet<Vector2Int>> CreateRooms(List<Vector2Int> roomCenterPositions)
     {
-         List<HashSet<Vector2Int>> roomPositions = new  List<HashSet<Vector2Int>>();
+        List<HashSet<Vector2Int>> roomPositions = new List<HashSet<Vector2Int>>();
 
         foreach (var pos in roomCenterPositions)
         {
@@ -90,7 +112,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         }
         return roomPositions;
     }
-    private List<HashSet<Vector2Int>> CreateCorridors(List<HashSet<Vector2Int>> roomPositions, List<Vector2Int> directions)
+    private List<HashSet<Vector2Int>> CreateCorridors(List<HashSet<Vector2Int>> roomPositions, List<Vector2Int> directions, List<Vector2Int> roomCenterPositions)
     {
         List<HashSet<Vector2Int>> corridors = new List<HashSet<Vector2Int>>();
 
@@ -99,12 +121,15 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
             var curRoomPositions = roomPositions[i];
             var nextRoomPositions = roomPositions[i + 1];
             Vector2Int direction = directions[i];
-            var corridor = CreateCorridor(curRoomPositions, nextRoomPositions, direction);
+            var curRoomCenterPos = roomCenterPositions[i];
+            var nextRoomCenterPos = roomCenterPositions[i + 1];
+
+            var corridor = CreateCorridor(curRoomPositions, nextRoomPositions, direction, curRoomCenterPos, nextRoomCenterPos);
             corridors.Add(corridor);
         }
         return corridors;
     }
-    Vector2Int FindStartCorridorPosition(HashSet<Vector2Int> roomPositions, Vector2Int direction)
+    Vector2Int FindCorridorStartPosition(HashSet<Vector2Int> roomPositions, Vector2Int direction)
     {
         Vector2Int centerPosition = roomPositions.First();
 
@@ -113,28 +138,15 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
                           (direction.y != 0 && pos.x == centerPosition.x))
             .OrderBy(pos => (direction.x != 0) ? pos.x : pos.y);
 
-        Vector2Int curRoomBorderPosOfDirection = direction switch
+        return direction switch
         {
             var d when d == Vector2Int.left => candidates.First(),
             var d when d == Vector2Int.right => candidates.Last(),
             var d when d == Vector2Int.up => candidates.Last(),
             var d when d == Vector2Int.down => candidates.First(),
         };
-
-        int y = (direction.y != 0) ? (curRoomBorderPosOfDirection.y + centerPosition.y) / 2 : centerPosition.y;
-        int x = (direction.x != 0) ? (curRoomBorderPosOfDirection.x + centerPosition.x) / 2 : centerPosition.x;
-        Vector2Int corridorStartPos = new Vector2Int(x, y);
-
-        while (corridorStartPos != curRoomBorderPosOfDirection)
-        {
-            if (roomPositions.Contains(corridorStartPos))
-                break;
-            corridorStartPos += direction;
-        }
-
-        return corridorStartPos;
     }
-    Vector2Int FindEndCorridorPosition(Vector2Int direction, HashSet<Vector2Int> nextRoomPositions)
+    Vector2Int FindCorridorEndPosition(Vector2Int direction, HashSet<Vector2Int> nextRoomPositions)
     {
         Vector2Int nextRoomCenterPos = nextRoomPositions.First();
 
@@ -143,41 +155,120 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
                           (direction.y != 0 && pos.x == nextRoomCenterPos.x))
             .OrderBy(pos => (direction.x != 0) ? pos.x : pos.y);
 
-        Vector2Int nextRoomBorderPosOfDirection = direction switch
+        return direction switch
         {
             var d when d == Vector2Int.left => candidates.Last(),
             var d when d == Vector2Int.right => candidates.First(),
             var d when d == Vector2Int.up => candidates.First(),
             var d when d == Vector2Int.down => candidates.Last(),
         };
-            
-        int y = (direction.y != 0) ? (nextRoomBorderPosOfDirection.y + nextRoomCenterPos.y) / 2 : nextRoomCenterPos.y;
-        int x = (direction.x != 0) ? (nextRoomBorderPosOfDirection.x + nextRoomCenterPos.x) / 2 : nextRoomCenterPos.x;
-        Vector2Int corridorEndPos = new Vector2Int(x, y);
-
-        while (corridorEndPos != nextRoomBorderPosOfDirection)
-        {
-            if (nextRoomPositions.Contains(corridorEndPos))
-                break;
-            corridorEndPos += (-direction);
-        }
-
-        return corridorEndPos;
     }
-    HashSet<Vector2Int> CreateCorridor(HashSet<Vector2Int> curRoomPositions, HashSet<Vector2Int> nextRoomPositions, Vector2Int direction)
+    HashSet<Vector2Int> CreateCorridor(HashSet<Vector2Int> curRoomPositions,
+                                        HashSet<Vector2Int> nextRoomPositions,
+                                        Vector2Int direction,
+                                        Vector2Int curRoomCenterPos,
+                                        Vector2Int nextRoomCenterPos)
     {
-        Vector2Int curPos = FindStartCorridorPosition(curRoomPositions, direction);
-        Vector2Int endPos = FindEndCorridorPosition(direction, nextRoomPositions);
+        Vector2Int startPos = FindCorridorStartPosition(curRoomPositions, direction);
+        Vector2Int endPos = FindCorridorEndPosition(direction, nextRoomPositions);
 
+        startPos = EnsureCorridorStartPosition(startPos, curRoomCenterPos, curRoomPositions, -direction);
+        endPos = EnsureCorridorEndPosition(endPos, nextRoomCenterPos, nextRoomPositions, direction);
         HashSet<Vector2Int> corridorPositions = new HashSet<Vector2Int>();
+        Vector2Int curPos = startPos;
+        bool horizontal = (endPos - startPos).x != 0;
 
         while (curPos != endPos)
         {
             corridorPositions.Add(curPos);
+            if (curPos != startPos)
+            {
+                for (int i = 1; i <= CorridorWidth / 2; i++)
+                {
+                    if (horizontal)
+                    {
+                        corridorPositions.Add(curPos + Vector2Int.up * i);
+                        corridorPositions.Add(curPos + Vector2Int.down * i);
+                    }
+                    else
+                    {
+                        corridorPositions.Add(curPos + Vector2Int.left * i);
+                        corridorPositions.Add(curPos + Vector2Int.right * i);
+                    }
+                }
+            }
             curPos += direction;
         }
+
+        curPos = startPos + direction;
+        while (curPos != endPos)
+        {
+            RemoveCorridorSide(curRoomPositions, curPos, horizontal);
+            RemoveCorridorSide(nextRoomPositions, curPos, horizontal);
+            curPos += direction;
+        }
+
         corridorPositions.Add(endPos);
         return corridorPositions;
+    }
+
+    Vector2Int EnsureCorridorEndPosition(Vector2Int curPos, Vector2Int endPos, HashSet<Vector2Int> curRoomPositions, Vector2Int direction)
+    {
+        Vector2Int startPos = curPos;
+
+        bool horizontal = direction.x != 0;
+        while (curPos != endPos)
+        {
+            RemoveCorridorSide(curRoomPositions, curPos, horizontal);
+            if (Bfs(curPos + direction, endPos, curRoomPositions) == true)
+                break;
+            curPos += direction;
+        }
+        return curPos;
+    }
+
+    Vector2Int EnsureCorridorStartPosition(Vector2Int curPos, Vector2Int endPos, HashSet<Vector2Int> curRoomPositions, Vector2Int direction)
+    {
+        Vector2Int startPos = curPos;
+
+        bool horizontal = direction.x != 0;
+        while (curPos != endPos)
+        {
+            RemoveCorridorSide(curRoomPositions, curPos, horizontal);
+            if (Bfs(curPos + direction, endPos, curRoomPositions) == true)
+                break;
+
+            curPos += direction;
+        }
+        return curPos;
+    }
+    void RemoveCorridorSide(HashSet<Vector2Int> curRoomPositions, Vector2Int pos, bool horizontal)
+    {
+        curRoomPositions.Remove(pos);
+        if (horizontal)
+        {
+            for (int i = 1; i <= CorridorWidth / 2; i++)
+            {
+                curRoomPositions.Remove(pos + Vector2Int.up * i);
+                curRoomPositions.Remove(pos + Vector2Int.up * (i + 2));
+                curRoomPositions.Remove(pos + Vector2Int.down * i);
+                curRoomPositions.Remove(pos + Vector2Int.down * (i + 2));
+            }
+            curRoomPositions.Remove(pos + Vector2Int.up * ((CorridorWidth / 2) + 1));
+            curRoomPositions.Remove(pos + Vector2Int.down * ((CorridorWidth / 2) + 1));
+        }
+        else
+        {
+            for (int i = 1; i <= CorridorWidth / 2; i++)
+            {
+                curRoomPositions.Remove(pos + Vector2Int.left * i);
+                curRoomPositions.Remove(pos + Vector2Int.left * (i + 2));
+                curRoomPositions.Remove(pos + Vector2Int.right * i);
+                curRoomPositions.Remove(pos + Vector2Int.right * (i + 2));
+            }
+            curRoomPositions.Remove(pos + Vector2Int.left * ((CorridorWidth / 2) + 1));
+            curRoomPositions.Remove(pos + Vector2Int.right * ((CorridorWidth / 2) + 1));
+        }
     }
     protected HashSet<Vector2Int> RunRandomWalk(Vector2Int pos)
     {
@@ -192,5 +283,45 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
                 curPos = floorPos.ElementAt(Random.Range(0, floorPos.Count));
         }
         return floorPos;
+    }
+    bool Bfs(Vector2Int start, Vector2Int dest, HashSet<Vector2Int> positions)
+    {
+        Queue<Vector2Int> queue = new Queue<Vector2Int>();
+        queue.Enqueue(start);
+
+        int xMax = positions.Max(p => p.x);
+        int yMax = positions.Max(p => p.y);
+        int xMin = positions.Min(p => p.x);
+        int yMin = positions.Min(p => p.y);
+
+        bool[,] visited = new bool[yMax - yMin + 1, xMax - xMin + 1];
+        List<Vector2Int> directions = Direction2D.CardinalDirectionsList;
+        while (queue.Count > 0)
+        {
+            Vector2Int pos = queue.Dequeue();
+            if (positions.Contains(pos) == false)
+                continue;
+            if (pos == dest)
+                return true;
+            Vector2Int cellPos = new Vector2Int(pos.x - xMin, yMax - pos.y);
+            if (visited.GetLength(0) <= cellPos.y || visited.GetLength(1) <= cellPos.x || cellPos.y < 0 || cellPos.x < 0)
+                continue;
+            if (visited[cellPos.y, cellPos.x])
+                continue;
+            visited[cellPos.y, cellPos.x] = true;
+            foreach (var direction in directions)
+            {
+                Vector2Int next = pos + direction;
+                Vector2Int nextCell = new Vector2Int(next.x - xMin, yMax - next.y);
+                if (nextCell.y < 0 || nextCell.y >= visited.GetLength(0) ||
+                    nextCell.x < 0 || nextCell.x >= visited.GetLength(1))
+                    continue;
+                if (visited[nextCell.y, nextCell.x])
+                    continue;
+
+                queue.Enqueue(next);
+            }
+        }
+        return false;
     }
 }

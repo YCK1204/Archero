@@ -1175,7 +1175,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1244226192}
   - {fileID: 1503414976}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1781,6 +1780,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc6366f54d3c207488b8cc885dd3f5ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseStats:
+    AttackPower: 10
+    MaxHp: 6
+    AttackSpeed: 1
+    MoveSpeed: 5
+    DashSpeed: 15
   currentHp: 6
 --- !u!114 &1533881635
 MonoBehaviour:

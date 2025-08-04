@@ -38,6 +38,7 @@ namespace Assets.Define
             monsterPool.Add(ChessCharType.bishop, new Pool<Monster>("Bishop"));
             monsterPool.Add(ChessCharType.knight, new Pool<Monster>("Knight"));
             monsterPool.Add(ChessCharType.rock, new Pool<Monster>("Rock"));
+            monsterPool.Add(ChessCharType.King, new Pool<Monster>("King"));
             playerProjectilePool = new Pool<Projectile>("Bullet");         // 0804 추가 by 김정민
             turretProjectilePool = new Pool<Projectile>("Bullet_Turret");  // 0804 추가 by 김정민
             //Items = new Pool<DropItem>[2] { new Pool<DropItem>("ExpItem"), new Pool<DropItem>("HPItem") };

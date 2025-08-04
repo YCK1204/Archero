@@ -153,6 +153,8 @@ interface IStatManaging
                 return new BishopStatSetter();
             case ChessCharType.rock:
                 return new RockStatSetter();
+            case ChessCharType.King:
+                return new KingStatSetter();
         }
         return null;
     }
@@ -233,5 +235,21 @@ public class RockStatSetter:IStatManaging
         int hp = 60 + (int)(0.5f + (0.5f * stageNum));
         float moveSpeed = 2f * (0.95f + (0.05f * stageNum));
         stat = new MonsterStat(hp, hp, moveSpeed, 7, 4, (1.5f*(1.06f-(0.06f*stageNum))));
+    }
+}
+public class KingStatSetter:IStatManaging
+{
+    public void ItemDrop(Vector3 pos)
+    {
+        DropItem item = BattleManager.GetInstance.Items[0].DeQueue();
+        item.Init(400);
+        item.transform.position = pos;
+
+        BattleManager.GetInstance.Items[1].DeQueue();
+        item.Init(100);
+    }
+    public void StatChange(ref MonsterStat stat, int stageNum)
+    {
+        stat = new MonsterStat(10000, 40, 0.1f, 10, 10, 3);
     }
 }

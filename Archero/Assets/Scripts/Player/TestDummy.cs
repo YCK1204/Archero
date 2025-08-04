@@ -27,4 +27,22 @@ public class TestDummy : MonoBehaviour
         //stats.TakeDamage(damage, attackerPos);
         Debug.Log($"¸ó½ºÅÍ ÇÇ°İµÊ! ÇöÀç Ã¼·Â: asdf asdf ");
     }
+
+    [SerializeField] private WeaponHolder weaponHolder;
+    [SerializeField] private WeaponData turretData;
+    [SerializeField] private GameObject turretPrefab;
+
+    private bool equipped = false;
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T) && !equipped)
+        {
+            weaponHolder.EquipWeapon(turretData, turretPrefab);
+            Debug.Log("ÅÍ·¿ ÀåÂøµÊ!");
+            equipped = true;
+        }
+    }
+
+
 }

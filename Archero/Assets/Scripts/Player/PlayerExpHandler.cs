@@ -40,7 +40,7 @@ public class PlayerExpHandler : MonoBehaviour
         // 외부 레벨업 이벤트 발행 (UI 등 연결 가능)
         OnLevelUp?.Invoke(playerLevel);
         // 스킬카드 UI 띄우기 (예: SkillManager 통해)
-        SkillManager.Instance?.ShowLevelUpSkills();
+        Lee.Scripts.GameManager.Reward.ShowVkrReward();
         // 레벨업 이펙트 등 추가 가능
         Debug.Log($"레벨이 올랐따. 현재 레벨: {playerLevel}");
     }

@@ -16,7 +16,6 @@ namespace Lee.Scripts
         private static GameManager instance;
         public static GameManager Instance { get { return instance; } }
 
-
         // Managers=========================
         private static UIManager uiManager;
         public static UIManager UI { get { return uiManager; } }
@@ -33,12 +32,8 @@ namespace Lee.Scripts
         private static SkillManager skillManager;
         public static SkillManager SkillReward { get { return skillManager; } }
 
-
-        // Clear����
         int clearCount = 23;
         public int _clearCount { get => clearCount; set => clearCount = value; }
-
-
 
         private void Awake()
         {
@@ -128,11 +123,9 @@ namespace Lee.Scripts
                                 break;
                             }
                         }
-                        int pickCount = groupSizes[groupIndex];
                         ESkillCategory cat = categories[groupIndex];
                         var grades = Enum.GetValues(typeof(ESkillGrade)).Cast<ESkillGrade>().ToArray();
-                        var randomGrade = grades[UnityEngine.Random.Range(0, grades.Length)];
-                        Reward.ShowReward(randomGrade, cat, pickCount);
+                        Reward.ShowReward(cat);
                     }
                     else
                     {

@@ -11,7 +11,7 @@ public class MonsterSpawner : MonoBehaviour
     // Start is called before the first frame update
     IEnumerator Start()
     {
-        yield return new WaitUntil(()=> MapManager.Instance.GetMapData != null && MapManager.Instance.GetMapData.Count > 0);
+        yield return new WaitUntil(()=> MapManager.Instance.GetMapData != null && MapManager.Instance.GetMapData.Count > 0&&BattleManager.GetInstance.monsterPool.All(x=>x.Value.IsPrefabReady));
         List<Vector3> vec = new List<Vector3>();
         int monsterNumb = 1;
         for (int i = 0; i < MapManager.Instance.GetMapData.Count-1; i++)

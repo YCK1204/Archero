@@ -8,6 +8,9 @@ public class Projectile : MonoBehaviour
     private Vector2 direction;
     private float speed;
     private int damage;
+    private float timer;
+    private BulletGroup bulletGroup;
+
 
     [SerializeField] private float lifetime = 3f;  // 막 쌓일 수 있대서, 일단 증발 시간 3f로 했어용
     [SerializeField] private LayerMask targetLayer;
@@ -17,20 +20,25 @@ public class Projectile : MonoBehaviour
         direction = dir.normalized;
         speed = weaponData.ProjectileSpeed;
         damage = attackPower;
-
-        lifetime = 3f;
+        bulletGroup = GetComponentInParent<BulletGroup>();
         targetLayer = 1 << 7;
+        timer = 0f;
+
 
         // 방향 회전
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle);
-
-        Destroy(gameObject, lifetime);
     }
 
     private void Update()
     {
         transform.Translate(direction * speed * Time.deltaTime, Space.World);
+
+        timer += Time.deltaTime;
+        if (timer >= lifetime)
+        {
+            ReturnToPool();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -43,6 +51,11 @@ public class Projectile : MonoBehaviour
             BattleManager.GetInstance.Attack(collision, damage, transform.position);
         }
 
-        Destroy(gameObject); // 기본은 1회 충돌 시 파괴
+        ReturnToPool();
+    }
+
+    private void ReturnToPool()
+    {
+        BattleManager.GetInstance.playerProjectilePool.EnQueue(this);
     }
 }

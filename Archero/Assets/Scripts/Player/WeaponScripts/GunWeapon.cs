@@ -1,10 +1,10 @@
+using Assets.Define;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GunWeapon : WeaponBase
 {
-    [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform firePoint;
 
     private float lastAttackTime = -Mathf.Infinity;
@@ -47,8 +47,12 @@ public class GunWeapon : WeaponBase
             float rad = angle * Mathf.Deg2Rad;
             Vector2 dir = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
 
-            GameObject proj = Instantiate(projectilePrefab, firePoint.position, Quaternion.Euler(0, 0, angle));
-            proj.AddComponent<Projectile>()?.Init(dir, weaponData, ownerStats.TotalStats.AttackPower);
+            Projectile proj = BattleManager.GetInstance.playerProjectilePool.DeQueue();
+
+            proj.transform.position = firePoint.position;
+            proj.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+            proj.Init(dir, weaponData, ownerStats.TotalStats.AttackPower);
         }
     }
 

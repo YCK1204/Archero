@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 971057550}
   - component: {fileID: 971057549}
   - component: {fileID: 971057552}
+  - component: {fileID: 971057553}
   m_Layer: 7
   m_Name: TestDummy
   m_TagString: Untagged
@@ -269,6 +270,43 @@ MonoBehaviour:
   weaponHolder: {fileID: 1546156303}
   turretData: {fileID: 11400000, guid: 41699fa2c575fb84c953acb0cc41f4f5, type: 2}
   turretPrefab: {fileID: 6615560999938772998, guid: 7282c185f21facb4584abff98a5ee4e2, type: 3}
+--- !u!114 &971057553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 971057548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b22eb7bae6d50f54a8ef72615e0929ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commonBuffs:
+    attackMultiplier: 1.2
+    attackSpeedMultiplier: 1.2
+    moveSpeedMultiplier: 1.2
+    maxHealthMultiplier: 1.5
+    healPercent: 0.2
+  rareBuffs:
+    attackMultiplier: 1.3
+    attackSpeedMultiplier: 1.3
+    moveSpeedMultiplier: 1.3
+    maxHealthMultiplier: 2
+    healPercent: 0.3
+  epicBuffs:
+    attackMultiplier: 1.4
+    attackSpeedMultiplier: 1.4
+    moveSpeedMultiplier: 1.4
+    maxHealthMultiplier: 2.5
+    healPercent: 0.4
+  legendaryBuffs:
+    attackMultiplier: 1.5
+    attackSpeedMultiplier: 1.5
+    moveSpeedMultiplier: 1.5
+    healthCost: 1
+  turretWeaponData: {fileID: 11400000, guid: 41699fa2c575fb84c953acb0cc41f4f5, type: 2}
+  turretWeaponPrefab: {fileID: 6615560999938772998, guid: 7282c185f21facb4584abff98a5ee4e2, type: 3}
 --- !u!1 &1476158870
 GameObject:
   m_ObjectHideFlags: 0

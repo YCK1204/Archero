@@ -36,17 +36,29 @@ public class TestDummy : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T) && !equipped)
+        if (Input.GetKeyDown(KeyCode.T))
         {
-            if (weaponHolder != null && turretData != null && turretPrefab != null)
+            Debug.Log("T 키 입력 → 터렛 스킬 강제 선택");
+
+            var skillManager = SkillManager.Instance;
+            if (skillManager == null)
             {
-                weaponHolder.EquipWeapon(turretData, turretPrefab);
-                Debug.Log(" T키로 터렛 무기 장착 완료");
-                equipped = true;
+                Debug.LogWarning("SkillManager 인스턴스를 찾을 수 없습니다.");
+                return;
+            }
+
+            // SummonTurret 스킬을 skillManager의 데이터베이스에서 찾아서 선택
+            var turretSkill = skillManager
+                .GetAllSkills()
+                .Find(s => s.EffectID == "SummonTurret");
+
+            if (turretSkill != null)
+            {
+                skillManager.SelectSkill(turretSkill);
             }
             else
             {
-                Debug.LogWarning("WeaponHolder, turretData, turretPrefab 중 하나가 비어있음");
+                Debug.LogWarning("SummonTurret 스킬을 찾지 못했습니다.");
             }
         }
     }

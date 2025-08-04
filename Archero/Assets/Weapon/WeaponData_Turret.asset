@@ -17,7 +17,7 @@ MonoBehaviour:
   cooldown: 1
   knockbackPower: 1
   knockbackTime: 1
-  projectileSpeed: 5
+  projectileSpeed: 15
   range: 20
   projectileCount: 1
   spreadAngle: 5

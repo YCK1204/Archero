@@ -43,8 +43,8 @@ public class GunWeapon : WeaponBase
         }
 
         // 2. 풀이 준비됐는지 (prefab이 할당됐는지) 직접 체크
-        var testProj = pool.DeQueue();
-        if (testProj == null)
+        bool testProj = pool.IsPrefabReady;
+        if (!testProj)
         {
             Debug.LogWarning("GunWeapon: 풀에서 투사체를 가져오지 못했습니다.");
             return;
@@ -63,17 +63,16 @@ public class GunWeapon : WeaponBase
             float rad = angle * Mathf.Deg2Rad;
             Vector2 dir = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
             Projectile proj = pool.DeQueue();
-        if (proj == null)
-        {
-            Debug.LogWarning("GunWeapon: 풀에서 투사체를 가져오지 못했습니다. (반복 중)");
-            continue;
-        }
+            if (proj == null)
+            {
+                Debug.LogWarning("GunWeapon: 풀에서 투사체를 가져오지 못했습니다. (반복 중)");
+                continue;
+            }
             proj.transform.position = firePoint.position;
             proj.transform.rotation = Quaternion.Euler(0, 0, angle);
-
-            proj.Init(dir, weaponData, ownerStats.TotalStats.AttackPower);
-
             proj.gameObject.SetActive(true);
+            proj.Init(dir, weaponData, ownerStats.TotalStats.AttackPower, BattleManager.GetInstance.playerProjectilePool);
+
         }
     }
 

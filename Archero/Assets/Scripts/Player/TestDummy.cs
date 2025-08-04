@@ -27,4 +27,29 @@ public class TestDummy : MonoBehaviour
         //stats.TakeDamage(damage, attackerPos);
         Debug.Log($"몬스터 피격됨! 현재 체력: asdf asdf ");
     }
+
+    [SerializeField] private WeaponHolder weaponHolder;
+    [SerializeField] private WeaponData turretData;
+    [SerializeField] private GameObject turretPrefab;
+
+    private bool equipped = false;
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T) && !equipped)
+        {
+            if (weaponHolder != null && turretData != null && turretPrefab != null)
+            {
+                weaponHolder.EquipWeapon(turretData, turretPrefab);
+                Debug.Log(" T키로 터렛 무기 장착 완료");
+                equipped = true;
+            }
+            else
+            {
+                Debug.LogWarning("WeaponHolder, turretData, turretPrefab 중 하나가 비어있음");
+            }
+        }
+    }
+
+
 }

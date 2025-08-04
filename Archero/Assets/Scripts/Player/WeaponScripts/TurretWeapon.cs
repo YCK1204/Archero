@@ -13,16 +13,19 @@ public class TurretWeapon : WeaponBase
 
     public override void Activate()
     {
+        Debug.Log("TurretWeapon: Activate() 진입 시도");
         if (Time.time - lastAttackTime < weaponData.Cooldown / ownerStats.TotalStats.AttackSpeed)
+        {
+            Debug.Log("TurretWeapon: 쿨타임 미도래로 발사 취소");
             return;
+        }
 
         Transform target = holder.FindNearestMonster(weaponData.Range);
-        if (target == null) return;
-
-        // 터렛 회전
-        Vector2 dir = (target.position - transform.position).normalized;
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+        if (target == null)
+        {
+            Debug.Log("TurretWeapon: 대상 없음으로 발사 취소");
+            return;
+        }
 
         FireAt(target.position);
         lastAttackTime = Time.time;
@@ -30,7 +33,7 @@ public class TurretWeapon : WeaponBase
 
     private void FireAt(Vector2 targetPos)
     {
-
+        Debug.Log("TurretWeapon: 발사 시도");
         Vector2 baseDir = (targetPos - (Vector2)firePoint.position).normalized;
         float baseAngle = Mathf.Atan2(baseDir.y, baseDir.x) * Mathf.Rad2Deg;
 
@@ -44,15 +47,28 @@ public class TurretWeapon : WeaponBase
             float rad = angle * Mathf.Deg2Rad;
             Vector2 dir = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
 
-            //// 풀에서 꺼내기
-            //Projectile proj = BattleManager.GetInstance.turretProjectilePool.DeQueue();
+            // 풀에서 꺼내기
+            Projectile proj = BattleManager.GetInstance.turretProjectilePool.DeQueue();
 
-            //// 위치 및 회전
-            //proj.transform.position = firePoint.position;
-            //proj.transform.rotation = Quaternion.Euler(0, 0, angle);
-
-            //proj.Init(dir, weaponData, ownerStats.TotalStats.AttackPower);
+            // 위치 및 회전
+            proj.transform.position = firePoint.position;
+            proj.transform.rotation = Quaternion.Euler(0, 0, angle);
+            proj.gameObject.SetActive(true);
+            proj.Init(dir, weaponData, ownerStats.TotalStats.AttackPower, BattleManager.GetInstance.turretProjectilePool);
         }
+    }
+    private void Update()
+    {
+        RotateTowardNearestMonster();
+    }
+    private void RotateTowardNearestMonster()
+    {
+        Transform target = holder.FindNearestMonster(weaponData.Range);
+        if (target == null) return;
+
+        Vector2 dir = (target.position - transform.position).normalized;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 }
 

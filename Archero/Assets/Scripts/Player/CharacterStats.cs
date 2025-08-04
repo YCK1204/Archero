@@ -100,6 +100,7 @@ public class CharacterStats : MonoBehaviour
     // 사망 관련 함수
     private void Die()
     {
+        Lee.Scripts.GameManager.Instance.CheckStageClear();
         // 사망 로직 추가
     }
 

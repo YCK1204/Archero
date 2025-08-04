@@ -116,7 +116,7 @@ public class Monster : MonoBehaviour
         // ≥ÀπÈ πÊ«‚
         Vector3 direction = transform.position - attackerPos;
         Vector3 knockbackDir = direction.normalized;
-        agent.velocity = knockbackDir * 3f;
+        if(agent != null)agent.velocity = knockbackDir * 3f;
         
         stat.GetDamage(damage);
         if(stat.isDie()) BattleManager.GetInstance.RemoveHitInfo(col);

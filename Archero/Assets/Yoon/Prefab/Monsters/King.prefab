@@ -112,7 +112,7 @@ MonoBehaviour:
   target: {fileID: 0}
   attackType: 2
   moveType: 0
-  chessType: 0
+  chessType: 4
 --- !u!95 &4313069653976665821
 Animator:
   serializedVersion: 5

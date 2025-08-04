@@ -43,7 +43,6 @@ namespace Assets.Define
         {
             unitDict.Remove(target);
         }
-        
     }
     
 }
@@ -85,7 +84,7 @@ public class Pool<T> where T : MonoBehaviour
             return (T)result;
         }
         T obj = stack.Pop();
-        obj.gameObject.SetActive(true);
+        //obj.gameObject.SetActive(true);
         return obj;
     }
 }

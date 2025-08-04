@@ -8,6 +8,8 @@ public class NormalMonster : Monster
     [SerializeField] Vector3[] patrolPositions;
     int patrolIndex = 0;
     float moveTimer = 0f;
+    float patrolTimer = 0f;
+    float patrolGoal = 0f;
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -17,6 +19,7 @@ public class NormalMonster : Monster
     // Update is called once per frame
     protected override void Update()
     {
+        patrolTimer += Time.deltaTime;
         if (!BaseUpdate())
         {
             moveTimer += Time.deltaTime;
@@ -66,13 +69,15 @@ public class NormalMonster : Monster
     private void PatrolLoop()
     {
         if (patrolPositions.Length == 0 || patrolPositions == null || moveType == MoveType.none) return;//패트롤 없으면 제자리 대기
-        if (agent.remainingDistance < 0.1f)
+        if (agent.remainingDistance < 0.1f || patrolTimer >= patrolGoal)
         {
             agent.velocity = Vector3.zero;
-
             agent.SetDestination(patrolPositions[patrolIndex]);
             patrolIndex++;
             if (patrolIndex >= patrolPositions.Length) patrolIndex = 0;
+            patrolGoal = Vector3.Distance(patrolPositions[patrolIndex], transform.position)/stat.GetMoveSpeed;
+
+            patrolTimer = 0;
         }
     }
 }

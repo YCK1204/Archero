@@ -13,7 +13,7 @@ namespace Assets.Define
         Dictionary<Collider2D, Action<int, Vector3>> unitDict = new Dictionary<Collider2D, Action<int, Vector3>>();
         public Dictionary<Collider2D, Action<int, Vector3>> GetUnitDIct { get { return unitDict; } }
         public Pool<MobProjectile> normalMobProjectile;
-        public Pool<Monster> monsterPool;
+        public Dictionary<ChessCharType,Pool<Monster>> monsterPool;
         public override void Init()
         {
             base.Init();
@@ -21,7 +21,11 @@ namespace Assets.Define
 
             normalMobProjectile = new Pool<MobProjectile>("MonsterArrow");
             normalMobProjectile.Init();
-            monsterPool = new Pool<Monster>(string.Empty/*NormalMonster*/);
+            monsterPool = new Dictionary<ChessCharType, Pool<Monster>>();
+            monsterPool.Add(ChessCharType.pawn, new Pool<Monster>("Pawn"));
+            monsterPool.Add(ChessCharType.bishop, new Pool<Monster>("Bishop"));
+            monsterPool.Add(ChessCharType.knight, new Pool<Monster>("Knight"));
+            monsterPool.Add(ChessCharType.rock, new Pool<Monster>("Rock"));
         }
         public void Attack(Collider2D target,int damage,Vector3 attackerPos)
         {

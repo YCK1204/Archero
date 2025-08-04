@@ -119,6 +119,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -211,9 +224,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 94
-        y: 230
-        width: 41
-        height: 41
+        y: 189
+        width: 76
+        height: 82
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -231,7 +244,7 @@ TextureImporter:
       name: Structure_Sprites_5
       rect:
         serializedVersion: 2
-        x: 155
+        x: 190
         y: 230
         width: 41
         height: 41
@@ -252,7 +265,7 @@ TextureImporter:
       name: Structure_Sprites_6
       rect:
         serializedVersion: 2
-        x: 216
+        x: 251
         y: 230
         width: 41
         height: 41
@@ -273,9 +286,9 @@ TextureImporter:
       name: Structure_Sprites_7
       rect:
         serializedVersion: 2
-        x: 277
+        x: 312
         y: 230
-        width: 38
+        width: 41
         height: 41
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -294,7 +307,7 @@ TextureImporter:
       name: Structure_Sprites_8
       rect:
         serializedVersion: 2
-        x: 335
+        x: 373
         y: 230
         width: 38
         height: 41
@@ -307,6 +320,27 @@ TextureImporter:
       bones: []
       spriteID: 3df676b45a2d13b49a822ecc29254ce4
       internalID: -324121867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Structure_Sprites_9
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 230
+        width: 38
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 528d6cefc10bb7c4894d40e12646cacd
+      internalID: -1281437009
       vertices: []
       indices: 
       edges: []
@@ -331,6 +365,7 @@ TextureImporter:
       Structure_Sprites_6: 796957624
       Structure_Sprites_7: -1717784634
       Structure_Sprites_8: -324121867
+      Structure_Sprites_9: -1281437009
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

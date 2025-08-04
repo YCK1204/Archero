@@ -25,14 +25,14 @@ MonoBehaviour:
     rewardInfo: "\uACF5\uACA9\uB825 \uC99D\uAC00"
     skillGrade: 1
     skillCategory: 0
-    baseWeight: 3
+    baseWeight: 2
     description: 
   - uiPrefab: {fileID: 5427350499359506132, guid: c9ac7cf0c3676f4409a3921ef180edaf, type: 3}
     skillEffectID: AttackUp
     rewardInfo: "\uACF5\uACA9\uB825 \uC99D\uAC00"
     skillGrade: 2
     skillCategory: 0
-    baseWeight: 3
+    baseWeight: 1
     description: 
   - uiPrefab: {fileID: 2629710952058088987, guid: 6d119a21ddda60f4daf8fd5fb622db08, type: 3}
     skillEffectID: AttackSpeedUp
@@ -46,14 +46,14 @@ MonoBehaviour:
     rewardInfo: "\uACF5\uACA9\uC18D\uB3C4 \uC99D\uAC00"
     skillGrade: 1
     skillCategory: 0
-    baseWeight: 3
+    baseWeight: 2
     description: 
   - uiPrefab: {fileID: 5427350499359506132, guid: ad2cc7a04ca16e346b5f52d689495411, type: 3}
     skillEffectID: AttackSpeedUp
     rewardInfo: "\uACF5\uACA9\uC18D\uB3C4 \uC99D\uAC00"
     skillGrade: 2
     skillCategory: 0
-    baseWeight: 3
+    baseWeight: 1
     description: 
   - uiPrefab: {fileID: 2629710952058088987, guid: a801660678c95d347a14b97e2b8e6377, type: 3}
     skillEffectID: MoveSpeedUp
@@ -67,14 +67,14 @@ MonoBehaviour:
     rewardInfo: "\uC774\uB3D9\uC18D\uB3C4 \uC99D\uAC00"
     skillGrade: 1
     skillCategory: 0
-    baseWeight: 3
+    baseWeight: 2
     description: 
   - uiPrefab: {fileID: 5427350499359506132, guid: 631fbffa02074834d9028f0ca8d4c9af, type: 3}
     skillEffectID: MoveSpeedUp
     rewardInfo: "\uC774\uB3D9\uC18D\uB3C4 \uC99D\uAC00"
     skillGrade: 2
     skillCategory: 0
-    baseWeight: 3
+    baseWeight: 1
     description: 
   - uiPrefab: {fileID: 2629710952058088987, guid: b0d1de23d2100f0459ef554fdd53c098, type: 3}
     skillEffectID: MaxHealthUp
@@ -88,14 +88,14 @@ MonoBehaviour:
     rewardInfo: "\uCD5C\uB300\uCCB4\uB825 \uC99D\uAC00"
     skillGrade: 1
     skillCategory: 0
-    baseWeight: 3
+    baseWeight: 2
     description: 
   - uiPrefab: {fileID: 5427350499359506132, guid: bf61a2e62e1db684f92939236f3a49b2, type: 3}
     skillEffectID: MaxHealthUp
     rewardInfo: "\uCD5C\uB300\uCCB4\uB825 \uC99D\uAC00"
     skillGrade: 2
     skillCategory: 0
-    baseWeight: 3
+    baseWeight: 1
     description: 
   - uiPrefab: {fileID: 2629710952058088987, guid: 817066da98ac8e84d9cdcb934f8f9b52, type: 3}
     skillEffectID: Heal
@@ -109,21 +109,21 @@ MonoBehaviour:
     rewardInfo: "HP \uD68C\uBCF5"
     skillGrade: 1
     skillCategory: 0
-    baseWeight: 3
+    baseWeight: 2
     description: 
   - uiPrefab: {fileID: 5427350499359506132, guid: dbb1a7e3b38ca44418478c851f6980f6, type: 3}
     skillEffectID: Heal
     rewardInfo: "HP \uD68C\uBCF5"
     skillGrade: 2
     skillCategory: 0
-    baseWeight: 3
+    baseWeight: 1
     description: 
   - uiPrefab: {fileID: 2629710952058088987, guid: 817066da98ac8e84d9cdcb934f8f9b52, type: 3}
     skillEffectID: Heal
     rewardInfo: "HP \uD68C\uBCF5"
     skillGrade: 0
     skillCategory: 2
-    baseWeight: 3
+    baseWeight: 100
     description: 
   - uiPrefab: {fileID: 2629710952058088987, guid: 37ea4391c02ef994da2a203b88afa755, type: 3}
     skillEffectID: AttackUp

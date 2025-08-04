@@ -30,6 +30,7 @@ public class Monster : MonoBehaviour
 
     protected float attackTimer = 0f;
     protected float playerDist = 0f;
+    bool isStart = false;
     protected virtual void Start()
     {
         fsm = new MonsterStateMachine(GetComponent<Animator>());
@@ -48,6 +49,7 @@ public class Monster : MonoBehaviour
         //YOON : stage정보 넘겨주면 1대신 해당 인스턴스 넣어주면됨
 
         Init();
+        isStart = true;
     }
     public void Init()
     {
@@ -120,21 +122,21 @@ public class Monster : MonoBehaviour
         if(stat.isDie()) BattleManager.GetInstance.RemoveHitInfo(col);
     }
 
-    public virtual void Spawn(MobType type , Vector3[] patrolPos , MonsterStat stat,ChessCharType chessType)
+    public virtual IEnumerator Spawn(Vector3[] patrolPos , ChessCharType chessType)
     {
-        this.stat = stat;
+        yield return new WaitUntil(() => isStart);
+        statSetter.StatChange(ref this.stat, BattleManager.GetInstance.stageNum);
 
         fsm.ForceChange(StateTypes.Patrol);
         BattleManager.GetInstance.RegistHitInfo(col, Damaged);
         //YOON : stageNum 받아와야됨
-        statSetter.StatChange(ref stat, /*stageNum*/1);
         Init();
     }
 
 
 }
 [Serializable]
-public enum ChessCharType { pawn,knight,bishop,rock}
+public enum ChessCharType { pawn,knight,bishop,rock,King}
 interface IStatManaging
 { 
     void ItemDrop(Vector3 pos);

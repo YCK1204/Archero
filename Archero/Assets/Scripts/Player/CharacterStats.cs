@@ -103,7 +103,7 @@ public class CharacterStats : MonoBehaviour
     private void Die()
     {
         Lee.Scripts.GameManager.UI.ShowPopUpUI<GameOverUI>("Prefabs/UI/GameOverUI");
-        Destroy(gameObject);
+        gameObject.SetActive(false);
         // 사망 로직 추가
     }
 

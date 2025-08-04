@@ -27,6 +27,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
     protected SimpleRandomWalkSO SimpleRandomWalkData = null;
 
     protected List<Map> _mapData = new List<Map>();
+    public List<Map> GetMapData { get { return _mapData; } }
     protected override void RunProceduralGeneration()
     {
         CorridorFirstGeneration();

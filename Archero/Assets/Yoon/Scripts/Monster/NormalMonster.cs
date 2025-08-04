@@ -62,9 +62,10 @@ public class NormalMonster : Monster
 #endif
 
 
-    public override void Spawn(MobType type, Vector3[] patrolPos, MonsterStat stat, ChessCharType chessType)
+    public override IEnumerator Spawn(Vector3[] patrolPos, ChessCharType chessType)
     {
-        base.Spawn(type, patrolPos, stat,chessType);
+        base.Spawn(patrolPos, chessType);
+        yield return null;
         patrolPositions = patrolPos;
     }
 

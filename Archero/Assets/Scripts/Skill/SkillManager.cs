@@ -37,12 +37,14 @@ public class SkillManager : MonoBehaviour
     private CharacterStats playerStats;
 
     [Header("터렛을 여기에 달아주세용")]
-    [SerializeField] private WeaponData turretWeaponData;
-    [SerializeField] private GameObject turretWeaponPrefab;
+   private WeaponData turretWeaponData;
+   private GameObject turretWeaponPrefab;
     void Awake()
     {
         Instance = this;
-        
+        turretWeaponData = Lee.Scripts.GameManager.Resource.Load<WeaponData>("Weapon/WeaponDataSO/WeaponData_Turret");
+        turretWeaponPrefab = Lee.Scripts.GameManager.Resource.Load<GameObject>("Weapon/WeaponPrefabs/TurretWeapon");
+
         // 버프 변수들이 null이면 기본값으로 초기화
         if (commonBuffs == null) commonBuffs = new CommonBuffs();
         if (rareBuffs == null) rareBuffs = new RareBuffs();

@@ -66,7 +66,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
 
         List<HashSet<Vector2Int>> roomPositions = CreateRooms(roomCenterPositions);
         List<HashSet<Vector2Int>> corridors = CreateCorridors(roomPositions, mapToMapDirections, roomCenterPositions);
-
+        RemoveIsland(roomPositions, roomCenterPositions);
 #if UNITY_EDITOR
         if (ShowCorridor)
         {
@@ -87,8 +87,37 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         }
 #endif
         TilemapVisualizer.PaintFloorTiles(floorPos);
+        foreach (var corridor in corridors)
+        {
+            foreach (var pos in corridor)
+                TilemapVisualizer.PaintSingleTile(TilemapVisualizer.FloorTilemap, TilemapVisualizer.CorridorTile, pos);
+        }
         TilemapVisualizer.GenerateWalls(floorPos);
     }
+    void RemoveIsland(List<HashSet<Vector2Int>> roomPositions, List<Vector2Int> roomCenterPositions)
+    {
+        for (int i = 0; i < roomPositions.Count; i++)
+        {
+            var room = roomPositions[i];
+            var centerPos = roomCenterPositions[i];
+            var connectedRegions = FindConnectedRegions(room);
+
+            if (connectedRegions.Count == 1)
+                continue;
+
+            foreach (var region in connectedRegions)
+            {
+                if (region.Contains(centerPos) == false)
+                {
+                    foreach (var pos in region)
+                    {
+                        room.Remove(pos);
+                    }
+                }
+            }
+        }
+    }
+
     private Tuple<Vector2Int, Vector2Int> FindNonOverlappingMapPosition(Vector2Int mapPos, List<Vector2Int> roomPositions)
     {
         Vector2Int nextMapPosition = mapPos;
@@ -220,7 +249,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         while (curPos != endPos)
         {
             RemoveCorridorSide(curRoomPositions, curPos, horizontal);
-            if (Bfs(curPos + direction, endPos, curRoomPositions) == true)
+            if (CanReach(curPos + direction, endPos, curRoomPositions) == true)
                 break;
             curPos += direction;
         }
@@ -235,7 +264,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         while (curPos != endPos)
         {
             RemoveCorridorSide(curRoomPositions, curPos, horizontal);
-            if (Bfs(curPos + direction, endPos, curRoomPositions) == true)
+            if (CanReach(curPos + direction, endPos, curRoomPositions) == true)
                 break;
 
             curPos += direction;
@@ -284,7 +313,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         }
         return floorPos;
     }
-    bool Bfs(Vector2Int start, Vector2Int dest, HashSet<Vector2Int> positions)
+    bool CanReach(Vector2Int start, Vector2Int dest, HashSet<Vector2Int> positions)
     {
         Queue<Vector2Int> queue = new Queue<Vector2Int>();
         queue.Enqueue(start);
@@ -303,25 +332,67 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
                 continue;
             if (pos == dest)
                 return true;
-            Vector2Int cellPos = new Vector2Int(pos.x - xMin, yMax - pos.y);
+            Vector2Int cellPos = PosToCell(pos, xMin, yMax);
             if (visited.GetLength(0) <= cellPos.y || visited.GetLength(1) <= cellPos.x || cellPos.y < 0 || cellPos.x < 0)
                 continue;
             if (visited[cellPos.y, cellPos.x])
                 continue;
             visited[cellPos.y, cellPos.x] = true;
             foreach (var direction in directions)
-            {
-                Vector2Int next = pos + direction;
-                Vector2Int nextCell = new Vector2Int(next.x - xMin, yMax - next.y);
-                if (nextCell.y < 0 || nextCell.y >= visited.GetLength(0) ||
-                    nextCell.x < 0 || nextCell.x >= visited.GetLength(1))
-                    continue;
-                if (visited[nextCell.y, nextCell.x])
-                    continue;
-
-                queue.Enqueue(next);
-            }
+                queue.Enqueue(pos + direction);
         }
         return false;
+    }
+    Vector2Int PosToCell(Vector2Int pos, int xMin, int yMax)
+    {
+        return new Vector2Int(pos.x - xMin, yMax - pos.y);
+    }
+    Vector2Int CellToPos(Vector2Int cell, int xMin, int yMax)
+    {
+        return new Vector2Int(cell.x + xMin, yMax - cell.y);
+    }
+    List<List<Vector2Int>> FindConnectedRegions(HashSet<Vector2Int> positions)
+    {
+        int xMax = positions.Max(p => p.x);
+        int yMax = positions.Max(p => p.y);
+        int xMin = positions.Min(p => p.x);
+        int yMin = positions.Min(p => p.y);
+
+        bool[,] visited = new bool[yMax - yMin + 1, xMax - xMin + 1];
+        List<Vector2Int> directions = Direction2D.CardinalDirectionsList;
+        List<List<Vector2Int>> regions = new List<List<Vector2Int>>();
+        for (int y = 0; y < visited.GetLength(0); y++)
+        {
+            for (int x = 0; x < visited.GetLength(1); x++)
+            {
+                Vector2Int cellPos = new Vector2Int(x, y);
+                if (cellPos.y < 0 || cellPos.y >= visited.GetLength(0) ||
+                    cellPos.x < 0 || cellPos.x >= visited.GetLength(1))
+                    continue;
+                if (visited[cellPos.y, cellPos.x])
+                    continue;
+
+                Queue<Vector2Int> queue = new Queue<Vector2Int>();
+                List<Vector2Int> region = new List<Vector2Int>();
+                Vector2Int pos = CellToPos(cellPos, xMin, yMax);
+                queue.Enqueue(pos);
+
+                while (queue.Count > 0)
+                {
+                    pos = queue.Dequeue();
+                    if (positions.Contains(pos) == false)
+                        continue;
+                    cellPos = PosToCell(pos, xMin, yMax);
+                    if (visited[cellPos.y, cellPos.x])
+                        continue;
+                    region.Add(pos);
+                    visited[cellPos.y, cellPos.x] = true;
+                    foreach (var direction in directions)
+                        queue.Enqueue(pos + direction);
+                }
+                regions.Add(region);
+            }
+        }
+        return regions;
     }
 }

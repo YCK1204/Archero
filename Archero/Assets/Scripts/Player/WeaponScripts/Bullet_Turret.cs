@@ -8,8 +8,6 @@ public class Bullet_Turret : Projectile
     {
         // °ø°Ý·Â 25%¸¸ Àû¿ë
         base.Init(dir, weaponData, Mathf.RoundToInt(baseAttackPower * 0.3f), returnPool);
-
-
         Debug.Log("ÅÍ·¿ ÃÑ¾Ë ¹ß»çµÊ!");
     }
 }

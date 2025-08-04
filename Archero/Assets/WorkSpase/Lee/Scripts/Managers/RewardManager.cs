@@ -143,6 +143,7 @@ namespace Lee.Scripts
             string uiPath = GetUIPath(category);
             if (!string.IsNullOrEmpty(uiPath))
             {
+                // 분류에 정해진 UI에 따라 Load 
                 var uiPrefab = GameManager.Resource.Load<GameObject>(uiPath);
                 if (uiPrefab != null)
                 {
@@ -150,8 +151,7 @@ namespace Lee.Scripts
                     if (rewardUI != null)
                     {
                         // 리플렉션을 사용하여 rewardSlots 개수 가져오기
-                        var rewardSlotsField = typeof(RewardSelectBaseUI).GetField("rewardSlots", 
-                            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                        var rewardSlotsField = typeof(RewardSelectBaseUI).GetField("rewardSlots",  System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                         
                         if (rewardSlotsField != null)
                         {
@@ -164,7 +164,6 @@ namespace Lee.Scripts
                     }
                 }
             }
-            
             // 기본값 반환
             return 3;
         }

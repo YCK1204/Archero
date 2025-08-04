@@ -14,6 +14,9 @@ namespace Assets.Define
         public Dictionary<Collider2D, Action<int, Vector3>> GetUnitDIct { get { return unitDict; } }
         public Pool<MobProjectile> normalMobProjectile;
         public Dictionary<ChessCharType,Pool<Monster>> monsterPool;
+        public Pool<Projectile> playerProjectilePool;                      // 0804 추가 by 김정민
+        public Pool<Projectile> turretProjectilePool;                      // 0804 추가 by 김정민
+
         public override void Init()
         {
             base.Init();
@@ -26,6 +29,10 @@ namespace Assets.Define
             monsterPool.Add(ChessCharType.bishop, new Pool<Monster>("Bishop"));
             monsterPool.Add(ChessCharType.knight, new Pool<Monster>("Knight"));
             monsterPool.Add(ChessCharType.rock, new Pool<Monster>("Rock"));
+            playerProjectilePool = new Pool<Projectile>("Bullet");         // 0804 추가 by 김정민
+            playerProjectilePool.Init();                                   // 0804 추가 by 김정민
+            turretProjectilePool = new Pool<Projectile>("Bullet_Turret");  // 0804 추가 by 김정민
+            turretProjectilePool.Init();                                   // 0804 추가 by 김정민
         }
         public void Attack(Collider2D target,int damage,Vector3 attackerPos)
         {

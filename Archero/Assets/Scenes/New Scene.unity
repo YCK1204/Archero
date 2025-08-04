@@ -14535,8 +14535,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1106219730}
   - component: {fileID: 1106219729}
+  - component: {fileID: 1106219731}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: MapManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14556,12 +14557,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TilemapVisualizer: {fileID: 706471470}
   StartPos: {x: 0, y: 0}
-  CorridorCount: 5
+  DungeonWidth: 20
+  DungeonHeight: 20
   SimpleRandomWalkData: {fileID: 11400000, guid: 73bf5bec35173b64eab92acf759fa919, type: 2}
-  RoomSpacing: 50
-  CorridorWidth: 3
-  ShowCorridor: 0
-  ShowRoom: 0
 --- !u!4 &1106219730
 Transform:
   m_ObjectHideFlags: 0
@@ -14577,6 +14575,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1106219731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106219728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f90c3e102f3ea542b0ef21dde22f10a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1885370600
 GameObject:
   m_ObjectHideFlags: 0

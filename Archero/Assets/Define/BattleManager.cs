@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Pool;
 using Defines;
+using Lee.Scripts;
 
 namespace Assets.Define
 {
@@ -18,6 +19,11 @@ namespace Assets.Define
         public Pool<Projectile> playerProjectilePool;                      // 0804 추가 by 김정민
         public Pool<Projectile> turretProjectilePool;                      // 0804 추가 by 김정민
         public Pool<DropItem>[] Items;
+        public Queue<SpawnQueue> spawnQueue = new Queue<SpawnQueue>();
+
+
+        public int stageNum { get { return 23-GameManager.Instance._clearCount; } }
+
         public override void Init()
         {
             base.Init();
@@ -28,10 +34,11 @@ namespace Assets.Define
 
             Debug.LogError("주석들 나중에 수정해야함");
 
-            //monsterPool.Add(ChessCharType.pawn, new Pool<Monster>("Pawn"));
-            //monsterPool.Add(ChessCharType.bishop, new Pool<Monster>("Bishop"));
-            //monsterPool.Add(ChessCharType.knight, new Pool<Monster>("Knight"));
-            //monsterPool.Add(ChessCharType.rock, new Pool<Monster>("Rock"));
+            monsterPool.Add(ChessCharType.pawn, new Pool<Monster>("Pawn"));
+            monsterPool.Add(ChessCharType.bishop, new Pool<Monster>("Bishop"));
+            monsterPool.Add(ChessCharType.knight, new Pool<Monster>("Knight"));
+            monsterPool.Add(ChessCharType.rock, new Pool<Monster>("Rock"));
+            monsterPool.Add(ChessCharType.King, new Pool<Monster>("King"));
             playerProjectilePool = new Pool<Projectile>("Bullet");         // 0804 추가 by 김정민
             turretProjectilePool = new Pool<Projectile>("Bullet_Turret");  // 0804 추가 by 김정민
             //Items = new Pool<DropItem>[2] { new Pool<DropItem>("ExpItem"), new Pool<DropItem>("HPItem") };
@@ -50,6 +57,19 @@ namespace Assets.Define
         {
             unitDict.Remove(target);
         }
+        public void SpawnMonster()
+        {
+            if (!spawnQueue.TryDequeue(out SpawnQueue result)) return;
+
+            while (result.types.Count>0)
+            {
+                (ChessCharType, Vector3,Vector3[]) spawnData = result.types.Dequeue();
+                monsterPool[spawnData.Item1].DeQueue().Spawn(spawnData.Item3,spawnData.Item1);
+                
+            }
+        }
+
+
     }
     
 }
@@ -66,7 +86,7 @@ public class Pool<T> where T : MonoBehaviour
     {
         Init();
         if (str == string.Empty) return;
-        ResourceManager.GetInstance.LoadAsync<GameObject>(str, (result) =>
+        Defines.ResourceManager.GetInstance.LoadAsync<GameObject>(str, (result) =>
         {
             prefab = result.GetComponent<T>();
         });
@@ -93,5 +113,18 @@ public class Pool<T> where T : MonoBehaviour
         T obj = stack.Pop();
         //obj.gameObject.SetActive(true);
         return obj;
+    }
+}
+public class SpawnQueue
+{
+    public Queue<(ChessCharType, Vector3, Vector3[])> types;
+    public SpawnQueue()
+    {
+        types = new Queue<(ChessCharType,Vector3,Vector3[])>();
+    }
+    public SpawnQueue(ChessCharType type ,Vector3 vec, Vector3[] patrolPath)
+    {
+        types = new Queue<(ChessCharType, Vector3, Vector3[])>();
+        types.Enqueue((type, vec,patrolPath));
     }
 }

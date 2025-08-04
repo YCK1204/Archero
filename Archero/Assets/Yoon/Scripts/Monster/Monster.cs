@@ -30,6 +30,7 @@ public class Monster : MonoBehaviour
 
     protected float attackTimer = 0f;
     protected float playerDist = 0f;
+    bool isStart = false;
     protected virtual void Start()
     {
         fsm = new MonsterStateMachine(GetComponent<Animator>());
@@ -48,6 +49,7 @@ public class Monster : MonoBehaviour
         //YOON : stage정보 넘겨주면 1대신 해당 인스턴스 넣어주면됨
 
         Init();
+        isStart = true;
     }
     public void Init()
     {
@@ -114,27 +116,27 @@ public class Monster : MonoBehaviour
         // 넉백 방향
         Vector3 direction = transform.position - attackerPos;
         Vector3 knockbackDir = direction.normalized;
-        agent.velocity = knockbackDir * 3f;
+        if(agent != null)agent.velocity = knockbackDir * 3f;
         
         stat.GetDamage(damage);
         if(stat.isDie()) BattleManager.GetInstance.RemoveHitInfo(col);
     }
 
-    public virtual void Spawn(MobType type , Vector3[] patrolPos , MonsterStat stat,ChessCharType chessType)
+    public virtual IEnumerator Spawn(Vector3[] patrolPos , ChessCharType chessType)
     {
-        this.stat = stat;
+        yield return new WaitUntil(() => isStart);
+        statSetter.StatChange(ref this.stat, BattleManager.GetInstance.stageNum);
 
         fsm.ForceChange(StateTypes.Patrol);
         BattleManager.GetInstance.RegistHitInfo(col, Damaged);
         //YOON : stageNum 받아와야됨
-        statSetter.StatChange(ref stat, /*stageNum*/1);
         Init();
     }
 
 
 }
 [Serializable]
-public enum ChessCharType { pawn,knight,bishop,rock}
+public enum ChessCharType { pawn,knight,bishop,rock,King}
 interface IStatManaging
 { 
     void ItemDrop(Vector3 pos);
@@ -151,6 +153,8 @@ interface IStatManaging
                 return new BishopStatSetter();
             case ChessCharType.rock:
                 return new RockStatSetter();
+            case ChessCharType.King:
+                return new KingStatSetter();
         }
         return null;
     }
@@ -231,5 +235,21 @@ public class RockStatSetter:IStatManaging
         int hp = 60 + (int)(0.5f + (0.5f * stageNum));
         float moveSpeed = 2f * (0.95f + (0.05f * stageNum));
         stat = new MonsterStat(hp, hp, moveSpeed, 7, 4, (1.5f*(1.06f-(0.06f*stageNum))));
+    }
+}
+public class KingStatSetter:IStatManaging
+{
+    public void ItemDrop(Vector3 pos)
+    {
+        DropItem item = BattleManager.GetInstance.Items[0].DeQueue();
+        item.Init(400);
+        item.transform.position = pos;
+
+        BattleManager.GetInstance.Items[1].DeQueue();
+        item.Init(100);
+    }
+    public void StatChange(ref MonsterStat stat, int stageNum)
+    {
+        stat = new MonsterStat(10000, 40, 0.1f, 10, 10, 3);
     }
 }

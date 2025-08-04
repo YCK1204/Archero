@@ -137,8 +137,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c52f72fdae2b40e47b6e42374a982afa
-      internalID: -80811583
+      spriteID: 2e96103ef9c97794b9d465ad9a9152a0
+      internalID: -937052453
       vertices: []
       indices: 
       edges: []
@@ -158,8 +158,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7062e2e09c4f2674c9a26253147c3217
-      internalID: -1694111553
+      spriteID: 132c5ae98a9c5be4ca0ccaa2c89dc884
+      internalID: -1090966187
       vertices: []
       indices: 
       edges: []
@@ -179,8 +179,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7995a1a5141371646a68ee5c2f25779b
-      internalID: -1742014202
+      spriteID: 2a0aa8fa3f82f5644b4c079a3b85a4ab
+      internalID: 2077252414
       vertices: []
       indices: 
       edges: []
@@ -200,8 +200,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 43405e7ec785cd04090cde939f65f0f0
-      internalID: -1556724303
+      spriteID: fc3afda5408957746ae9679ffa2609ba
+      internalID: 2090981238
       vertices: []
       indices: 
       edges: []
@@ -221,8 +221,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 13787c2b8d06bf54b8b88058a8c832dd
-      internalID: -474461592
+      spriteID: a3c82e4b75cde494688efc1638e929f6
+      internalID: -266799816
       vertices: []
       indices: 
       edges: []
@@ -242,8 +242,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cee7cfa4d638ebd4dbd393708cc24873
-      internalID: -1909894872
+      spriteID: 140e97fb02c9f384385413219532a443
+      internalID: -1452381477
       vertices: []
       indices: 
       edges: []
@@ -259,12 +259,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Monster_Sprites_0: -80811583
-      Monster_Sprites_1: -1694111553
-      Monster_Sprites_2: -1742014202
-      Monster_Sprites_3: -1556724303
-      Monster_Sprites_4: -474461592
-      Monster_Sprites_5: -1909894872
+      Monster_Sprites_0: -937052453
+      Monster_Sprites_1: -1090966187
+      Monster_Sprites_2: 2077252414
+      Monster_Sprites_3: 2090981238
+      Monster_Sprites_4: -266799816
+      Monster_Sprites_5: -1452381477
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

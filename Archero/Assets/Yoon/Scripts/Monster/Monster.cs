@@ -25,7 +25,7 @@ public class Monster : MonoBehaviour
     [SerializeField]protected MoveType moveType;
 
     [SerializeField]private ChessCharType chessType;
-    private IStatManaging statSetter;
+    protected IStatManaging statSetter;
     protected Collider2D col;
 
     protected float attackTimer = 0f;
@@ -137,7 +137,7 @@ public class Monster : MonoBehaviour
 }
 [Serializable]
 public enum ChessCharType { pawn,knight,bishop,rock,King}
-interface IStatManaging
+public interface IStatManaging
 { 
     void ItemDrop(Vector3 pos);
     void StatChange(ref MonsterStat currStat,int stageNum);

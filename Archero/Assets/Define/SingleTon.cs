@@ -14,6 +14,7 @@ public class SingleTon<T> where T : SingleTon<T>, new()
             { 
                 instance = new T();
                 instance.Init();
+                SceneManagerEx.Instance.DefaultCallback += instance.Init;
             }
             return instance;
         }

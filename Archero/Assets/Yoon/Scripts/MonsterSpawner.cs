@@ -12,6 +12,8 @@ public class MonsterSpawner : MonoBehaviour
     IEnumerator Start()
     {
         yield return new WaitUntil(()=> MapManager.Instance.GetMapData != null && MapManager.Instance.GetMapData.Count > 0&&BattleManager.GetInstance.monsterPool.All(x=>x.Value.IsPrefabReady));
+        BattleManager.GetInstance.spawnQueue.Clear();
+
         List<Vector3> vec = new List<Vector3>();
         int monsterNumb = 1;
         for (int i = 0; i < MapManager.Instance.GetMapData.Count-1; i++)

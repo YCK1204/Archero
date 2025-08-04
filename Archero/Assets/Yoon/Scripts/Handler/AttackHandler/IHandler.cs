@@ -24,7 +24,8 @@ namespace Handler
                 case MobType.Ranged:
                     return new RangeHandle();
                 case MobType.Boss:
-                    return new BossHandle(new Handler.Barrages.Barrages[3] { new MultiShot(0.2f, 2f, 45f, 90f, 8), new MultiShot(0.1f, 2f, 5f, 90f, 8), new MultiShot(0.2f, 2f, 90f, 90f, 4) });
+                    return new BossHandle(new Handler.Barrages.Barrages[3] { new MultiShot(0.2f, 2f, 45f, 90f, 8,5), new MultiShot(0.1f, 2f, 5f, 90f, 8,5), new MultiShot(0.2f, 2f, 90f, 90f, 4,5) });
+                    //YOON : 시연용 낮은데미지
             }
             return new MeleeHandle();
         }

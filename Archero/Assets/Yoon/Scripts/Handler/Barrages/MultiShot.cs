@@ -11,11 +11,12 @@ namespace Handler.Barrages
     public class MultiShot : Barrages
     {
         
-        public MultiShot(float shotDelay, float shotDuration, float angleGap, float pivotAngle,int shotCount) : base(shotDelay, shotDuration, angleGap, pivotAngle,shotCount)
+        public MultiShot(float shotDelay, float shotDuration, float angleGap, float pivotAngle,int shotCount,int damage) : base(shotDelay, shotDuration, angleGap, pivotAngle,shotCount,damage)
         {
             this.shotDelay = shotDelay;
             this.shotDuration = shotDuration;
             this.angleGap = angleGap;
+            this.damage = damage;
             this.shotCount = shotCount;
 
             defaultAngle = pivotAngle - (((float)shotCount / 2f)*angleGap);

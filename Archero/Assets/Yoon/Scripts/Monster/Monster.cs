@@ -2,8 +2,10 @@ using Assets.Define;
 using Assets.Yoon.Handler;
 using Handler;
 using Handler.Barrages;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Unit.State;
 using UnityEngine;
 using UnityEngine.AI;
@@ -22,6 +24,8 @@ public class Monster : MonoBehaviour
     protected IMoveHandler moveHandler;
     [SerializeField]protected MoveType moveType;
 
+    [SerializeField]private ChessCharType chessType;
+    private IStatManaging statSetter;
     protected Collider2D col;
 
     protected float attackTimer = 0f;
@@ -32,17 +36,27 @@ public class Monster : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+
+        statSetter = IStatManaging.Factory(stat, chessType);
+        statSetter.StatChange(ref stat, 1);
+        
         agent.speed = stat.GetMoveSpeed;
         fsm.Init();
         col = GetComponent<Collider2D>();
         attackHandle = IAttackHandler.TypeFactory(attackType);
         moveHandler = IMoveHandler.Factory(moveType,agent);
+        //YOON : stage정보 넘겨주면 1대신 해당 인스턴스 넣어주면됨
+
         Init();
     }
     public void Init()
     {
         BattleManager.GetInstance.RegistHitInfo(col, Damaged);
-        stat.Init();
+        gameObject.SetActive(true);
+        if(target == null)
+        {
+            target = GameObject.FindWithTag("Player").transform;
+        }
     }
 
     // Update is called once per frame
@@ -57,7 +71,7 @@ public class Monster : MonoBehaviour
             if (fsm.GetCurrentState != StateTypes.Die)
             {
                 fsm.Chage(StateTypes.Die);
-                BattleManager.GetInstance.monsterPool.EnQueue(this);
+                BattleManager.GetInstance.monsterPool[chessType].EnQueue(this);
             }
             return false;
         }
@@ -86,6 +100,7 @@ public class Monster : MonoBehaviour
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
+        if (collision.gameObject.layer != 6) return;
         if (attackHandle.DelayCheck(stat.GetAttackDelay, attackTimer))
         {
             attackHandle.OnCollision(collision.collider,stat.GetATK, transform.position);
@@ -104,13 +119,116 @@ public class Monster : MonoBehaviour
         if(stat.isDie()) BattleManager.GetInstance.RemoveHitInfo(col);
     }
 
-    public virtual void Spawn(MobType type , Vector3[] patrolPos , MonsterStat stat)
+    public virtual void Spawn(MobType type , Vector3[] patrolPos , MonsterStat stat,ChessCharType chessType)
     {
         this.stat = stat;
-        attackHandle = IAttackHandler.TypeFactory(attackType);
+
         fsm.ForceChange(StateTypes.Patrol);
+        BattleManager.GetInstance.RegistHitInfo(col, Damaged);
+        //YOON : stageNum 받아와야됨
+        statSetter.StatChange(ref stat, /*stageNum*/1);
         Init();
     }
 
 
+}
+[Serializable]
+public enum ChessCharType { pawn,knight,bishop,rock}
+interface IStatManaging
+{ 
+    void ItemDrop(Vector3 pos);
+    void StatChange(ref MonsterStat currStat,int stageNum);
+    public static IStatManaging Factory(MonsterStat stat,ChessCharType type)
+    {
+        switch (type)
+        {
+            case ChessCharType.pawn:
+                return new PawnStatSetter();
+            case ChessCharType.knight:
+                return new KnightStatSetter();
+            case ChessCharType.bishop:
+                return new BishopStatSetter();
+            case ChessCharType.rock:
+                return new RockStatSetter();
+        }
+        return null;
+    }
+}
+public class PawnStatSetter:IStatManaging 
+{
+    public void ItemDrop(Vector3 pos)
+    {
+        DropItem item = BattleManager.GetInstance.Items[0].DeQueue();
+        item.Init(10);
+        item.transform.position = pos;
+        if (new System.Random().Next(0, 100) > 90)
+        {
+            BattleManager.GetInstance.Items[1].DeQueue();
+            item.Init(10);
+        }
+    }
+    public void StatChange(ref MonsterStat stat, int stageNum)
+    {
+        int hp = 30 + (int)(0.5f + (0.5f * stageNum));
+        float moveSpeed = 1f * (0.95f + (0.05f * stageNum));
+        stat = new MonsterStat(hp, hp, moveSpeed, 7, 1, 0.5f);
+    }
+}
+public class KnightStatSetter:IStatManaging 
+{
+    public void ItemDrop(Vector3 pos)
+    {
+        DropItem item = BattleManager.GetInstance.Items[0].DeQueue();
+        item.Init(20);
+        item.transform.position = pos;
+        if (new System.Random().Next(0, 100) > 30)
+        {
+            BattleManager.GetInstance.Items[1].DeQueue();
+            item.Init(10);
+        }
+    }
+    public void StatChange(ref MonsterStat stat, int stageNum)
+    {
+        int hp = 50 + (int)(0.5f + (0.5f * stageNum));
+        float moveSpeed = 1f * (0.90f + (0.01f * stageNum));
+        stat = new MonsterStat(hp, hp, moveSpeed, 7, 1, 0.5f);
+    }
+}
+public class BishopStatSetter:IStatManaging 
+{
+    public void ItemDrop(Vector3 pos)
+    {
+        DropItem item = BattleManager.GetInstance.Items[0].DeQueue();
+        item.Init(20);
+        item.transform.position = pos;
+        if (new System.Random().Next(0, 100) > 30)
+        {
+            BattleManager.GetInstance.Items[1].DeQueue();
+            item.Init(10);
+        }
+    }
+    public void StatChange(ref MonsterStat stat, int stageNum)
+    {
+        int hp = 30 + (int)(0.5f + (0.5f * stageNum));
+        int atk = (int)(hp * 0.7f);
+        stat = new MonsterStat(hp, atk, 1, 5, 4, 0.5f);
+    }
+}
+public class RockStatSetter:IStatManaging
+{
+    public void ItemDrop(Vector3 pos)
+    {
+        DropItem item = BattleManager.GetInstance.Items[0].DeQueue();
+        item.Init(30);
+        item.transform.position = pos;
+
+        BattleManager.GetInstance.Items[1].DeQueue();
+        item.Init(40);
+    }
+    public void StatChange(ref MonsterStat stat, int stageNum)
+    {
+        int hp = 60 + (int)(0.5f + (0.5f * stageNum));
+        float moveSpeed = 2f * (0.95f + (0.05f * stageNum));
+        stat = new MonsterStat(hp, hp, moveSpeed, 7, 4, (1.5f*(1.06f-(0.06f*stageNum))));
+    }
 }

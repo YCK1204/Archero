@@ -21,6 +21,10 @@ public class DropItem : MonoBehaviour
     {
         FollowPlayer();
     }
+    public virtual void Init(int v)
+    {
+
+    }
 
     //=======================[Interaction RayCast]=======================
     void OverlapRay()

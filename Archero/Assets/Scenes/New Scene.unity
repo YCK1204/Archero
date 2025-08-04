@@ -202,6 +202,8 @@ MonoBehaviour:
   WallTilemap: {fileID: 1006944343}
   FloorTile: {fileID: 11400000, guid: 004fda0ae88f3ed448658c60e719420e, type: 2}
   WallTile: {fileID: 11400000, guid: ce2cbf5dc8f5a394faf8d3ed42a6a6bb, type: 2}
+  CorridorTile: {fileID: 0}
+  TestTile: {fileID: 0}
 --- !u!4 &706471471
 Transform:
   m_ObjectHideFlags: 0
@@ -14554,10 +14556,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TilemapVisualizer: {fileID: 706471470}
   StartPos: {x: 0, y: 0}
-  SimpleRandomWalkData: {fileID: 11400000, guid: 73bf5bec35173b64eab92acf759fa919, type: 2}
-  CorridorLength: 60
   CorridorCount: 5
-  RoomPercent: 1
+  SimpleRandomWalkData: {fileID: 11400000, guid: 73bf5bec35173b64eab92acf759fa919, type: 2}
+  RoomSpacing: 50
+  CorridorWidth: 3
+  ShowCorridor: 0
+  ShowRoom: 0
 --- !u!4 &1106219730
 Transform:
   m_ObjectHideFlags: 0
@@ -14584,6 +14588,7 @@ GameObject:
   - component: {fileID: 1885370601}
   - component: {fileID: 1885370603}
   - component: {fileID: 1885370602}
+  - component: {fileID: 1885370604}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -61057,6 +61062,23 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &1885370604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885370600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c025d437297ccfa4da8666a9d808b292, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilemap: {fileID: 1885370603}
+  minRoomWidth: 4
+  minRoomHeight: 4
+  corridorThreshold: 6
+  rooms: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

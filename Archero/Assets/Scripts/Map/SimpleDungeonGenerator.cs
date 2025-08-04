@@ -5,7 +5,21 @@ using System.Net.NetworkInformation;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Random = UnityEngine.Random;
-using MapData = System.Collections.Generic.List<System.Collections.Generic.HashSet<UnityEngine.Vector2Int>>;
+
+public class Corridor
+{
+    public Vector2Int StartPosition;
+    public Vector2Int EndPosition;
+    public Door StartDoor;
+    public Door EndDoor;
+    public HashSet<Vector2Int> Positions;
+}
+public class Map
+{
+    public HashSet<Vector2Int> Positions;
+    public Vector2Int CenterPosition;
+    public Corridor Corridor;
+}
 
 public class SimpleDungeonGenerator : AbstractDungeonGenerator
 {
@@ -22,11 +36,13 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
     bool ShowCorridor;
     [SerializeField]
     bool ShowRoom;
+
+    protected List<Map> _mapData = new List<Map>();
     protected override void RunProceduralGeneration()
     {
         CorridorFirstGeneration();
     }
-    protected Tuple<MapData, MapData> CorridorFirstGeneration()
+    protected void CorridorFirstGeneration()
     {
         // 0. CurPosition를 StartPos로 설정
         // 1. CurPosition에 맵 생성
@@ -45,7 +61,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         if (CorridorWidth % 2 != 1)
         {
             Debug.LogError("CorridorWidth 값은 반드시 홀수여야 합니다.");
-            return null;
+            return ;
         }
 
         HashSet<Vector2Int> floorPos = new HashSet<Vector2Int>();
@@ -66,16 +82,32 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         }
 
         List<HashSet<Vector2Int>> roomPositions = CreateRooms(roomCenterPositions);
-        List<HashSet<Vector2Int>> corridors = CreateCorridors(roomPositions, mapToMapDirections, roomCenterPositions);
+        List<Corridor> corridors = CreateCorridors(roomPositions, mapToMapDirections, roomCenterPositions);
         RemoveIsland(roomPositions, roomCenterPositions);
+
+        for (int i = 0; i <= CorridorCount; i++)
+        {
+            Map data = new Map();
+            data.CenterPosition = roomCenterPositions[i];
+            data.Positions = new HashSet<Vector2Int>(roomPositions[i]);
+            if (i < CorridorCount)
+            {
+                data.Corridor = corridors[i];
+            }
+            else
+            {
+                data.Corridor = null; // 마지막 맵은 복도가 없음
+            }
+
+            _mapData.Add(data);
+        }
 #if UNITY_EDITOR
         if (ShowCorridor)
         {
             foreach (var corridor in corridors)
             {
-                foreach (var pos in corridor)
+                foreach (var pos in corridor.Positions)
                     floorPos.Add(pos);
-                Debug.Log($"corridor length: {corridor.Count}");
             }
         }
         if (ShowRoom)
@@ -90,11 +122,10 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         TilemapVisualizer.PaintFloorTiles(floorPos);
         foreach (var corridor in corridors)
         {
-            foreach (var pos in corridor)
+            foreach (var pos in corridor.Positions)
                 TilemapVisualizer.PaintSingleTile(TilemapVisualizer.FloorTilemap, TilemapVisualizer.CorridorTile, pos);
         }
         TilemapVisualizer.GenerateWalls(floorPos);
-        return new Tuple<MapData, MapData>(roomPositions, corridors);
     }
     void RemoveIsland(List<HashSet<Vector2Int>> roomPositions, List<Vector2Int> roomCenterPositions)
     {
@@ -153,9 +184,9 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
 
         positions.RemoveWhere(pos => pos.x < xMin || pos.x > xMax || pos.y < yMin || pos.y > yMax);
     }
-    private List<HashSet<Vector2Int>> CreateCorridors(List<HashSet<Vector2Int>> roomPositions, List<Vector2Int> directions, List<Vector2Int> roomCenterPositions)
+    private List<Corridor> CreateCorridors(List<HashSet<Vector2Int>> roomPositions, List<Vector2Int> directions, List<Vector2Int> roomCenterPositions)
     {
-        List<HashSet<Vector2Int>> corridors = new List<HashSet<Vector2Int>>();
+        List<Corridor> corridors = new List<Corridor>();
 
         for (int i = 0; i < directions.Count; i++)
         {
@@ -204,7 +235,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
             var d when d == Vector2Int.down => candidates.Last(),
         };
     }
-    HashSet<Vector2Int> CreateCorridor(HashSet<Vector2Int> curRoomPositions,
+    Corridor CreateCorridor(HashSet<Vector2Int> curRoomPositions,
                                         HashSet<Vector2Int> nextRoomPositions,
                                         Vector2Int direction,
                                         Vector2Int curRoomCenterPos,
@@ -218,6 +249,14 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         HashSet<Vector2Int> corridorPositions = new HashSet<Vector2Int>();
         Vector2Int curPos = startPos;
         bool horizontal = (endPos - startPos).x != 0;
+        Corridor corridor = new Corridor
+        {
+            StartPosition = startPos,
+            EndPosition = endPos,
+            StartDoor = null,
+            EndDoor = null,
+            Positions = corridorPositions
+        };
 
         while (curPos != endPos)
         {
@@ -239,8 +278,8 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
                 }
             }
             curPos += direction;
-        }
 
+        }
         curPos = startPos + direction;
         while (curPos != endPos)
         {
@@ -250,7 +289,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         }
 
         corridorPositions.Add(endPos);
-        return corridorPositions;
+        return corridor;
     }
 
     Vector2Int EnsureCorridorEndPosition(Vector2Int curPos, Vector2Int endPos, HashSet<Vector2Int> curRoomPositions, Vector2Int direction)

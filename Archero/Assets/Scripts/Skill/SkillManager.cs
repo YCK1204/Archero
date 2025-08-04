@@ -113,7 +113,7 @@ public class SkillManager : MonoBehaviour
         return allSkills.FirstOrDefault(skill => skill.EffectID == effectID &&skill.Grade == grade && skill.Category == category);
     }
 
-    // UI���� ��ų�� �����ϸ� �� �Լ��� ȣ��
+    // UI에서 호출되는 메서드
     public void SelectSkill(Skill selectedSkill)
     {
         ApplySkillEffect(selectedSkill);

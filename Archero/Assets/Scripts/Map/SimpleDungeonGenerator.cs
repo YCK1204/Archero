@@ -5,28 +5,33 @@ using System.Net.NetworkInformation;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Random = UnityEngine.Random;
-using MapData = System.Collections.Generic.List<System.Collections.Generic.HashSet<UnityEngine.Vector2Int>>;
+
+public class Corridor
+{
+    public Vector2Int StartPosition;
+    public Vector2Int EndPosition;
+    public Door StartDoor;
+    public Door EndDoor;
+    public HashSet<Vector2Int> Positions;
+}
+public class Map
+{
+    public HashSet<Vector2Int> Positions;
+    public Vector2Int CenterPosition;
+    public Corridor Corridor;
+}
 
 public class SimpleDungeonGenerator : AbstractDungeonGenerator
 {
     [SerializeField]
-    private int CorridorCount = 5;
-    [SerializeField]
     protected SimpleRandomWalkSO SimpleRandomWalkData = null;
-    [SerializeField]
-    private int RoomSpacing = 50;
-    [Range(1, 9)]
-    [SerializeField]
-    private int CorridorWidth = 3;
-    [SerializeField]
-    bool ShowCorridor;
-    [SerializeField]
-    bool ShowRoom;
+
+    protected List<Map> _mapData = new List<Map>();
     protected override void RunProceduralGeneration()
     {
         CorridorFirstGeneration();
     }
-    protected Tuple<MapData, MapData> CorridorFirstGeneration()
+    protected void CorridorFirstGeneration()
     {
         // 0. CurPosition를 StartPos로 설정
         // 1. CurPosition에 맵 생성
@@ -34,7 +39,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         // 3. 다음 맵 위치를 CurPosition + Direction * RoomSpacing으로 설정
         // 4. 다음 맵 위치가 이미 존재하는 맵 위치와 겹치지 않는지 확인
         // 5. 겹치지 않으면 맵 위치를 추가하고, 겹치면 2번으로 돌아감
-        // 6. 2-5번을 CorridorCount만큼 반복
+        // 6. 2-5번을 SimpleRandomWalkData.CorridorCount만큼 반복
         // 7. 맵 위치를 기반으로 방을 생성
         // 8. 복도 시작 끝점을 현재 맵, 다음 맵 Border위치로 설정
         // 9. 복도 양옆 min, max + 3 확보(dfs로 입출구로부터 맵의 중심점까지 유효성 검사) 중복된 칸 삭제
@@ -42,10 +47,10 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         // 11. 삭제되면서 생겼을 수 있는 섬같은 공간 삭제(bfs로 현재 위치로부터 맵까지 이동 가능한지 유효성 검사)
         // 12. 복도 생성
 
-        if (CorridorWidth % 2 != 1)
+        if (SimpleRandomWalkData.CorridorWidth % 2 != 1)
         {
-            Debug.LogError("CorridorWidth 값은 반드시 홀수여야 합니다.");
-            return null;
+            Debug.LogError("SimpleRandomWalkData.CorridorWidth 값은 반드시 홀수여야 합니다.");
+            return;
         }
 
         HashSet<Vector2Int> floorPos = new HashSet<Vector2Int>();
@@ -57,7 +62,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         List<Vector2Int> mapToMapDirections = new List<Vector2Int>();
         roomCenterPositions.Add(curPos);
 
-        for (int i = 0; i < CorridorCount; i++)
+        for (int i = 0; i < SimpleRandomWalkData.CorridorCount; i++)
         {
             var nextRoomPos = FindNonOverlappingMapPosition(curPos, roomCenterPositions);
             roomCenterPositions.Add(nextRoomPos.Item1);
@@ -66,35 +71,45 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         }
 
         List<HashSet<Vector2Int>> roomPositions = CreateRooms(roomCenterPositions);
-        List<HashSet<Vector2Int>> corridors = CreateCorridors(roomPositions, mapToMapDirections, roomCenterPositions);
+        List<Corridor> corridors = CreateCorridors(roomPositions, mapToMapDirections, roomCenterPositions);
         RemoveIsland(roomPositions, roomCenterPositions);
-#if UNITY_EDITOR
-        if (ShowCorridor)
+
+        for (int i = 0; i <= SimpleRandomWalkData.CorridorCount; i++)
         {
-            foreach (var corridor in corridors)
+            Map data = new Map();
+            data.CenterPosition = roomCenterPositions[i];
+            data.Positions = new HashSet<Vector2Int>(roomPositions[i]);
+            if (i < SimpleRandomWalkData.CorridorCount)
             {
-                foreach (var pos in corridor)
-                    floorPos.Add(pos);
-                Debug.Log($"corridor length: {corridor.Count}");
+                data.Corridor = corridors[i];
             }
+            else
+            {
+                data.Corridor = null; // 마지막 맵은 복도가 없음
+            }
+
+            _mapData.Add(data);
         }
-        if (ShowRoom)
+
+        foreach (var corridor in corridors)
         {
-            foreach (var room in roomPositions)
-            {
-                foreach (var pos in room)
-                    floorPos.Add(pos);
-            }
+            foreach (var pos in corridor.Positions)
+                floorPos.Add(pos);
         }
-#endif
+
+        foreach (var room in roomPositions)
+        {
+            foreach (var pos in room)
+                floorPos.Add(pos);
+
+        }
         TilemapVisualizer.PaintFloorTiles(floorPos);
         foreach (var corridor in corridors)
         {
-            foreach (var pos in corridor)
+            foreach (var pos in corridor.Positions)
                 TilemapVisualizer.PaintSingleTile(TilemapVisualizer.FloorTilemap, TilemapVisualizer.CorridorTile, pos);
         }
         TilemapVisualizer.GenerateWalls(floorPos);
-        return new Tuple<MapData, MapData>(roomPositions, corridors);
     }
     void RemoveIsland(List<HashSet<Vector2Int>> roomPositions, List<Vector2Int> roomCenterPositions)
     {
@@ -128,7 +143,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         while (roomPositions.Contains(nextMapPosition))
         {
             direction = Direction2D.GetRandomCardinalDirectionExcluding(direction);
-            nextMapPosition = mapPos + direction * RoomSpacing;
+            nextMapPosition = mapPos + direction * SimpleRandomWalkData.RoomSpacing;
         }
         return new Tuple<Vector2Int, Vector2Int>(nextMapPosition, direction);
     }
@@ -153,9 +168,9 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
 
         positions.RemoveWhere(pos => pos.x < xMin || pos.x > xMax || pos.y < yMin || pos.y > yMax);
     }
-    private List<HashSet<Vector2Int>> CreateCorridors(List<HashSet<Vector2Int>> roomPositions, List<Vector2Int> directions, List<Vector2Int> roomCenterPositions)
+    private List<Corridor> CreateCorridors(List<HashSet<Vector2Int>> roomPositions, List<Vector2Int> directions, List<Vector2Int> roomCenterPositions)
     {
-        List<HashSet<Vector2Int>> corridors = new List<HashSet<Vector2Int>>();
+        List<Corridor> corridors = new List<Corridor>();
 
         for (int i = 0; i < directions.Count; i++)
         {
@@ -204,7 +219,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
             var d when d == Vector2Int.down => candidates.Last(),
         };
     }
-    HashSet<Vector2Int> CreateCorridor(HashSet<Vector2Int> curRoomPositions,
+    Corridor CreateCorridor(HashSet<Vector2Int> curRoomPositions,
                                         HashSet<Vector2Int> nextRoomPositions,
                                         Vector2Int direction,
                                         Vector2Int curRoomCenterPos,
@@ -218,13 +233,21 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         HashSet<Vector2Int> corridorPositions = new HashSet<Vector2Int>();
         Vector2Int curPos = startPos;
         bool horizontal = (endPos - startPos).x != 0;
+        Corridor corridor = new Corridor
+        {
+            StartPosition = startPos,
+            EndPosition = endPos,
+            StartDoor = null,
+            EndDoor = null,
+            Positions = corridorPositions
+        };
 
         while (curPos != endPos)
         {
             corridorPositions.Add(curPos);
             if (curPos != startPos)
             {
-                for (int i = 1; i <= CorridorWidth / 2; i++)
+                for (int i = 1; i <= SimpleRandomWalkData.CorridorWidth / 2; i++)
                 {
                     if (horizontal)
                     {
@@ -239,8 +262,8 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
                 }
             }
             curPos += direction;
-        }
 
+        }
         curPos = startPos + direction;
         while (curPos != endPos)
         {
@@ -250,7 +273,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         }
 
         corridorPositions.Add(endPos);
-        return corridorPositions;
+        return corridor;
     }
 
     Vector2Int EnsureCorridorEndPosition(Vector2Int curPos, Vector2Int endPos, HashSet<Vector2Int> curRoomPositions, Vector2Int direction)
@@ -288,27 +311,27 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         curRoomPositions.Remove(pos);
         if (horizontal)
         {
-            for (int i = 1; i <= CorridorWidth / 2; i++)
+            for (int i = 1; i <= SimpleRandomWalkData.CorridorWidth / 2; i++)
             {
                 curRoomPositions.Remove(pos + Vector2Int.up * i);
                 curRoomPositions.Remove(pos + Vector2Int.up * (i + 2));
                 curRoomPositions.Remove(pos + Vector2Int.down * i);
                 curRoomPositions.Remove(pos + Vector2Int.down * (i + 2));
             }
-            curRoomPositions.Remove(pos + Vector2Int.up * ((CorridorWidth / 2) + 1));
-            curRoomPositions.Remove(pos + Vector2Int.down * ((CorridorWidth / 2) + 1));
+            curRoomPositions.Remove(pos + Vector2Int.up * ((SimpleRandomWalkData.CorridorWidth / 2) + 1));
+            curRoomPositions.Remove(pos + Vector2Int.down * ((SimpleRandomWalkData.CorridorWidth / 2) + 1));
         }
         else
         {
-            for (int i = 1; i <= CorridorWidth / 2; i++)
+            for (int i = 1; i <= SimpleRandomWalkData.CorridorWidth / 2; i++)
             {
                 curRoomPositions.Remove(pos + Vector2Int.left * i);
                 curRoomPositions.Remove(pos + Vector2Int.left * (i + 2));
                 curRoomPositions.Remove(pos + Vector2Int.right * i);
                 curRoomPositions.Remove(pos + Vector2Int.right * (i + 2));
             }
-            curRoomPositions.Remove(pos + Vector2Int.left * ((CorridorWidth / 2) + 1));
-            curRoomPositions.Remove(pos + Vector2Int.right * ((CorridorWidth / 2) + 1));
+            curRoomPositions.Remove(pos + Vector2Int.left * ((SimpleRandomWalkData.CorridorWidth / 2) + 1));
+            curRoomPositions.Remove(pos + Vector2Int.right * ((SimpleRandomWalkData.CorridorWidth / 2) + 1));
         }
     }
     protected HashSet<Vector2Int> RunRandomWalk(Vector2Int pos)

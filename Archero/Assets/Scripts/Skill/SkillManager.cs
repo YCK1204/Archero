@@ -36,7 +36,7 @@ public class SkillManager : MonoBehaviour
     private List<Skill> allSkills = new List<Skill>();
     private CharacterStats playerStats;
 
-    [Header("특수 무기용 데이터")]
+    [Header("터렛을 여기에 달아주세용")]
     [SerializeField] private WeaponData turretWeaponData;
     [SerializeField] private GameObject turretWeaponPrefab;
     void Awake()

@@ -46,8 +46,16 @@ public class WeaponHolder : MonoBehaviour
         }
 
         GameObject weaponObj = Instantiate(prefab, transform);
+        // 디버그중 ~
+        Debug.Log($"[DEBUG] Instantiated weaponObj: {weaponObj.name}");
+        var allComponents = weaponObj.GetComponents<Component>();
+        foreach (var comp in allComponents)
+        {
+            Debug.Log($"[DEBUG] Component on weaponObj: {comp.GetType()}");
+        }
+        // ~ 디버그중
         WeaponBase weapon = weaponObj.GetComponent<WeaponBase>();
-
+        Debug.Log($"[DEBUG] weapon == null ? {weapon == null}"); // ~ 디버그중
         if (weapon == null)
         {
             Debug.LogError("WeaponHolder: 프리팹에 WeaponBase가 없습니다.");

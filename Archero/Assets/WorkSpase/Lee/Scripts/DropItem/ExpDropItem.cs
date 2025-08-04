@@ -15,7 +15,8 @@ public class ExpDropItem : DropItem
         if (collision.CompareTag("Player"))
         {
             collision.GetComponent<PlayerExpHandler>().GainExp(amount);
-            BattleManager.GetInstance.Items[0].EnQueue(this);
+            Debug.LogError("나중에 수정해야함");
+            //BattleManager.GetInstance.Items[0].EnQueue(this);
         }
     }
 }

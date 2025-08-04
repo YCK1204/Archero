@@ -25,13 +25,16 @@ namespace Assets.Define
 
             normalMobProjectile = new Pool<MobProjectile>("MonsterArrow");
             monsterPool = new Dictionary<ChessCharType, Pool<Monster>>();
-            monsterPool.Add(ChessCharType.pawn, new Pool<Monster>("Pawn"));
-            monsterPool.Add(ChessCharType.bishop, new Pool<Monster>("Bishop"));
-            monsterPool.Add(ChessCharType.knight, new Pool<Monster>("Knight"));
-            monsterPool.Add(ChessCharType.rock, new Pool<Monster>("Rock"));
+
+            Debug.LogError("주석들 나중에 수정해야함");
+
+            //monsterPool.Add(ChessCharType.pawn, new Pool<Monster>("Pawn"));
+            //monsterPool.Add(ChessCharType.bishop, new Pool<Monster>("Bishop"));
+            //monsterPool.Add(ChessCharType.knight, new Pool<Monster>("Knight"));
+            //monsterPool.Add(ChessCharType.rock, new Pool<Monster>("Rock"));
             playerProjectilePool = new Pool<Projectile>("Bullet");         // 0804 추가 by 김정민
             turretProjectilePool = new Pool<Projectile>("Bullet_Turret");  // 0804 추가 by 김정민
-            Items = new Pool<DropItem>[2] { new Pool<DropItem>("ExpItem"), new Pool<DropItem>("HPItem") };
+            //Items = new Pool<DropItem>[2] { new Pool<DropItem>("ExpItem"), new Pool<DropItem>("HPItem") };
         }
         public void Attack(Collider2D target,int damage,Vector3 attackerPos)
         {

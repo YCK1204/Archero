@@ -13,21 +13,24 @@ namespace Assets.Define
         Dictionary<Collider2D, Action<int, Vector3>> unitDict = new Dictionary<Collider2D, Action<int, Vector3>>();
         public Dictionary<Collider2D, Action<int, Vector3>> GetUnitDIct { get { return unitDict; } }
         public Pool<MobProjectile> normalMobProjectile;
+        public Dictionary<ChessCharType,Pool<Monster>> monsterPool;
         public Pool<Projectile> playerProjectilePool;                      // 0804 추가 by 김정민
         public Pool<Projectile> turretProjectilePool;                      // 0804 추가 by 김정민
-        public Pool<Monster> monsterPool;
+        public Pool<DropItem>[] Items;
         public override void Init()
         {
             base.Init();
             unitDict = new Dictionary<Collider2D, Action<int, Vector3>>();
 
             normalMobProjectile = new Pool<MobProjectile>("MonsterArrow");
-            normalMobProjectile.Init();
+            monsterPool = new Dictionary<ChessCharType, Pool<Monster>>();
+            monsterPool.Add(ChessCharType.pawn, new Pool<Monster>("Pawn"));
+            monsterPool.Add(ChessCharType.bishop, new Pool<Monster>("Bishop"));
+            monsterPool.Add(ChessCharType.knight, new Pool<Monster>("Knight"));
+            monsterPool.Add(ChessCharType.rock, new Pool<Monster>("Rock"));
             playerProjectilePool = new Pool<Projectile>("Bullet");         // 0804 추가 by 김정민
-            playerProjectilePool.Init();                                   // 0804 추가 by 김정민
             turretProjectilePool = new Pool<Projectile>("Bullet_Turret");  // 0804 추가 by 김정민
-            turretProjectilePool.Init();                                   // 0804 추가 by 김정민
-            monsterPool = new Pool<Monster>(string.Empty/*NormalMonster*/);
+            Items = new Pool<DropItem>[2] { new Pool<DropItem>("ExpItem"), new Pool<DropItem>("HPItem") };
         }
         public void Attack(Collider2D target,int damage,Vector3 attackerPos)
         {

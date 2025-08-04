@@ -29,5 +29,6 @@ namespace Handler
             return new MeleeHandle();
         }
     }
+    [Serializable]
     public enum MobType { Melee, Ranged ,Boss}
 }

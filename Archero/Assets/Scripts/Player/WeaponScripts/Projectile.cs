@@ -58,4 +58,8 @@ public class Projectile : MonoBehaviour
     {
         BattleManager.GetInstance.playerProjectilePool.EnQueue(this);
     }
+    private void OnDisable()
+    {
+        transform.position = new Vector3(10000f, 10000f, 10000f);
+    }
 }

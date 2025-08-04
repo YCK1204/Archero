@@ -1,5 +1,7 @@
 ﻿using Assets.Define;
+using Lee.Scripts;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
@@ -100,7 +102,8 @@ public class CharacterStats : MonoBehaviour
     // 사망 관련 함수
     private void Die()
     {
-        Lee.Scripts.GameManager.Instance.CheckStageClear();
+        Lee.Scripts.GameManager.UI.ShowPopUpUI<GameOverUI>("Prefabs/UI/GameOverUI");
+        Destroy(gameObject);
         // 사망 로직 추가
     }
 

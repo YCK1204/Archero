@@ -101,15 +101,12 @@ namespace Lee.Scripts
         public void CheckStageClear()
         {
             var unitDict = BattleManager.GetInstance.GetUnitDIct;
+
             if (unitDict.Count == 1)
             {
                 var last = unitDict.Last().Key.gameObject;
 
-                if (last.CompareTag("Monster"))
-                {
-                    uiManager.ShowPopUpUI<GameOverUI>("Prefabs/UI/GameOverUI");  
-                    return;
-                }
+                if (last.CompareTag("Monster")) return;
 
                 if (last.CompareTag("Player"))
                 {
@@ -118,7 +115,7 @@ namespace Lee.Scripts
                     {
                         int roomsCleared = 23 - clearCount;
                         int[] groupSizes = { 3, 1, 2, 1, 1 };
-                        ESkillCategory[] categories = { ESkillCategory.LevelUp,   ESkillCategory.Valkyrie, ESkillCategory.LevelUp,    ESkillCategory.Angel,   ESkillCategory.Devil};
+                        ESkillCategory[] categories = { ESkillCategory.LevelUp, ESkillCategory.Valkyrie, ESkillCategory.LevelUp, ESkillCategory.Angel, ESkillCategory.Devil };
                         int cycleLength = groupSizes.Sum();
                         int posInCycle = (roomsCleared - 1) % cycleLength;
                         int cumulative = 0, groupIndex = 0;
@@ -135,20 +132,16 @@ namespace Lee.Scripts
                         ESkillCategory cat = categories[groupIndex];
                         var grades = Enum.GetValues(typeof(ESkillGrade)).Cast<ESkillGrade>().ToArray();
                         var randomGrade = grades[UnityEngine.Random.Range(0, grades.Length)];
-                        Reward.ShowReward(randomGrade,  cat, pickCount);
+                        Reward.ShowReward(randomGrade, cat, pickCount);
                     }
                     else
                     {
                         GameManager.UI.ShowPopUpUI<ClearGameUI>("Prefabs/UI/ClearGameUI");
                     }
-
                 }
-
             }
         }
-
     }
-
 }
 
 

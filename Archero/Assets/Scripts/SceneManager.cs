@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
-
+using Defines;
 public class SceneManagerEx : MonoBehaviour
 {
     static SceneManagerEx _instance;

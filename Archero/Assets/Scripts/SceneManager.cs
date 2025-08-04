@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 
 public class SceneManagerEx : MonoBehaviour
 {
@@ -19,6 +20,17 @@ public class SceneManagerEx : MonoBehaviour
             }
             return _instance;
         }
+    }
+    public void LoadDungeonScene()
+    {
+        ResourceManager.GetInstance.LoadAsync<GameObject>("Dungeon", (go) =>
+        {
+            LoadSceneAsync("DungeonScene", () =>
+            {
+                var player = Instantiate(go);
+                player.transform.position = Vector3.zero;
+            });
+        }, true);
     }
     /// <summary>
     /// 동기형 씬 로드 함수

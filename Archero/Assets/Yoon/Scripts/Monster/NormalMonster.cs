@@ -57,9 +57,9 @@ public class NormalMonster : Monster
         }
     }
 
-    public override void Spawn(MobType type, Vector3[] patrolPos, MonsterStat stat)
+    public override void Spawn(MobType type, Vector3[] patrolPos, MonsterStat stat, ChessCharType chessType)
     {
-        base.Spawn(type, patrolPos, stat);
+        base.Spawn(type, patrolPos, stat,chessType);
         patrolPositions = patrolPos;
     }
 

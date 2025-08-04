@@ -34,3 +34,11 @@ public enum EStatType
     Heal,
     PetAttack // 펫 공격력
 }
+
+public enum EProjectileModifier
+{
+    FrontShot,      // 전방 추가 발사
+    DiagonalShot,   // 사선 추가 발사
+    BackShot,       // 후방 발사
+    Piercing        // 관통
+}

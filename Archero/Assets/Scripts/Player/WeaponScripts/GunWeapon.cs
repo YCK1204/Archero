@@ -71,8 +71,21 @@ public class GunWeapon : WeaponBase
             proj.transform.position = firePoint.position;
             proj.transform.rotation = Quaternion.Euler(0, 0, angle);
             proj.gameObject.SetActive(true);
-            proj.Init(dir, weaponData, ownerStats.TotalStats.AttackPower, BattleManager.GetInstance.playerProjectilePool);
+            proj.Init(dir, weaponData, ownerStats.TotalStats.AttackPower, pool);
+        }
+        if (weaponData.HasModifier(EProjectileModifier.BackShot))
+        {
+            Vector2 backDir = -baseDir;
+            float backAngle = Mathf.Atan2(backDir.y, backDir.x) * Mathf.Rad2Deg;
 
+            Projectile backProj = pool.DeQueue();
+            if (backProj != null)
+            {
+                backProj.transform.position = firePoint.position;
+                backProj.transform.rotation = Quaternion.Euler(0, 0, backAngle);
+                backProj.gameObject.SetActive(true);
+                backProj.Init(backDir, weaponData, ownerStats.TotalStats.AttackPower, pool);
+            }
         }
     }
 

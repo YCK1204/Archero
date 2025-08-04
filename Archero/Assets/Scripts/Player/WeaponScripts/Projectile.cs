@@ -11,6 +11,7 @@ public class Projectile : MonoBehaviour
     private float timer;
     private BulletGroup bulletGroup;
     private Pool<Projectile> originPool;
+    private WeaponData weaponData;
 
     [SerializeField] private float lifetime = 3f;  // 막 쌓일 수 있대서, 일단 증발 시간 3f로 했어용
     [SerializeField] private LayerMask targetLayer;
@@ -24,6 +25,7 @@ public class Projectile : MonoBehaviour
         targetLayer = 1 << 7;
         timer = 0f;
         originPool = returnPool;
+        this.weaponData = weaponData;
 
         // 방향 회전
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -46,12 +48,15 @@ public class Projectile : MonoBehaviour
         if ((targetLayer.value & (1 << collision.gameObject.layer)) == 0)
             return;
 
-        if ( collision.gameObject.layer == 7)
+        if (collision.gameObject.layer == 7)
         {
             BattleManager.GetInstance.Attack(collision, damage, transform.position);
-        }
 
-        ReturnToPool();
+            if (!weaponData.HasModifier(EProjectileModifier.Piercing))
+            {
+                ReturnToPool();
+            }
+        }
     }
 
     private void ReturnToPool()

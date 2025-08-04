@@ -31,6 +31,8 @@ public class TurretWeapon : WeaponBase
 
     private void FireAt(Vector2 targetPos)
     {
+        var pool = BattleManager.GetInstance.turretProjectilePool;
+
         Vector2 baseDir = (targetPos - (Vector2)firePoint.position).normalized;
         float baseAngle = Mathf.Atan2(baseDir.y, baseDir.x) * Mathf.Rad2Deg;
 
@@ -45,13 +47,28 @@ public class TurretWeapon : WeaponBase
             Vector2 dir = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
 
             // 풀에서 꺼내기
-            Projectile proj = BattleManager.GetInstance.turretProjectilePool.DeQueue();
+            Projectile proj = pool.DeQueue();
 
             // 위치 및 회전
             proj.transform.position = firePoint.position;
             proj.transform.rotation = Quaternion.Euler(0, 0, angle);
             proj.gameObject.SetActive(true);
-            proj.Init(dir, weaponData, ownerStats.TotalStats.AttackPower, BattleManager.GetInstance.turretProjectilePool);
+            proj.Init(dir, weaponData, ownerStats.TotalStats.AttackPower, pool);
+        }
+
+        if (weaponData.HasModifier(EProjectileModifier.BackShot))
+        {
+            Vector2 backDir = -baseDir;
+            float backAngle = Mathf.Atan2(backDir.y, backDir.x) * Mathf.Rad2Deg;
+
+            Projectile backProj = pool.DeQueue();
+            if (backProj != null)
+            {
+                backProj.transform.position = firePoint.position;
+                backProj.transform.rotation = Quaternion.Euler(0, 0, backAngle);
+                backProj.gameObject.SetActive(true);
+                backProj.Init(backDir, weaponData, ownerStats.TotalStats.AttackPower, pool);
+            }
         }
     }
     private void Update()

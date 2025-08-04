@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,9 +19,9 @@ public class WeaponData : ScriptableObject  // 무기 기본 데이터
     [SerializeField] private float range;
     [SerializeField] private int projectileCount;
     [SerializeField] private float spreadAngle = 10f;
-    [SerializeField] private bool isPiercing;
-    [SerializeField] private bool isTracking;
-    [SerializeField] private bool isSplitting;
+
+    [Header("투사체 스킬 효과")]
+    [SerializeField] private List<EProjectileModifier> modifiers = new();
 
     /// <summary>
     /// ==================== 윤님의 어드바이스 ===================
@@ -36,7 +35,22 @@ public class WeaponData : ScriptableObject  // 무기 기본 데이터
     public float Range => range;
     public int ProjectileCount => projectileCount;
     public float SpreadAngle => spreadAngle;
-    public bool IsPiercing => isPiercing;
-    public bool IsTracking => isTracking;
-    public bool IsSplitting => isSplitting;
+    public IReadOnlyList<EProjectileModifier> Modifiers => modifiers;
+
+    // --- Modifier 조작 ---
+    public void AddModifier(EProjectileModifier mod)
+    {
+        if (!modifiers.Contains(mod))
+            modifiers.Add(mod);
+    }
+
+    public bool HasModifier(EProjectileModifier mod)
+    {
+        return modifiers.Contains(mod);
+    }
+
+    public void IncreaseProjectileCount(int amount)
+    {
+        projectileCount += amount;
+    }
 }

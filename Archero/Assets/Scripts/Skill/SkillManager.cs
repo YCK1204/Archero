@@ -72,6 +72,10 @@ public class SkillManager : MonoBehaviour
         allSkills.Add(new Skill("Heal", "HP 회복", ESkillGrade.Common, ESkillCategory.LevelUp));
         allSkills.Add(new Skill("Heal", "HP 회복", ESkillGrade.Rare, ESkillCategory.LevelUp));
         allSkills.Add(new Skill("Heal", "HP 회복", ESkillGrade.Epic, ESkillCategory.LevelUp));
+        // ============================ 플레이어 총알 스킬 추가 =========================================
+        allSkills.Add(new Skill("DiagonalShot", "사선샷", ESkillGrade.Common, ESkillCategory.LevelUp));
+        allSkills.Add(new Skill("BackShot", "후방샷", ESkillGrade.Common, ESkillCategory.LevelUp));
+        allSkills.Add(new Skill("PiercingShot", "관통샷", ESkillGrade.Common, ESkillCategory.LevelUp));
 
         // --- 천사 이벤트 스킬 ---
         allSkills.Add(new Skill("Heal", "HP 회복", ESkillGrade.Common, ESkillCategory.Angel));
@@ -156,10 +160,30 @@ public class SkillManager : MonoBehaviour
                 playerStats.MultiplyStat(EStatType.MoveSpeed, legendaryBuffs.moveSpeedMultiplier);
                 playerStats.DecreaseMaxHealth(legendaryBuffs.healthCost);
                 break;
+
+            // --- 투사체 스킬 ---
+            case "DiagonalShot":
+                ApplyToAllWeapons(w => w.IncreaseProjectileCount(2));
+                break;
+            case "BackShot":
+                ApplyToAllWeapons(w => w.AddModifier(EProjectileModifier.BackShot));
+                break;
+            case "PiercingShot":
+                ApplyToAllWeapons(w => w.AddModifier(EProjectileModifier.Piercing));
+                break;
+        }
+    }
+    private void ApplyToAllWeapons(System.Action<WeaponData> action)
+    {
+        foreach (var weapon in FindObjectsOfType<WeaponBase>())
+        {
+            var data = weapon.WeaponData;
+            if (data != null)
+                action.Invoke(data);
         }
     }
 
-     // 등급과 스탯 종류에 따라 올바른 배율을 찾아주는 보조 함수
+    // 등급과 스탯 종류에 따라 올바른 배율을 찾아주는 보조 함수
     private float GetStatMultiplier(ESkillGrade grade, EStatType type)
     {
         switch (grade)
@@ -193,6 +217,4 @@ public class SkillManager : MonoBehaviour
         }
         return 1f; // 기본값
     }
-
-
 }

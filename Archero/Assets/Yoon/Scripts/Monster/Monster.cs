@@ -134,8 +134,9 @@ public class Monster : MonoBehaviour
 }
 [Serializable]
 public enum ChessCharType { pawn,knight,bishop,rock}
-interface IStatManaging 
+interface IStatManaging
 { 
+    void ItemDrop(Vector3 pos);
     void StatChange(ref MonsterStat currStat,int stageNum);
     public static IStatManaging Factory(MonsterStat stat,ChessCharType type)
     {
@@ -155,7 +156,17 @@ interface IStatManaging
 }
 public class PawnStatSetter:IStatManaging 
 {
-
+    public void ItemDrop(Vector3 pos)
+    {
+        DropItem item = BattleManager.GetInstance.Items[0].DeQueue();
+        item.Init(10);
+        item.transform.position = pos;
+        if (new System.Random().Next(0, 100) > 90)
+        {
+            BattleManager.GetInstance.Items[1].DeQueue();
+            item.Init(10);
+        }
+    }
     public void StatChange(ref MonsterStat stat, int stageNum)
     {
         int hp = 30 + (int)(0.5f + (0.5f * stageNum));
@@ -165,6 +176,17 @@ public class PawnStatSetter:IStatManaging
 }
 public class KnightStatSetter:IStatManaging 
 {
+    public void ItemDrop(Vector3 pos)
+    {
+        DropItem item = BattleManager.GetInstance.Items[0].DeQueue();
+        item.Init(20);
+        item.transform.position = pos;
+        if (new System.Random().Next(0, 100) > 30)
+        {
+            BattleManager.GetInstance.Items[1].DeQueue();
+            item.Init(10);
+        }
+    }
     public void StatChange(ref MonsterStat stat, int stageNum)
     {
         int hp = 50 + (int)(0.5f + (0.5f * stageNum));
@@ -173,7 +195,18 @@ public class KnightStatSetter:IStatManaging
     }
 }
 public class BishopStatSetter:IStatManaging 
-{ 
+{
+    public void ItemDrop(Vector3 pos)
+    {
+        DropItem item = BattleManager.GetInstance.Items[0].DeQueue();
+        item.Init(20);
+        item.transform.position = pos;
+        if (new System.Random().Next(0, 100) > 30)
+        {
+            BattleManager.GetInstance.Items[1].DeQueue();
+            item.Init(10);
+        }
+    }
     public void StatChange(ref MonsterStat stat, int stageNum)
     {
         int hp = 30 + (int)(0.5f + (0.5f * stageNum));
@@ -181,8 +214,17 @@ public class BishopStatSetter:IStatManaging
         stat = new MonsterStat(hp, atk, 1, 5, 4, 0.5f);
     }
 }
-public class RockStatSetter:IStatManaging 
-{ 
+public class RockStatSetter:IStatManaging
+{
+    public void ItemDrop(Vector3 pos)
+    {
+        DropItem item = BattleManager.GetInstance.Items[0].DeQueue();
+        item.Init(30);
+        item.transform.position = pos;
+
+        BattleManager.GetInstance.Items[1].DeQueue();
+        item.Init(40);
+    }
     public void StatChange(ref MonsterStat stat, int stageNum)
     {
         int hp = 60 + (int)(0.5f + (0.5f * stageNum));

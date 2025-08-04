@@ -27,7 +27,7 @@ namespace Lee.Scripts
             }
         }
 
-        public void ShowReward(ESkillGrade grade, ESkillCategory category, int pickCount)
+        public void ShowReward(ESkillCategory category)
         {
             // SkillManager가 초기화되었는지 확인
             if (SkillManager.Instance == null)
@@ -192,6 +192,28 @@ namespace Lee.Scripts
                 int j = UnityEngine.Random.Range(0, i + 1);
                 (list[i], list[j]) = (list[j], list[i]);
             }
+        }
+
+        // 레벨업시 발키리만 나오게 
+        public void ShowVkrReward()
+        {
+            // SkillManager가 초기화되었는지 확인
+            if (SkillManager.Instance == null)
+            {
+                Debug.LogError("SkillManager가 초기화되지 않았습니다. ShowReward를 호출할 수 없습니다.");
+                return;
+            }
+
+            // 모든 스킬 후보들을 가져오기 (grade 제한 제거하여 모든 등급이 섞여서 나오도록)
+            var candidates = rewardDatas.SelectMany(so => so.rewardEntries).Where(e => e.skillCategory == ESkillCategory.Valkyrie).ToList();
+
+            // UI 슬롯 개수에 맞춰 보상 선택 (rewardSlots 개수만큼)
+            int slotCount = GetRewardSlotCount(ESkillCategory.Valkyrie);
+            var picks = ReawrdSampling(candidates, slotCount);
+
+            //섞기
+            Shuffle(picks);
+            GameManager.UI.ShowPopUpUI<VkrRewardSelect_PopUpUI>(VkrUIPath).Initialize(picks, ChoseReward);
         }
     }
 }

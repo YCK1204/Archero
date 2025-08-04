@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MapManager : SimpleDungeonGenerator
 {
-    List<HashSet<Vector2Int>> _roomPositions;
-    List<HashSet<Vector2Int>> _corridorPositions;
-
     static MapManager _instance = null;
+    public struct CorridorDoors
+    {
+        public Door StartDoor;
+        public Door EndDoor;
+    }
     public static MapManager Instance
     {
         get
@@ -33,9 +36,31 @@ public class MapManager : SimpleDungeonGenerator
     public void GenerateMap()
     {
         TilemapVisualizer.Clear();
-        var data = CorridorFirstGeneration();
+        CorridorFirstGeneration();
 
-        _roomPositions = data.Item1;
-        _corridorPositions = data.Item2;
+        foreach (var map in _mapData)
+        {
+            Debug.Log($"Map Cell Count: {map.Positions.Count}");
+            Debug.Log($"Map Center Position: {map.CenterPosition}");
+            if (map.Corridor != null)
+            {
+                var corridor = map.Corridor;
+                Debug.Log($"Corridor Start Position: {corridor.StartPosition}");
+                Debug.Log($"Corridor End Position: {corridor.EndPosition}");
+                Debug.Log($"Corridor Cell Count: {corridor.Positions.Count}");
+            }
+        }
+    }
+    void SetCorridorDoors()
+    {
+        //foreach (var corridor in _corridorPositions)
+        //{
+        //    int xMax = corridor.Max(pos => pos.x);
+        //    int xMin = corridor.Min(pos => pos.x);
+        //    int yMax = corridor.Max(pos => pos.y);
+        //    int yMin = corridor.Min(pos => pos.y);
+
+
+        //}
     }
 }

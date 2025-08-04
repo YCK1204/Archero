@@ -7,9 +7,17 @@ namespace Lee.Scripts
 {
     public class NextSceneButton : MonoBehaviour
     {
-        public void StartSceneButton() 
+        public void StartSceneButton()
         {
             SceneManager.LoadScene("MainScene");
+        }
+        public void LeaveGameButton()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
         }
 
         public void DugeonSceneButton()
@@ -19,17 +27,11 @@ namespace Lee.Scripts
             {
                 Defines.ResourceManager.GetInstance.LoadAsync<GameObject>("Player", (go) =>
                 {
-                    MapManager.Instance.GenerateDungeon();
+                    MapManager.Instance.GenerateMap();
                     var player = Instantiate(go);
                     player.transform.position = Vector3.zero;
                 }, true);
             });
         }
-
-        public void CountClearTest()
-        {
-            GameManager.Instance.CheckStageClear();
-        }
-
     }
 }

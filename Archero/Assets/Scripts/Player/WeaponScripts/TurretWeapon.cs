@@ -7,6 +7,7 @@ public class TurretWeapon : WeaponBase
 {
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform firePoint;
+    [SerializeField] private float orbitDistance = 1.5f;
 
     private float lastAttackTime = -Mathf.Infinity;
 
@@ -14,15 +15,15 @@ public class TurretWeapon : WeaponBase
     public override void Activate()
     {
         if (Time.time - lastAttackTime < weaponData.Cooldown / ownerStats.TotalStats.AttackSpeed)
+        {
             return;
+        }
 
         Transform target = holder.FindNearestMonster(weaponData.Range);
-        if (target == null) return;
-
-        // 터렛 회전
-        Vector2 dir = (target.position - transform.position).normalized;
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+        if (target == null)
+        {
+            return;
+        }
 
         FireAt(target.position);
         lastAttackTime = Time.time;
@@ -30,7 +31,6 @@ public class TurretWeapon : WeaponBase
 
     private void FireAt(Vector2 targetPos)
     {
-
         Vector2 baseDir = (targetPos - (Vector2)firePoint.position).normalized;
         float baseAngle = Mathf.Atan2(baseDir.y, baseDir.x) * Mathf.Rad2Deg;
 
@@ -44,15 +44,63 @@ public class TurretWeapon : WeaponBase
             float rad = angle * Mathf.Deg2Rad;
             Vector2 dir = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
 
-            //// 풀에서 꺼내기
-            //Projectile proj = BattleManager.GetInstance.turretProjectilePool.DeQueue();
+            // 풀에서 꺼내기
+            Projectile proj = BattleManager.GetInstance.turretProjectilePool.DeQueue();
 
-            //// 위치 및 회전
-            //proj.transform.position = firePoint.position;
-            //proj.transform.rotation = Quaternion.Euler(0, 0, angle);
-
-            //proj.Init(dir, weaponData, ownerStats.TotalStats.AttackPower);
+            // 위치 및 회전
+            proj.transform.position = firePoint.position;
+            proj.transform.rotation = Quaternion.Euler(0, 0, angle);
+            proj.gameObject.SetActive(true);
+            proj.Init(dir, weaponData, ownerStats.TotalStats.AttackPower, BattleManager.GetInstance.turretProjectilePool);
         }
     }
+    private void Update()
+    {
+        RotateTowardNearestMonster();
+        OrbitBehindPlayer();
+    }
+    private void RotateTowardNearestMonster()
+    {
+        if (holder == null || weaponData == null) return;
+
+        Transform target = holder.FindNearestMonster(weaponData.Range);
+        if (target == null) return;
+
+        Vector2 dir = (target.position - transform.position).normalized;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+        // 좌우 판별
+        bool flip = dir.x < 0;
+
+        // Flip 처리 (Sprite 좌우 반전)
+        var scale = transform.localScale;
+        scale.x = Mathf.Abs(scale.x) * (flip ? -1 : 1);
+        transform.localScale = scale;
+
+        // 회전 방향 보정 (flip되었으면 z축도 반대로)
+        if (flip)
+            angle += 180f;
+
+        transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    private void OrbitBehindPlayer()
+    {
+        Transform target = holder.FindNearestMonster(weaponData.Range);
+        if (target == null) return;
+
+        // 플레이어 → 몬스터 방향
+        Vector2 dirToTarget = (target.position - holder.transform.position).normalized;
+
+        // 반대 방향으로 이동한 위치
+        Vector3 orbitOffset = -dirToTarget * orbitDistance;
+
+        orbitOffset += Vector3.up * 0.6f;
+
+        // 터렛의 위치를 플레이어 기준으로 이동
+        transform.position = holder.transform.position + orbitOffset;
+    }
+
+
 }
 

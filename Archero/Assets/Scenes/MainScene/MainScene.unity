@@ -1430,6 +1430,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TilemapVisualizer: {fileID: 1601073338}
   StartPos: {x: 0, y: 0}
+  DungeonWidth: 20
+  DungeonHeight: 20
   CorridorCount: 5
   SimpleRandomWalkData: {fileID: 11400000, guid: 73bf5bec35173b64eab92acf759fa919, type: 2}
   RoomSpacing: 50

@@ -11,6 +11,10 @@ namespace Lee.Scripts
         {
             SceneManager.LoadScene("MainScene");
         }
+        public void LeaveGameButton()
+        {
+            Application.Quit();
+        }
 
         public void DugeonSceneButton()
         {
@@ -25,11 +29,5 @@ namespace Lee.Scripts
                 }, true);
             });
         }
-
-        public void CountClearTest()
-        {
-            GameManager.Instance.CheckStageClear();
-        }
-
     }
 }

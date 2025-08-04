@@ -38,9 +38,16 @@ public class TestDummy : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T) && !equipped)
         {
-            weaponHolder.EquipWeapon(turretData, turretPrefab);
-            Debug.Log("터렛 장착됨!");
-            equipped = true;
+            if (weaponHolder != null && turretData != null && turretPrefab != null)
+            {
+                weaponHolder.EquipWeapon(turretData, turretPrefab);
+                Debug.Log(" T키로 터렛 무기 장착 완료");
+                equipped = true;
+            }
+            else
+            {
+                Debug.LogWarning("WeaponHolder, turretData, turretPrefab 중 하나가 비어있음");
+            }
         }
     }
 

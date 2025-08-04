@@ -71,7 +71,7 @@ public class GunWeapon : WeaponBase
             proj.transform.position = firePoint.position;
             proj.transform.rotation = Quaternion.Euler(0, 0, angle);
             proj.gameObject.SetActive(true);
-            proj.Init(dir, weaponData, ownerStats.TotalStats.AttackPower);
+            proj.Init(dir, weaponData, ownerStats.TotalStats.AttackPower, BattleManager.GetInstance.playerProjectilePool);
 
         }
     }

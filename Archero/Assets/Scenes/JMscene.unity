@@ -268,7 +268,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponHolder: {fileID: 1546156303}
   turretData: {fileID: 11400000, guid: 41699fa2c575fb84c953acb0cc41f4f5, type: 2}
-  turretPrefab: {fileID: 3231508821411865859, guid: f80335305a29bbf4c82f81241873c56d, type: 3}
+  turretPrefab: {fileID: 6615560999938772998, guid: 7282c185f21facb4584abff98a5ee4e2, type: 3}
 --- !u!1 &1476158870
 GameObject:
   m_ObjectHideFlags: 0
@@ -469,9 +469,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4048864142974788769, guid: 55789152e14b6b942aeb05ee554dacb1, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5249330920475971279, guid: 55789152e14b6b942aeb05ee554dacb1, type: 3}
       propertyPath: baseStats.AttackSpeed
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -218,8 +218,4 @@ MonoBehaviour:
   attackType: 0
   moveType: 1
   chessType: 0
-  patrolPositions:
-  - {x: -2.87, y: 2.64, z: 0}
-  - {x: 2.28, y: 2.83, z: 0}
-  - {x: -3.05, y: -3.1, z: 0}
-  - {x: 2.28, y: -3.1, z: 0}
+  patrolPositions: []

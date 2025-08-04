@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Resources;
 using UnityEngine;
-
+using NavMeshPlus.Components;
+using UnityEngine.UI;
+using Unity.VisualScripting;
+using NavMeshPlus.Extensions;
 public class MapManager : SimpleDungeonGenerator
 {
     static MapManager _instance = null;
+
     public static MapManager Instance
     {
         get
@@ -23,6 +27,8 @@ public class MapManager : SimpleDungeonGenerator
             return _instance;
         }
     }
+    private bool isBaked = false;
+    public bool IsBaked { get { return isBaked; } }
     private void Start()
     {
         _instance = this;
@@ -74,6 +80,23 @@ public class MapManager : SimpleDungeonGenerator
                     exitDoor.Init(parent, corridor.StartPosition, corridor.EndPosition, false);
                 }
             }
+            StartCoroutine(WaitForBake());
         });
+       
+    }
+    private IEnumerator WaitForBake()
+    {
+        //gameObject.AddComponent<CollectSources2d>()
+
+        var surface = gameObject.GetComponent<NavMeshSurface>();
+        var bakeOperation = surface.BuildNavMeshAsync();
+        // 빌드가 끝날 때까지 기다림
+        while (!bakeOperation.isDone)
+        {
+            yield return null;
+        }
+
+        Debug.Log("NavMesh 비동기 빌드 완료!");
+        isBaked = true;
     }
 }

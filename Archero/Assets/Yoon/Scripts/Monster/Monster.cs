@@ -72,6 +72,7 @@ public class Monster : MonoBehaviour
             {
                 fsm.Chage(StateTypes.Die);
                 BattleManager.GetInstance.monsterPool[chessType].EnQueue(this);
+                Lee.Scripts.GameManager.Instance.CheckStageClear();
             }
             return false;
         }

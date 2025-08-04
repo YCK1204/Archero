@@ -7,9 +7,17 @@ namespace Lee.Scripts
 {
     public class NextSceneButton : MonoBehaviour
     {
-        public void StartSceneButton() 
+        public void StartSceneButton()
         {
             SceneManager.LoadScene("MainScene");
+        }
+        public void LeaveGameButton()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
         }
 
         public void DugeonSceneButton()
@@ -25,11 +33,5 @@ namespace Lee.Scripts
                 }, true);
             });
         }
-
-        public void CountClearTest()
-        {
-            GameManager.Instance.CheckStageClear();
-        }
-
     }
 }

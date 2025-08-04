@@ -7,23 +7,21 @@ public class TurretWeapon : WeaponBase
 {
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform firePoint;
+    [SerializeField] private float orbitDistance = 1.5f;
 
     private float lastAttackTime = -Mathf.Infinity;
 
 
     public override void Activate()
     {
-        Debug.Log("TurretWeapon: Activate() 진입 시도");
         if (Time.time - lastAttackTime < weaponData.Cooldown / ownerStats.TotalStats.AttackSpeed)
         {
-            Debug.Log("TurretWeapon: 쿨타임 미도래로 발사 취소");
             return;
         }
 
         Transform target = holder.FindNearestMonster(weaponData.Range);
         if (target == null)
         {
-            Debug.Log("TurretWeapon: 대상 없음으로 발사 취소");
             return;
         }
 
@@ -33,7 +31,6 @@ public class TurretWeapon : WeaponBase
 
     private void FireAt(Vector2 targetPos)
     {
-        Debug.Log("TurretWeapon: 발사 시도");
         Vector2 baseDir = (targetPos - (Vector2)firePoint.position).normalized;
         float baseAngle = Mathf.Atan2(baseDir.y, baseDir.x) * Mathf.Rad2Deg;
 
@@ -60,15 +57,50 @@ public class TurretWeapon : WeaponBase
     private void Update()
     {
         RotateTowardNearestMonster();
+        OrbitBehindPlayer();
     }
     private void RotateTowardNearestMonster()
     {
+        if (holder == null || weaponData == null) return;
+
         Transform target = holder.FindNearestMonster(weaponData.Range);
         if (target == null) return;
 
         Vector2 dir = (target.position - transform.position).normalized;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+        // 좌우 판별
+        bool flip = dir.x < 0;
+
+        // Flip 처리 (Sprite 좌우 반전)
+        var scale = transform.localScale;
+        scale.x = Mathf.Abs(scale.x) * (flip ? -1 : 1);
+        transform.localScale = scale;
+
+        // 회전 방향 보정 (flip되었으면 z축도 반대로)
+        if (flip)
+            angle += 180f;
+
         transform.rotation = Quaternion.Euler(0, 0, angle);
     }
+
+    private void OrbitBehindPlayer()
+    {
+        Transform target = holder.FindNearestMonster(weaponData.Range);
+        if (target == null) return;
+
+        // 플레이어 → 몬스터 방향
+        Vector2 dirToTarget = (target.position - holder.transform.position).normalized;
+
+        // 반대 방향으로 이동한 위치
+        Vector3 orbitOffset = -dirToTarget * orbitDistance;
+
+        orbitOffset += Vector3.up * 0.6f;
+
+        // 터렛의 위치를 플레이어 기준으로 이동
+        transform.position = holder.transform.position + orbitOffset;
+    }
+
+
 }
 

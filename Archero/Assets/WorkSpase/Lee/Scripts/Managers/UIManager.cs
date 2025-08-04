@@ -17,30 +17,43 @@ namespace Lee.Scripts
             windowCanvas = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
             windowCanvas.gameObject.name = "WindowCanvas";
             windowCanvas.sortingOrder = 10;
+            DontDestroyOnLoad(windowCanvas.gameObject);
 
             popUpCanvas = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
             popUpCanvas.gameObject.name = "PopUpCanvas";
             popUpCanvas.sortingOrder = 100;
+            DontDestroyOnLoad(popUpCanvas.gameObject);
 
             popUpStack = new Stack<PopUpUI>();
         }
 
         public void Recreated()
         {
-            windowCanvas = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
-            windowCanvas.gameObject.name = "WindowCanvas";
-            windowCanvas.sortingOrder = 10;
+            if (windowCanvas == null)
+            {
+                windowCanvas = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
+                windowCanvas.gameObject.name = "WindowCanvas";
+                windowCanvas.sortingOrder = 10;
+                DontDestroyOnLoad(windowCanvas.gameObject);
+            }
+            if( popUpCanvas == null)
+            {
+                popUpCanvas = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
+                popUpCanvas.gameObject.name = "PopUpCanvas";
+                popUpCanvas.sortingOrder = 100;
+                DontDestroyOnLoad(popUpCanvas.gameObject);
 
-            popUpCanvas = GameManager.Resource.Instantiate<Canvas>("Prefabs/UI/Canvas");
-            popUpCanvas.gameObject.name = "PopUpCanvas";
-            popUpCanvas.sortingOrder = 100;
-
-            popUpStack = new Stack<PopUpUI>();
+                popUpStack = new Stack<PopUpUI>();
+            }
+            else
+            {
+                return;
+            }
         }
 
         public void Clear()
         {
-            GameManager.Resource.Destroy(windowCanvas);
+            popUpStack.Clear();
         }
 
         public T ShowWindowUI<T>(T windowUI) where T : WindowUI

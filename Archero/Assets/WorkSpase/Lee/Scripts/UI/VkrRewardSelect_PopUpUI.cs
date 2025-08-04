@@ -4,67 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 namespace Lee.Scripts
 {
-    public class VkrRewardSelect_PopUpUI : PopUpUI
+    public class VkrRewardSelect_PopUpUI : RewardSelectBaseUI
     {
-        [SerializeField] List<RectTransform> rewardSlots = new List<RectTransform>();
-        private List<StageRewardEntry> entries;
-        private Action<StageRewardEntry> onChosen;
-        private StageRewardEntry selectedEntry;
-        protected override void Awake()
-        {
-            base.Awake();
-            buttons["DecideButton"].onClick.AddListener(() => { OnDecideClicked(); });
-        }
-        public void Initialize(List<StageRewardEntry> entries, Action<StageRewardEntry> onChosen)
-        {
-            this.entries = entries;
-            this.onChosen = onChosen;
-            this.selectedEntry = null;
-            StartCoroutine(OpenRountine());
-        }
-        IEnumerator OpenRountine()
-        {
-            // ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ÀÖ´Ù¸é ÃÊº¯°æ
-            yield return new WaitForSeconds(0.1f);
-
-            // ½½·ÔÃÊ±âÈ­ (ÀÚ½Ä¿ÀºêÁ§Æ®µé »èÁ¦)
-            foreach (var slot in rewardSlots)
-            {
-                foreach (Transform child in slot)
-                {
-                    GameManager.Resource.Destroy(child.gameObject);
-                }
-            }
-
-            for (int i = 0; i < entries.Count && i < rewardSlots.Count; i++)
-            {
-                var entry = entries[i];
-                var slot = rewardSlots[i];
-
-                if (entry.uiPrefab != null)
-                {
-                    GameObject obj = GameManager.Resource.Instantiate(entry.uiPrefab, slot);
-                    obj.transform.localPosition = Vector3.zero;
-
-                    // º¸»óÀ» ¼±ÅÃÇÒ½Ã ÇØ´ç º¸»ó¿¡ ´ëÇÑ Á¤º¸ °¡Àú¿À±â
-                    if (obj.TryGetComponent<Button>(out var btn))
-                    {
-                        btn.onClick.RemoveAllListeners();
-                        btn.onClick.AddListener(() => selectedEntry = entry);
-                    }
-                }
-            }
-        }
-        void OnDecideClicked()
-        {
-            var result = selectedEntry ?? (entries.Count > 0 ? entries[0] : null);
-            // ¹öÆ° Å¬¸¯½Ã ¼±ÅÃµÈ º¸»ó Àû¿ë
-            onChosen?.Invoke(result);
-            GameManager.UI.ClosePopUpUI();
-        }
+        // ëª¨ë“  ê¸°ëŠ¥ì€ RewardSelectBaseUIì—ì„œ ìƒì†ë°›ìŒ
+        // í•„ìš”ì‹œ ì—¬ê¸°ì— ì¶”ê°€ ê¸°ëŠ¥ êµ¬í˜„
     }
-
 }

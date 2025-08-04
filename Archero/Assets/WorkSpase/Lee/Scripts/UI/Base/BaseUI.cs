@@ -16,6 +16,8 @@ namespace Lee.Scripts
         {
             BindChildren();
         }
+        
+        protected virtual void OnDisable() {}
 
         private void BindChildren()
         {

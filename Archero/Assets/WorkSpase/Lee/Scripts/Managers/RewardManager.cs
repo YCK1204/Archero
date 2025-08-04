@@ -9,7 +9,7 @@ namespace Lee.Scripts
 {
     public class RewardManager : MonoBehaviour
     {
-        [Header("»ı¼ºÇÑ RewardData ¿¡¼Âµé")]
+        [Header("ìƒì„±í•œ RewardData ì—ì…‹ë“¤")]
         [SerializeField] List<StageRewardData> rewardDatas;
         string commonUIPath = "Prefabs/UI/RewardUI";
         string VkrUIPath = "Prefabs/UI/VkrRewardUI";
@@ -18,72 +18,106 @@ namespace Lee.Scripts
 
         void Awake()
         {
-            // ÀÎ½ºÆåÅÍ ºñ¾îÀÖÀ¸¸é Resources Æú´õ¿¡¼­ ·Îµå
+            // ì¸ìŠ¤í™í„° ë¹„ì–´ìˆìœ¼ë©´ Resources í´ë”ì—ì„œ ë¡œë“œ
             if (rewardDatas == null || rewardDatas.Count == 0)
             {
                 var loaded = Resources.LoadAll<StageRewardData>("Data");
                 rewardDatas = new List<StageRewardData>(loaded);
-                Debug.Log($"RewardManager: {rewardDatas.Count}°³ÀÇ StageRewardData ·Îµå");
+                Debug.Log($"RewardManager: {rewardDatas.Count}ê°œì˜ StageRewardData ë¡œë“œ");
             }
         }
 
         public void ShowReward(ESkillGrade grade, ESkillCategory category, int pickCount)
         {
-            // ¸ğµç ½ºÅ³ ¿£Æ®¸® º¸±â
-            var candidates = rewardDatas.SelectMany(so => so.rewardEntries).Where(e => e.skillGrade == grade && e.skillCategory == category).ToList();
+            // SkillManagerê°€ ì´ˆê¸°í™”ë˜ì—ˆëŠ”ì§€ í™•ì¸
+            if (SkillManager.Instance == null)
+            {
+                Debug.LogError("SkillManagerê°€ ì´ˆê¸°í™”ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤. ShowRewardë¥¼ í˜¸ì¶œí•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+                return;
+            }
 
-            //°¡ÁßÄ¡¿¡ µû¸¥ ·£´ı »ùÇÃ¸µ(Áßº¹¾øÀÌ)
-            var picks = ReawrdSampling(candidates, pickCount);
+            // ëª¨ë“  ìŠ¤í‚¬ í›„ë³´ë“¤ì„ ê°€ì ¸ì˜¤ê¸° (grade ì œí•œ ì œê±°í•˜ì—¬ ëª¨ë“  ë“±ê¸‰ì´ ì„ì—¬ì„œ ë‚˜ì˜¤ë„ë¡)
+            var candidates = rewardDatas.SelectMany(so => so.rewardEntries).Where(e => e.skillCategory == category).ToList();
 
-            //¼ÅÇÃ
+            // UI ìŠ¬ë¡¯ ê°œìˆ˜ì— ë§ì¶° ë³´ìƒ ì„ íƒ (rewardSlots ê°œìˆ˜ë§Œí¼)
+            int slotCount = GetRewardSlotCount(category);
+            var picks = ReawrdSampling(candidates, slotCount);
+
+            //ì„ê¸°
             Shuffle(picks);
 
            switch(category)
             {
                 case ESkillCategory.LevelUp:
                     {
-                        // common ¹æ Àü¿ë UI
+                        // common ë°© ì „ìš© UI
                         GameManager.UI.ShowPopUpUI<RewardSelect_PopUpUI>(commonUIPath).Initialize(picks, ChoseReward);
                     }
                     break;
 
                 case ESkillCategory.Valkyrie:
                     {
-                        // ¹ßÅ°¸® ¹æ Àü¿ë UI
+                        // ë°œí‚¤ë¦¬ ë°© ì „ìš© UI
                         GameManager.UI.ShowPopUpUI<VkrRewardSelect_PopUpUI>(VkrUIPath).Initialize(picks, ChoseReward);
                     }
                     break;
 
                 case ESkillCategory.Angel:
                     {
-                        // Ãµ»ç ¹æ Àü¿ë UI
+                        // ì²œì‚¬ ë°© ì „ìš© UI
                         GameManager.UI.ShowPopUpUI<AngleRewardSelect_PopUpUI>(AngleUIPath).Initialize(picks, ChoseReward);
                     }
                     break;
 
                 case ESkillCategory.Devil:
                     {
-                        // ¾Ç¸¶ ¹æ Àü¿ë UI
+                        // ì•…ë§ˆ ë°© ì „ìš© UI
                         GameManager.UI.ShowPopUpUI<DevilRewardSelect_PopUpUI>(DevilUIPath).Initialize(picks, ChoseReward);
                     }
                     break;
             };
         }
 
-        // UI °áÁ¤ ¹öÆ° Å¬¸¯½Ã Àû¿ëµÇ´Â ÇÔ¼ö
+        // UI ê²°ì • ë²„íŠ¼ í´ë¦­ì‹œ ì ìš©ë˜ëŠ” í•¨ìˆ˜
         private void ChoseReward(StageRewardEntry entry)
         {
+            if (entry == null)
+            {
+                Debug.LogWarning("StageRewardEntryê°€ nullì…ë‹ˆë‹¤.");
+                return;
+            }
+
+            if (SkillManager.Instance == null)
+            {
+                Debug.LogError("SkillManager.Instanceê°€ nullì…ë‹ˆë‹¤. SkillManagerê°€ ì´ˆê¸°í™”ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
+                return;
+            }
+
             var skill = SkillManager.Instance.GetSkillInfo(entry.skillEffectID, entry.skillGrade, entry.skillCategory);
-            if (skill != null) SkillManager.Instance.SelectSkill(skill);
+            if (skill != null)
+            {
+                SkillManager.Instance.SelectSkill(skill);
+            }
+            else
+            {
+                Debug.LogWarning($"ìŠ¤í‚¬ì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤: {entry.skillEffectID}, {entry.skillGrade}, {entry.skillCategory}");
+            }
         }
 
         private List<StageRewardEntry> ReawrdSampling(List<StageRewardEntry> source, int count)
         {
-            var pool = new List<StageRewardEntry>(source);
             var result = new List<StageRewardEntry>();
+            var pool = new List<StageRewardEntry>(source);
 
-            for(int i = 0; i < count && pool.Count > 0; i++)
-        {
+            // ìš”ì²­ëœ ê°œìˆ˜ë§Œí¼ ì„ íƒ
+            for (int i = 0; i < count && pool.Count > 0; i++)
+            {
+                // poolì´ ë¹„ì–´ìˆìœ¼ë©´ ë‹¤ì‹œ ì±„ìš°ê¸°
+                if (pool.Count == 0)
+                {
+                    pool.AddRange(source);
+                }
+
                 float totalWeight = pool.Sum(e => e.baseWeight);
                 float roll = UnityEngine.Random.Range(0f, totalWeight);
                 float acc = 0f;
@@ -94,12 +128,62 @@ namespace Lee.Scripts
                     if (roll <= acc)
                     {
                         result.Add(e);
-                        pool.Remove(e);
+                        pool.Remove(e); // ì„ íƒëœ í•­ëª© ì œê±°
                         break;
                     }
                 }
             }
+            
             return result;
+        }
+
+        private int GetRewardSlotCount(ESkillCategory category)
+        {
+            // ê° ì¹´í…Œê³ ë¦¬ë³„ UIì˜ rewardSlots ê°œìˆ˜ë¥¼ ë™ì ìœ¼ë¡œ ê°€ì ¸ì˜¤ê¸°
+            string uiPath = GetUIPath(category);
+            if (!string.IsNullOrEmpty(uiPath))
+            {
+                var uiPrefab = GameManager.Resource.Load<GameObject>(uiPath);
+                if (uiPrefab != null)
+                {
+                    var rewardUI = uiPrefab.GetComponent<RewardSelectBaseUI>();
+                    if (rewardUI != null)
+                    {
+                        // ë¦¬í”Œë ‰ì…˜ì„ ì‚¬ìš©í•˜ì—¬ rewardSlots ê°œìˆ˜ ê°€ì ¸ì˜¤ê¸°
+                        var rewardSlotsField = typeof(RewardSelectBaseUI).GetField("rewardSlots", 
+                            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                        
+                        if (rewardSlotsField != null)
+                        {
+                            var rewardSlots = rewardSlotsField.GetValue(rewardUI) as List<RectTransform>;
+                            if (rewardSlots != null)
+                            {
+                                return rewardSlots.Count;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // ê¸°ë³¸ê°’ ë°˜í™˜
+            return 3;
+        }
+
+        private string GetUIPath(ESkillCategory category)
+        {
+            switch (category)
+            {
+                case ESkillCategory.LevelUp:
+                    return commonUIPath;
+                case ESkillCategory.Valkyrie:
+                    return VkrUIPath;
+                case ESkillCategory.Angel:
+                    return AngleUIPath;
+                case ESkillCategory.Devil:
+                    return DevilUIPath;
+                default:
+                    return commonUIPath;
+            }
         }
 
         private void Shuffle<T>(IList<T> list)

@@ -11,11 +11,13 @@ namespace Lee.Scripts
         protected override void Awake()
         {
             base.Awake();
+            buttons["ReturnButton"].onClick.AddListener(() => { RetryGame(); });
         }
 
         void RetryGame()
         {
-            SceneManager.LoadScene("DungeonScene");
+            GameManager.UI.ClosePopUpUI();
+            SceneManager.LoadScene("StartScene");
         }
     }
 }

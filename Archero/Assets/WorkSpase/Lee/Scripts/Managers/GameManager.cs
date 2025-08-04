@@ -34,7 +34,7 @@ namespace Lee.Scripts
         public static SkillManager SkillReward { get { return skillManager; } }
 
 
-        // Clearº¯¼ö
+        // Clearï¿½ï¿½ï¿½ï¿½
         int clearCount = 23;
         public int _clearCount { get => clearCount; set => clearCount = value; }
 
@@ -84,22 +84,34 @@ namespace Lee.Scripts
             skillObj.name = "SkillManager";
             skillObj.transform.parent = transform;
             skillManager = skillObj.AddComponent<SkillManager>();
+
+            // SkillManagerê°€ ì™„ì „íˆ ì´ˆê¸°í™”ë  ë•Œê¹Œì§€ ëŒ€ê¸°
+            StartCoroutine(WaitForSkillManagerInit());
+        }
+
+        private IEnumerator WaitForSkillManagerInit()
+        {
+            while (skillManager == null || SkillManager.Instance == null)
+            {
+                yield return null;
+            }
+            Debug.Log("SkillManager ì´ˆê¸°í™” ì™„ë£Œ");
         }
 
         public void CheckStageClear()
         {
             var unitDict = BattleManager.GetInstance.GetUnitDIct;
-
             if (unitDict.Count == 1)
             {
                 var last = unitDict.Last().Key.gameObject;
-                if (last.CompareTag("Player"))
+
+                if (last.CompareTag("Monster"))
                 {
-                    uiManager.ShowPopUpUI<GameOverUI>("Prefabs/UI/GameOverUI");  // UI ¸¸µé°í ¼öÁ¤
+                    uiManager.ShowPopUpUI<GameOverUI>("Prefabs/UI/GameOverUI");  // UI ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                     return;
                 }
 
-                if (last.CompareTag("Monster"))
+                if (last.CompareTag("Player"))
                 {
                     clearCount--;
                     if (clearCount > 0)
@@ -127,7 +139,7 @@ namespace Lee.Scripts
                     }
                     else
                     {
-                        // Å¬¸®¾î UI¶ç¿ì±â
+                        GameManager.UI.ShowPopUpUI<ClearGameUI>("Prefabs/UI/ClearGameUI");
                     }
 
                 }

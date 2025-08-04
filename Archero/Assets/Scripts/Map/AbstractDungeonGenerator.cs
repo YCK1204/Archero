@@ -9,7 +9,8 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
     protected TilemapVisualizer TilemapVisualizer = null;
     [SerializeField]
     protected Vector2Int StartPos = Vector2Int.zero;
-
+    [SerializeField]
+    protected int DungeonWidth = 20, DungeonHeight = 20;
     public void GenerateDungeon()
     {
         TilemapVisualizer.Clear();

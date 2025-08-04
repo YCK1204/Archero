@@ -139,9 +139,19 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         foreach (var pos in roomCenterPositions)
         {
             var roomFloor = RunRandomWalk(pos);
+            LimitMapToBounds(pos, roomFloor);
             roomPositions.Add(roomFloor);
         }
         return roomPositions;
+    }
+    void LimitMapToBounds(Vector2Int center, HashSet<Vector2Int> positions)
+    {
+        int xMin = center.x - DungeonWidth / 2;
+        int xMax = center.x + DungeonWidth / 2;
+        int yMin = center.y - DungeonHeight / 2;
+        int yMax = center.y + DungeonHeight / 2;
+
+        positions.RemoveWhere(pos => pos.x < xMin || pos.x > xMax || pos.y < yMin || pos.y > yMax);
     }
     private List<HashSet<Vector2Int>> CreateCorridors(List<HashSet<Vector2Int>> roomPositions, List<Vector2Int> directions, List<Vector2Int> roomCenterPositions)
     {

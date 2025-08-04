@@ -14,11 +14,12 @@ namespace Handler
         public KiteMove(NavMeshAgent agent)
         {
             this.agent = agent;
+
         }
 
         public bool GetMoveCondition(float currDist, float dist)
         {
-            return currDist-(currDist/10f) < dist;
+            return currDist < dist;
         }
 
         public void OnMove( Vector3 dir, float speed)

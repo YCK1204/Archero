@@ -49,7 +49,7 @@ public class NormalMonster : Monster
     }
 
 
-
+#if UNITY_EDITOR
     void OnDrawGizmosSelected()
     {
         if (patrolPositions == null || patrolPositions.Length <= 0) return;
@@ -59,6 +59,8 @@ public class NormalMonster : Monster
             Gizmos.DrawSphere(patrolPositions[i], 0.5f);
         }
     }
+#endif
+
 
     public override void Spawn(MobType type, Vector3[] patrolPos, MonsterStat stat, ChessCharType chessType)
     {

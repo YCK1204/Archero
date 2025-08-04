@@ -7,6 +7,7 @@ using Object = UnityEngine.Object;
 using Defines;
 public class SceneManagerEx : MonoBehaviour
 {
+    public Action DefaultCallback = null;
     static SceneManagerEx _instance;
     public static SceneManagerEx Instance
     {

@@ -266,6 +266,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1ecda52c385d614589600ee34185df5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponHolder: {fileID: 1546156303}
+  turretData: {fileID: 11400000, guid: 41699fa2c575fb84c953acb0cc41f4f5, type: 2}
+  turretPrefab: {fileID: 6615560999938772998, guid: 7282c185f21facb4584abff98a5ee4e2, type: 3}
 --- !u!1 &1476158870
 GameObject:
   m_ObjectHideFlags: 0
@@ -403,6 +406,17 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &1546156303 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7803090279236625766, guid: 55789152e14b6b942aeb05ee554dacb1, type: 3}
+  m_PrefabInstance: {fileID: 8964580541790437571}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c74584b8546250489dcbe93d9fdcc24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8964580541790437571
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -454,6 +468,14 @@ PrefabInstance:
     - target: {fileID: 2845479321344457257, guid: 55789152e14b6b942aeb05ee554dacb1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4048864142974788769, guid: 55789152e14b6b942aeb05ee554dacb1, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5249330920475971279, guid: 55789152e14b6b942aeb05ee554dacb1, type: 3}
+      propertyPath: baseStats.AttackSpeed
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

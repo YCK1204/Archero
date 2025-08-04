@@ -5,6 +5,7 @@ using System.Net.NetworkInformation;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using MapData = System.Collections.Generic.List<System.Collections.Generic.HashSet<UnityEngine.Vector2Int>>;
 
 public class SimpleDungeonGenerator : AbstractDungeonGenerator
 {
@@ -25,7 +26,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
     {
         CorridorFirstGeneration();
     }
-    private void CorridorFirstGeneration()
+    protected Tuple<MapData, MapData> CorridorFirstGeneration()
     {
         // 0. CurPosition를 StartPos로 설정
         // 1. CurPosition에 맵 생성
@@ -44,7 +45,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         if (CorridorWidth % 2 != 1)
         {
             Debug.LogError("CorridorWidth 값은 반드시 홀수여야 합니다.");
-            return;
+            return null;
         }
 
         HashSet<Vector2Int> floorPos = new HashSet<Vector2Int>();
@@ -93,6 +94,7 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
                 TilemapVisualizer.PaintSingleTile(TilemapVisualizer.FloorTilemap, TilemapVisualizer.CorridorTile, pos);
         }
         TilemapVisualizer.GenerateWalls(floorPos);
+        return new Tuple<MapData, MapData>(roomPositions, corridors);
     }
     void RemoveIsland(List<HashSet<Vector2Int>> roomPositions, List<Vector2Int> roomCenterPositions)
     {
@@ -137,9 +139,19 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
         foreach (var pos in roomCenterPositions)
         {
             var roomFloor = RunRandomWalk(pos);
+            LimitMapToBounds(pos, roomFloor);
             roomPositions.Add(roomFloor);
         }
         return roomPositions;
+    }
+    void LimitMapToBounds(Vector2Int center, HashSet<Vector2Int> positions)
+    {
+        int xMin = center.x - DungeonWidth / 2;
+        int xMax = center.x + DungeonWidth / 2;
+        int yMin = center.y - DungeonHeight / 2;
+        int yMax = center.y + DungeonHeight / 2;
+
+        positions.RemoveWhere(pos => pos.x < xMin || pos.x > xMax || pos.y < yMin || pos.y > yMax);
     }
     private List<HashSet<Vector2Int>> CreateCorridors(List<HashSet<Vector2Int>> roomPositions, List<Vector2Int> directions, List<Vector2Int> roomCenterPositions)
     {

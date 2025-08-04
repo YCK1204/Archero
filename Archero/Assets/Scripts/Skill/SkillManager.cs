@@ -36,6 +36,9 @@ public class SkillManager : MonoBehaviour
     private List<Skill> allSkills = new List<Skill>();
     private CharacterStats playerStats;
 
+    [Header("특수 무기용 데이터")]
+    [SerializeField] private WeaponData turretWeaponData;
+    [SerializeField] private GameObject turretWeaponPrefab;
     void Awake()
     {
         Instance = this;
@@ -77,6 +80,7 @@ public class SkillManager : MonoBehaviour
         allSkills.Add(new Skill("BackShot", "후방샷", ESkillGrade.Common, ESkillCategory.LevelUp));
         allSkills.Add(new Skill("PiercingShot", "관통샷", ESkillGrade.Common, ESkillCategory.LevelUp));
 
+        allSkills.Add(new Skill("SummonTurret", "터렛 장착", ESkillGrade.Common, ESkillCategory.LevelUp));
         // --- 천사 이벤트 스킬 ---
         allSkills.Add(new Skill("Heal", "HP 회복", ESkillGrade.Common, ESkillCategory.Angel));
         allSkills.Add(new Skill("AttackUp", "공격력 증가", ESkillGrade.Common, ESkillCategory.Angel));
@@ -171,6 +175,9 @@ public class SkillManager : MonoBehaviour
             case "PiercingShot":
                 ApplyToAllWeapons(w => w.AddModifier(EProjectileModifier.Piercing));
                 break;
+            case "SummonTurret":
+                EquipTurretWeapon();
+                break;
         }
     }
     private void ApplyToAllWeapons(System.Action<WeaponData> action)
@@ -182,6 +189,24 @@ public class SkillManager : MonoBehaviour
                 action.Invoke(data);
         }
     }
+    private void EquipTurretWeapon()
+    {
+        var holder = FindObjectOfType<WeaponHolder>();
+        if (holder == null)
+        {
+            Debug.LogWarning("WeaponHolder를 찾을 수 없습니다.");
+            return;
+        }
+
+        if (turretWeaponData == null || turretWeaponPrefab == null)
+        {
+            Debug.LogWarning("터렛 무기 데이터 또는 프리팹이 연결되지 않았습니다.");
+            return;
+        }
+
+        holder.EquipWeapon(turretWeaponData, turretWeaponPrefab);
+    }
+
 
     // 등급과 스탯 종류에 따라 올바른 배율을 찾아주는 보조 함수
     private float GetStatMultiplier(ESkillGrade grade, EStatType type)

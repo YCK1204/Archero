@@ -1,6 +1,7 @@
 using Assets.Define;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class WeaponHolder : MonoBehaviour
@@ -46,21 +47,21 @@ public class WeaponHolder : MonoBehaviour
         }
 
         GameObject weaponObj = Instantiate(prefab, transform);
-        // 디버그중 ~
-        Debug.Log($"[DEBUG] Instantiated weaponObj: {weaponObj.name}");
-        var allComponents = weaponObj.GetComponents<Component>();
-        foreach (var comp in allComponents)
-        {
-            Debug.Log($"[DEBUG] Component on weaponObj: {comp.GetType()}");
-        }
-        // ~ 디버그중
+
         WeaponBase weapon = weaponObj.GetComponent<WeaponBase>();
-        Debug.Log($"[DEBUG] weapon == null ? {weapon == null}"); // ~ 디버그중
         if (weapon == null)
         {
             Debug.LogError("WeaponHolder: 프리팹에 WeaponBase가 없습니다.");
             Destroy(weaponObj);
             return;
+        }
+        // 터렛 개수 파악
+        int turretIndex = equippedWeapons.Count(w => w is TurretWeapon);
+
+        // weapon에 인덱스 넘기기 (TurretWeapon.cs에서 처리할 수 있도록)
+        if (weapon is TurretWeapon turret)
+        {
+            turret.SetIndex(turretIndex); // 이 메서드 TurretWeapon.cs에 추가할 거야
         }
 
         weapon.Init(data, ownerStats, this);

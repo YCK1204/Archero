@@ -11,6 +11,12 @@ public class TurretWeapon : WeaponBase
 
     private float lastAttackTime = -Mathf.Infinity;
 
+    private int turretIndex = 0; // 몇 번째 터렛인지
+
+    public void SetIndex(int index)
+    {
+        turretIndex = index;
+    }
 
     public override void Activate()
     {
@@ -103,14 +109,19 @@ public class TurretWeapon : WeaponBase
 
     private void OrbitBehindPlayer()
     {
+        if (holder == null || weaponData == null) return;
+
         Transform target = holder.FindNearestMonster(weaponData.Range);
         if (target == null) return;
 
         // 플레이어 → 몬스터 방향
         Vector2 dirToTarget = (target.position - holder.transform.position).normalized;
 
+        float angleOffset = 15f * (turretIndex - 1);
+        float radians = Mathf.Atan2(-dirToTarget.y, -dirToTarget.x) + angleOffset * Mathf.Deg2Rad;
+
         // 반대 방향으로 이동한 위치
-        Vector3 orbitOffset = -dirToTarget * orbitDistance;
+        Vector3 orbitOffset = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians)) * orbitDistance;
 
         orbitOffset += Vector3.up * 0.6f;
 

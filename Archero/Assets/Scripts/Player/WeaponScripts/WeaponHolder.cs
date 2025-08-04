@@ -1,3 +1,4 @@
+using Assets.Define;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,8 +16,10 @@ public class WeaponHolder : MonoBehaviour
     {
         ownerStats = GetComponentInParent<CharacterStats>();
     }
-    private void Start()
+    private IEnumerator Start()
     {
+        yield return new WaitUntil(() => BattleManager.GetInstance?.playerProjectilePool != null);
+        yield return new WaitUntil(() => BattleManager.GetInstance.playerProjectilePool.IsPrefabReady);
         //yield return null;           // À¸Çë¤·À¸¾û¤·À¸¾îÇãÇë
         EquipWeapon(startingWeaponData, startingWeaponPrefab);
     }

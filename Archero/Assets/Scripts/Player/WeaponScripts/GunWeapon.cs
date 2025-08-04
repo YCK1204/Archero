@@ -34,6 +34,22 @@ public class GunWeapon : WeaponBase
 
     private void FireAt(Vector2 targetPos)
     {
+        // 1. 안전 확인 (플레이어 풀이 아직 준비 안된 경우 방어)
+        var pool = BattleManager.GetInstance?.playerProjectilePool;
+        if (pool == null)
+        {
+            Debug.LogWarning("GunWeapon: Projectile Pool이 아직 준비되지 않았습니다.");
+            return;
+        }
+
+        // 2. 풀이 준비됐는지 (prefab이 할당됐는지) 직접 체크
+        var testProj = pool.DeQueue();
+        if (testProj == null)
+        {
+            Debug.LogWarning("GunWeapon: 풀에서 투사체를 가져오지 못했습니다.");
+            return;
+        }
+        // 3. 위치 세팅 후 사용
         Vector2 baseDir = (targetPos - (Vector2)firePoint.position).normalized;
         float baseAngle = Mathf.Atan2(baseDir.y, baseDir.x) * Mathf.Rad2Deg;
 
@@ -46,13 +62,18 @@ public class GunWeapon : WeaponBase
             float angle = startAngle + spread * i;
             float rad = angle * Mathf.Deg2Rad;
             Vector2 dir = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
-
-            Projectile proj = BattleManager.GetInstance.playerProjectilePool.DeQueue();
-
+            Projectile proj = pool.DeQueue();
+        if (proj == null)
+        {
+            Debug.LogWarning("GunWeapon: 풀에서 투사체를 가져오지 못했습니다. (반복 중)");
+            continue;
+        }
             proj.transform.position = firePoint.position;
             proj.transform.rotation = Quaternion.Euler(0, 0, angle);
 
             proj.Init(dir, weaponData, ownerStats.TotalStats.AttackPower);
+
+            proj.gameObject.SetActive(true);
         }
     }
 

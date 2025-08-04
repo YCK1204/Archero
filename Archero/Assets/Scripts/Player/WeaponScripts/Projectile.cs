@@ -15,7 +15,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float lifetime = 3f;  // 막 쌓일 수 있대서, 일단 증발 시간 3f로 했어용
     [SerializeField] private LayerMask targetLayer;
 
-    public void Init(Vector2 dir, WeaponData weaponData, int attackPower)
+    public virtual void Init(Vector2 dir, WeaponData weaponData, int attackPower)
     {
         direction = dir.normalized;
         speed = weaponData.ProjectileSpeed;

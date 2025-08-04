@@ -49,6 +49,7 @@ namespace Assets.Define
 }
 public class Pool<T> where T : MonoBehaviour
 {
+    public bool IsPrefabReady => prefab != null;
     private Stack<T> stack;
     private T prefab;
     public void Init()
@@ -71,6 +72,11 @@ public class Pool<T> where T : MonoBehaviour
     }
     public T DeQueue()
     {
+        if (prefab == null)
+        {
+            Debug.LogError($"[Pool<{typeof(T).Name}>] prefab이 아직 준비되지 않았습니다.");
+            return null;
+        }
         if (stack.Count <= 0)//큐언더플로우 방지
         {
             GameObject gameObj = GameObject.Instantiate(prefab.gameObject);

@@ -1,3 +1,4 @@
+using Assets.Define;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,6 +30,7 @@ public class TurretWeapon : WeaponBase
 
     private void FireAt(Vector2 targetPos)
     {
+
         Vector2 baseDir = (targetPos - (Vector2)firePoint.position).normalized;
         float baseAngle = Mathf.Atan2(baseDir.y, baseDir.x) * Mathf.Rad2Deg;
 
@@ -42,11 +44,14 @@ public class TurretWeapon : WeaponBase
             float rad = angle * Mathf.Deg2Rad;
             Vector2 dir = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
 
-            GameObject proj = Instantiate(projectilePrefab, firePoint.position, Quaternion.Euler(0, 0, angle));
+            //// 풀에서 꺼내기
+            //Projectile proj = BattleManager.GetInstance.turretProjectilePool.DeQueue();
 
-            // 공격력은 25%만 적용
-            int turretAttackPower = ownerStats.TotalStats.AttackPower /4;
-            proj.AddComponent<Projectile>()?.Init(dir, weaponData, turretAttackPower);
+            //// 위치 및 회전
+            //proj.transform.position = firePoint.position;
+            //proj.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+            //proj.Init(dir, weaponData, ownerStats.TotalStats.AttackPower);
         }
     }
 }

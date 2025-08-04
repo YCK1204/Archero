@@ -27,7 +27,7 @@ namespace Lee.Scripts
             {
                 Defines.ResourceManager.GetInstance.LoadAsync<GameObject>("Player", (go) =>
                 {
-                    MapManager.Instance.GenerateDungeon();
+                    MapManager.Instance.GenerateMap();
                     var player = Instantiate(go);
                     player.transform.position = Vector3.zero;
                 }, true);

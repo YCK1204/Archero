@@ -107,7 +107,7 @@ namespace Lee.Scripts
 
                 if (last.CompareTag("Monster"))
                 {
-                    uiManager.ShowPopUpUI<GameOverUI>("Prefabs/UI/GameOverUI");  // UI ����� ����
+                    uiManager.ShowPopUpUI<GameOverUI>("Prefabs/UI/GameOverUI");  
                     return;
                 }
 

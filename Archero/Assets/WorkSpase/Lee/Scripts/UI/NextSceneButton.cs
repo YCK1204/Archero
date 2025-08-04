@@ -33,5 +33,10 @@ namespace Lee.Scripts
                 }, true);
             });
         }
+
+        public void RewardTest()
+        {
+           GameManager.Instance.CheckStageClear();
+        }
     }
 }

@@ -77,12 +77,13 @@ public class SkillManager : MonoBehaviour
         allSkills.Add(new Skill("Heal", "HP 회복", ESkillGrade.Common, ESkillCategory.LevelUp));
         allSkills.Add(new Skill("Heal", "HP 회복", ESkillGrade.Rare, ESkillCategory.LevelUp));
         allSkills.Add(new Skill("Heal", "HP 회복", ESkillGrade.Epic, ESkillCategory.LevelUp));
-        // ============================ 플레이어 총알 스킬 추가 =========================================
-        allSkills.Add(new Skill("DiagonalShot", "사선샷", ESkillGrade.Common, ESkillCategory.LevelUp));
-        allSkills.Add(new Skill("BackShot", "후방샷", ESkillGrade.Common, ESkillCategory.LevelUp));
-        allSkills.Add(new Skill("PiercingShot", "관통샷", ESkillGrade.Common, ESkillCategory.LevelUp));
 
-        allSkills.Add(new Skill("SummonTurret", "터렛 장착", ESkillGrade.Common, ESkillCategory.LevelUp));
+        // ============================ 플레이어 총알 스킬 추가 =========================================
+        allSkills.Add(new Skill("DiagonalShot", "사선샷", ESkillGrade.Common, ESkillCategory.Valkyrie));
+        allSkills.Add(new Skill("BackShot", "후방샷", ESkillGrade.Common, ESkillCategory.Valkyrie));
+        allSkills.Add(new Skill("PiercingShot", "관통샷", ESkillGrade.Common, ESkillCategory.Valkyrie));
+        allSkills.Add(new Skill("SummonTurret", "터렛 장착", ESkillGrade.Common, ESkillCategory.Valkyrie));
+
         // --- 천사 이벤트 스킬 ---
         allSkills.Add(new Skill("Heal", "HP 회복", ESkillGrade.Common, ESkillCategory.Angel));
         allSkills.Add(new Skill("AttackUp", "공격력 증가", ESkillGrade.Common, ESkillCategory.Angel));

@@ -471,7 +471,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5249330920475971279, guid: 55789152e14b6b942aeb05ee554dacb1, type: 3}
       propertyPath: baseStats.AttackSpeed
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

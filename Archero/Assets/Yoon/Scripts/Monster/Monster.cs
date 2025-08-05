@@ -28,7 +28,7 @@ public class Monster : MonoBehaviour
     [SerializeField]private ChessCharType chessType;
     protected IStatManaging statSetter;
     protected Collider2D col;
-
+    public GameObject player { get; set; }
     protected float attackTimer = 0f;
     protected float playerDist = 0f;
     bool isStart = false;
@@ -66,6 +66,10 @@ public class Monster : MonoBehaviour
     protected virtual void Update()
     {
         BaseUpdate();
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
     }
     protected virtual bool BaseUpdate()
     {
@@ -75,7 +79,6 @@ public class Monster : MonoBehaviour
             {
                 fsm.Chage(StateTypes.Die);
                 BattleManager.GetInstance.monsterPool[chessType].EnQueue(this);
-                Lee.Scripts.GameManager.Instance.CheckStageClear();
             }
             return false;
         }
@@ -123,7 +126,9 @@ public class Monster : MonoBehaviour
         {
             BattleManager.GetInstance.RemoveHitInfo(col);
             Lee.Scripts.GameManager.Instance.CheckStageClear();
-            gameObject.SetActive(false);
+            player.GetComponent<PlayerExpHandler>().GainExp(10);
+            statSetter.ItemDrop(transform.position);
+            this.gameObject.SetActive(false);
         }
     }
 

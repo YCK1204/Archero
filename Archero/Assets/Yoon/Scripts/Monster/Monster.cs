@@ -2,6 +2,7 @@ using Assets.Define;
 using Assets.Yoon.Handler;
 using Handler;
 using Handler.Barrages;
+using Lee.Scripts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -112,14 +113,18 @@ public class Monster : MonoBehaviour
     }
     public void Damaged(int damage,Vector3 attackerPos)
     {
-
         // ≥ÀπÈ πÊ«‚
         Vector3 direction = transform.position - attackerPos;
         Vector3 knockbackDir = direction.normalized;
         if(agent != null)agent.velocity = knockbackDir * 3f;
         
         stat.GetDamage(damage);
-        if(stat.isDie()) BattleManager.GetInstance.RemoveHitInfo(col);
+        if (stat.isDie())
+        {
+            BattleManager.GetInstance.RemoveHitInfo(col);
+            Lee.Scripts.GameManager.Instance.CheckStageClear();
+            gameObject.SetActive(false);
+        }
     }
 
     public virtual IEnumerator Spawn(Vector3[] patrolPos , ChessCharType chessType)
@@ -250,6 +255,6 @@ public class KingStatSetter:IStatManaging
     }
     public void StatChange(ref MonsterStat stat, int stageNum)
     {
-        stat = new MonsterStat(10000, 40, 0.1f, 10, 10, 3);
+        stat = new MonsterStat(10, 40, 0.1f, 10, 10, 3);
     }
 }

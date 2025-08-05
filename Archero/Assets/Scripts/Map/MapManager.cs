@@ -54,6 +54,17 @@ public class MapManager : SimpleDungeonGenerator
         }
         SetDoors();
     }
+    public void OpenCorridorDoor(int level)
+    {
+        if (_mapData.Count <= level)
+            return;
+        var data = _mapData[level];
+        if (data.Corridor == null)
+            return;
+        var corridor = data.Corridor;
+        corridor.StartDoor.OpenDoor();
+        corridor.EndDoor.OpenDoor();
+    }
     void SetDoors()
     {
         Defines.ResourceManager.GetInstance.LoadAsync<GameObject>("Door", (g) =>

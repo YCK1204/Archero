@@ -43,6 +43,11 @@ namespace Assets.Define
         }
         public void Attack(Collider2D target,int damage,Vector3 attackerPos)
         {
+            //if (unitDict.ContainsKey(target) == false)
+            //{
+            //    unitDict.Add(target, );
+            //}
+
             if (unitDict.ContainsKey(target)) unitDict[target].Invoke(damage, attackerPos);
             else Debug.LogError("등록되지 않은 키 값입니다. BattleManager의 RegistHitInfo 함수를 통해 Collider2D값을 등록해주세요" +
                 "모르겠으면 허윤<< 찌르세요");

@@ -10,6 +10,7 @@ public class Door : MonoBehaviour
     [SerializeField]
     Sprite OpenSprite;
     bool isActivate = false;
+    [SerializeField]
     Sprite CloseSprite;
     public void Init(GameObject parent, Vector2Int startPos, Vector2Int endPos, bool start)
     {
@@ -35,6 +36,14 @@ public class Door : MonoBehaviour
 
             Collider2D.transform.position = transform.position + (placeBottom ? Vector3.down : Vector3.up);
         }
+    }
+    public void OpenDoor()
+    {
+        var renderer = GetComponent<SpriteRenderer>();
+        var collider = GetComponent<BoxCollider2D>();
+
+        renderer.sprite = OpenSprite;
+        collider.isTrigger = true;
     }
     private void OnTriggerExit2D(Collider2D collision)
     {

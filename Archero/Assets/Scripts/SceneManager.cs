@@ -22,17 +22,7 @@ public class SceneManagerEx : MonoBehaviour
             return _instance;
         }
     }
-    public void LoadDungeonScene()
-    {
-        ResourceManager.GetInstance.LoadAsync<GameObject>("Dungeon", (go) =>
-        {
-            LoadSceneAsync("DungeonScene", () =>
-            {
-                var player = Instantiate(go);
-                player.transform.position = Vector3.zero;
-            });
-        }, true);
-    }
+
     /// <summary>
     /// 동기형 씬 로드 함수
     /// </summary>

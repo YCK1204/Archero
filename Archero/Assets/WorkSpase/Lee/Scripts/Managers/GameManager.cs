@@ -46,6 +46,10 @@ namespace Lee.Scripts
             instance = this;
             DontDestroyOnLoad(this);
             InitManagers();
+            //SceneManagerEx.Instance.DefaultCallback += () =>
+            //{
+
+            //}
         }
 
         private void OnDestroy()
@@ -92,7 +96,6 @@ namespace Lee.Scripts
             }
             Debug.Log("SkillManager 초기화 완료");
         }
-
         public void CheckStageClear()
         {
             var unitDict = BattleManager.GetInstance.GetUnitDIct;
@@ -108,6 +111,7 @@ namespace Lee.Scripts
                     clearCount--;
                     if (clearCount > 0)
                     {
+                        MapManager.Instance.OpenCorridorDoor(BattleManager.GetInstance.stageNum - 1);
                         int roomsCleared = 23 - clearCount;
                         int[] groupSizes = { 3, 1, 2, 1, 1 };
                         ESkillCategory[] categories = { ESkillCategory.LevelUp, ESkillCategory.Valkyrie, ESkillCategory.LevelUp, ESkillCategory.Angel, ESkillCategory.Devil };

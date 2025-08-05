@@ -27,9 +27,10 @@ namespace Lee.Scripts
             {
                 Defines.ResourceManager.GetInstance.LoadAsync<GameObject>("Player", (go) =>
                 {
-                    MapManager.Instance.GenerateMap();
                     var player = Instantiate(go);
                     player.transform.position = Vector3.zero;
+                    player.transform.localScale = new Vector3(.5f, .5f, 1);
+                    MapManager.Instance.GenerateMap();
                 }, true);
             });
         }

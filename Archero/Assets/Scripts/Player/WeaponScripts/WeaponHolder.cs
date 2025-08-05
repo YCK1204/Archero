@@ -25,7 +25,6 @@ public class WeaponHolder : MonoBehaviour
         EquipWeapon(startingWeaponData, startingWeaponPrefab);
     }
 
-
     private void Update()
     {
         foreach (var weapon in equippedWeapons)

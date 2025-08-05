@@ -250,7 +250,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseStats:
     AttackPower: 10
-    MaxHp: 6
+    MaxHp: 100
     AttackSpeed: 1
     MoveSpeed: 5
     DashSpeed: 15

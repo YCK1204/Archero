@@ -7,7 +7,7 @@ using UnityEngine;
 public class CharacterStats : MonoBehaviour
 {
     [Header("기본 능력치")]
-    [SerializeField] private Stat baseStats = new Stat(10, 6, 1f, 5f, 15f);  // 인스펙터에서 조정 가능
+    [SerializeField] private Stat baseStats = new Stat(10, 100, 1f, 5f, 15f);  // 인스펙터에서 조정 가능
 
     public Stat TotalStats { get; private set; }
     public int CurrentHp => currentHp;

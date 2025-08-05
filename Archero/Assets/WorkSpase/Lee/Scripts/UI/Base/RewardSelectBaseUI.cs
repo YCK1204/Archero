@@ -26,6 +26,7 @@ namespace Lee.Scripts
         {
             base.OnDisable();
             ClearSlots();
+            Time.timeScale = 1.0f;  
         }
 
         public virtual void Initialize(List<StageRewardEntry> entries, Action<StageRewardEntry> onChosen)
@@ -46,6 +47,7 @@ namespace Lee.Scripts
 
             // 보상 슬롯 생성
             CreateRewardSlots();
+            Time.timeScale = 0f;
         }
 
         protected virtual void CreateRewardSlots()

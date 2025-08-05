@@ -6,8 +6,15 @@ using UnityEngine;
 public class GunWeapon : WeaponBase
 {
     [SerializeField] private Transform firePoint;
+    PlayerExpHandler PlayerExpHandler;
+
 
     private float lastAttackTime = -Mathf.Infinity;
+
+    private void Awake()
+    {
+        PlayerExpHandler = GetComponentInParent<PlayerExpHandler>();
+    }
 
     private void Update()
     {
@@ -87,6 +94,7 @@ public class GunWeapon : WeaponBase
                 backProj.Init(backDir, weaponData, ownerStats.TotalStats.AttackPower, pool);
             }
         }
+        PlayerExpHandler.GainExp(10);
     }
 
     private void RotateTowardNearestMonster()

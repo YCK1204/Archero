@@ -27,7 +27,7 @@ public class Monster : MonoBehaviour
     [SerializeField]private ChessCharType chessType;
     protected IStatManaging statSetter;
     protected Collider2D col;
-
+    public GameObject player { get; set; }
     protected float attackTimer = 0f;
     protected float playerDist = 0f;
     bool isStart = false;
@@ -65,6 +65,10 @@ public class Monster : MonoBehaviour
     protected virtual void Update()
     {
         BaseUpdate();
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
     }
     protected virtual bool BaseUpdate()
     {
@@ -74,7 +78,6 @@ public class Monster : MonoBehaviour
             {
                 fsm.Chage(StateTypes.Die);
                 BattleManager.GetInstance.monsterPool[chessType].EnQueue(this);
-                Lee.Scripts.GameManager.Instance.CheckStageClear();
             }
             return false;
         }
@@ -119,7 +122,14 @@ public class Monster : MonoBehaviour
         if(agent != null)agent.velocity = knockbackDir * 3f;
         
         stat.GetDamage(damage);
-        if(stat.isDie()) BattleManager.GetInstance.RemoveHitInfo(col);
+        if (stat.isDie())
+        {
+            BattleManager.GetInstance.RemoveHitInfo(col);
+            Lee.Scripts.GameManager.Instance.CheckStageClear();
+            player.GetComponent<PlayerExpHandler>().GainExp(10);
+            statSetter.ItemDrop(transform.position);
+            this.gameObject.SetActive(false);
+        }
     }
 
     public virtual IEnumerator Spawn(Vector3[] patrolPos , ChessCharType chessType)
@@ -250,6 +260,6 @@ public class KingStatSetter:IStatManaging
     }
     public void StatChange(ref MonsterStat stat, int stageNum)
     {
-        stat = new MonsterStat(10000, 40, 0.1f, 10, 10, 3);
+        stat = new MonsterStat(10, 40, 0.1f, 10, 10, 3);
     }
 }

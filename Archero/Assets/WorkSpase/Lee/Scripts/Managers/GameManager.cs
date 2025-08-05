@@ -32,6 +32,8 @@ namespace Lee.Scripts
         private static SkillManager skillManager;
         public static SkillManager SkillReward { get { return skillManager; } }
 
+
+
         int clearCount = 23;
         public int _clearCount { get => clearCount; set => clearCount = value; }
 

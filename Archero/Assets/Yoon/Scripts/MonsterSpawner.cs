@@ -55,6 +55,10 @@ public class MonsterSpawner : MonoBehaviour
         BattleManager.GetInstance.spawnQueue.Enqueue(new SpawnQueue(ChessCharType.King, new Vector3(centerPos.x,centerPos.y,0),null));
 
         BattleManager.GetInstance.SpawnMonster();
+    }
 
+   public void SpwanTest() 
+    {
+        StartCoroutine("Start");
     }
 }

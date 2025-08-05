@@ -254,6 +254,6 @@ public class KingStatSetter:IStatManaging
     }
     public void StatChange(ref MonsterStat stat, int stageNum)
     {
-        stat = new MonsterStat(1000, 40, 0.1f, 10, 10, 3);
+        stat = new MonsterStat(50, 20, 0.1f, 10, 10, 3);
     }
 }

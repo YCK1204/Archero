@@ -10,7 +10,7 @@ public class PlayerExpHandler : MonoBehaviour
     [SerializeField] private int playerLevel = 1;
     [SerializeField] private int currentExp = 0;
     [SerializeField] private int baseExpToLevelUp = 10;
-    [SerializeField] private float expGrowthFactor = 1.5f;
+    [SerializeField] private float expGrowthFactor = 1.1f;
 
     public int CurrentPlayerLevel => playerLevel;
     public int CurrentExp => currentExp;

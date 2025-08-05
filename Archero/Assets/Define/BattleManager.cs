@@ -71,10 +71,7 @@ namespace Assets.Define
                 
             }
         }
-
-
     }
-    
 }
 public class Pool<T> where T : MonoBehaviour
 {

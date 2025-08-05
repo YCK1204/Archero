@@ -1136,6 +1136,7 @@ GameObject:
   - component: {fileID: 1175013260}
   - component: {fileID: 1175013258}
   - component: {fileID: 1175013259}
+  - component: {fileID: 1175013261}
   m_Layer: 0
   m_Name: Wall
   m_TagString: Untagged
@@ -1245,6 +1246,42 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1548432370}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!19719996 &1175013261
+TilemapCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175013257}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_MaximumTileChangeCount: 1000
+  m_ExtrusionFactor: 0
+  m_UseDelaunayMesh: 0
 --- !u!1 &1350793458
 GameObject:
   m_ObjectHideFlags: 0
@@ -1379,10 +1416,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FloorTilemap: {fileID: 275855014}
   WallTilemap: {fileID: 1175013258}
-  FloorTile: {fileID: 11400000, guid: 004fda0ae88f3ed448658c60e719420e, type: 2}
-  WallTile: {fileID: 11400000, guid: ce2cbf5dc8f5a394faf8d3ed42a6a6bb, type: 2}
-  CorridorTile: {fileID: 11400000, guid: 233e9e63a97ab2244910d344525551fc, type: 2}
-  TestTile: {fileID: 0}
+  FloorBlackTile: {fileID: 11400000, guid: c4be8e1c28edb184b8d7940e80cfe435, type: 2}
+  FloorWhiteTile: {fileID: 11400000, guid: 23a73053bbb831343916e4c16a98fc09, type: 2}
+  WallTile: {fileID: 11400000, guid: 7fc325c293fb47c4d98aba0309bb2393, type: 2}
 --- !u!4 &1601073339
 Transform:
   m_ObjectHideFlags: 0
@@ -1432,12 +1468,7 @@ MonoBehaviour:
   StartPos: {x: 0, y: 0}
   DungeonWidth: 20
   DungeonHeight: 20
-  CorridorCount: 5
   SimpleRandomWalkData: {fileID: 11400000, guid: 73bf5bec35173b64eab92acf759fa919, type: 2}
-  RoomSpacing: 50
-  CorridorWidth: 3
-  ShowCorridor: 1
-  ShowRoom: 1
 --- !u!4 &1888250747
 Transform:
   m_ObjectHideFlags: 0

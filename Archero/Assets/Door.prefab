@@ -48,10 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Collider2D: {fileID: 7164377797193587565}
-  VerticalCloseSprite: {fileID: -1627138593, guid: 8bf9789ddd970824a9b130b495325a0c, type: 3}
-  VerticalOpenSprite: {fileID: 0}
-  HorizontalCloseSprite: {fileID: -315292187, guid: 8bf9789ddd970824a9b130b495325a0c, type: 3}
-  HorizontalOpenSprite: {fileID: 0}
+  OpenSprite: {fileID: 21300000, guid: ab4abd38eff67304f8f5270616237849, type: 3}
+  CloseSprite: {fileID: 21300000, guid: 98ea91bce7e7574448c6c6e22fde474d, type: 3}
 --- !u!212 &1688386116788740904
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -101,7 +99,7 @@ SpriteRenderer:
   m_Size: {x: 2.41, y: 2.47}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!61 &11082327466262199

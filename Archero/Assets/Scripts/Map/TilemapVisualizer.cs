@@ -8,13 +8,52 @@ using UnityEngine.WSA;
 public class TilemapVisualizer : MonoBehaviour
 {
     [SerializeField]
-    public Tilemap FloorTilemap, WallTilemap;
+    Tilemap FloorTilemap, WallTilemap;
     [SerializeField]
-    public TileBase FloorTile, WallTile, CorridorTile, TestTile;
+    TileBase FloorBlackTile, FloorWhiteTile;
+    [SerializeField]
+    RuleTile WallTile;
     public void PaintFloorTiles(IEnumerable<Vector2Int> floorPos)
     {
         foreach (var position in floorPos)
-            PaintSingleTile(FloorTilemap, FloorTile, position);
+        {
+            var x = Math.Abs(position.x + 10000) % 4;
+            var y = Math.Abs(position.y + 10000) % 4;
+
+            if (x < 2)
+            {
+                if (y < 2)
+                {
+                    PaintSingleTile(FloorTilemap, FloorBlackTile, position);
+                }
+                else
+                {
+                    PaintSingleTile(FloorTilemap, FloorWhiteTile, position);
+                }
+            }
+            else
+            {
+                if (y < 2)
+                {
+                    PaintSingleTile(FloorTilemap, FloorWhiteTile, position);
+
+                }
+                else
+                {
+                    PaintSingleTile(FloorTilemap, FloorBlackTile, position);
+
+                }
+            }
+
+            //if ((x + y) % 2 == 0)
+            //{
+            //    PaintSingleTile(FloorTilemap, FloorBlackTile, position);
+            //}
+            //else
+            //{
+            //    PaintSingleTile(FloorTilemap, FloorWhiteTile, position);
+            //}
+        }
     }
     public void PaintSingleTile(Tilemap tilemap, TileBase tile, Vector2Int position)
     {

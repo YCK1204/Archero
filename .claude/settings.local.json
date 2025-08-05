@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(find:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(python test:*)",
+      "Bash(python3 test_checkerboard.py:*)"
     ],
     "deny": []
   }

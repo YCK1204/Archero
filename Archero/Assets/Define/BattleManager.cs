@@ -67,8 +67,8 @@ namespace Assets.Define
             while (result.types.Count>0)
             {
                 (ChessCharType, Vector3,Vector3[]) spawnData = result.types.Dequeue();
-                monsterPool[spawnData.Item1].DeQueue().Spawn(spawnData.Item3,spawnData.Item1);
-                
+                Monster mob = monsterPool[spawnData.Item1].DeQueue();
+                mob.Spawn(spawnData.Item3,spawnData.Item1,spawnData.Item2);
             }
         }
     }

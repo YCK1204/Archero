@@ -17,7 +17,7 @@ public class HPDropItem : DropItem
         {
             collision.GetComponent<CharacterStats>().Heal(healValue);
             Debug.LogError("나중에 수정해야함");
-            //BattleManager.GetInstance.Items[1].EnQueue(this);
+            BattleManager.GetInstance.Items[1].EnQueue(this);
         }
     }
 }

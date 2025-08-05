@@ -44,7 +44,6 @@ public class MonsterSpawner : MonoBehaviour
                     }
                     patrols.Add(patrolPos);
                 }
-                queue.types.Enqueue((ChessCharType.King, new Vector3(map.CenterPosition.x, map.CenterPosition.y, 0), null));
                 queue.types.Enqueue((type, pos,patrols.ToArray()));
             }
             monsterNumb += 2;

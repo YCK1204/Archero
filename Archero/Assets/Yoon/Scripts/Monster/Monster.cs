@@ -16,7 +16,7 @@ public class Monster : MonoBehaviour
 {
     protected IStateMachine fsm;
     [SerializeField]protected MonsterStat stat;
-    protected NavMeshAgent agent;
+    public NavMeshAgent agent;
     [SerializeField]protected Transform target;
 
     protected IAttackHandler attackHandle;
@@ -126,7 +126,7 @@ public class Monster : MonoBehaviour
         }
     }
 
-    public virtual IEnumerator Spawn(Vector3[] patrolPos , ChessCharType chessType)
+    public virtual IEnumerator Spawn(Vector3[] patrolPos , ChessCharType chessType,Vector3 pos)
     {
         yield return new WaitUntil(() => isStart);
         statSetter.StatChange(ref this.stat, BattleManager.GetInstance.stageNum);
@@ -135,6 +135,8 @@ public class Monster : MonoBehaviour
         BattleManager.GetInstance.RegistHitInfo(col, Damaged);
         //YOON : stageNum �޾ƿ;ߵ�
         Init();
+        transform.position = pos;
+        agent?.Warp(pos);
     }
 
 

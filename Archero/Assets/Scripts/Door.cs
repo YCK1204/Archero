@@ -1,3 +1,4 @@
+using Assets.Define;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,17 +7,9 @@ public class Door : MonoBehaviour
 {
     [SerializeField]
     Collider2D Collider2D;
-    //[SerializeField]
-    //Sprite VerticalCloseSprite;
-    //[SerializeField]
-    //Sprite VerticalOpenSprite;
-    //[SerializeField]
-    //Sprite HorizontalCloseSprite;
-    //[SerializeField]
-    //Sprite HorizontalOpenSprite;
     [SerializeField]
     Sprite OpenSprite;
-    [SerializeField]
+    bool isActivate = false;
     Sprite CloseSprite;
     public void Init(GameObject parent, Vector2Int startPos, Vector2Int endPos, bool start)
     {
@@ -41,6 +34,17 @@ public class Door : MonoBehaviour
             bool placeBottom = (start && bottomToTop) || (!start && !bottomToTop);
 
             Collider2D.transform.position = transform.position + (placeBottom ? Vector3.down : Vector3.up);
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (!isActivate && collision.gameObject.layer == 3)
+        {
+            BattleManager.GetInstance.SpawnMonster();
+            
+            isActivate = true;
+            Collider2D.isTrigger = false;
+            //TODO : 문 수집해둔게 있으면 전체적으로 잠그는것도 괜찮아보입니다!
         }
     }
 }

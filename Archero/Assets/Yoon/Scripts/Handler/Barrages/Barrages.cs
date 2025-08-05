@@ -19,11 +19,12 @@ namespace Handler.Barrages
         protected float defaultAngle;//초기화할 각도
         protected int damage;
         public int shotCount;//1회 사격시 발사 갯수
-        public Barrages(float shotDelay, float shotDuration, float angleGap, float poviotAngle, int shotCount)
+        public Barrages(float shotDelay, float shotDuration, float angleGap, float poviotAngle, int shotCount , int damage)
         {
             this.shotDelay = shotDelay;
             this.shotDuration = shotDuration;
             this.angleGap = angleGap;
+            this.damage = damage;
             this.shotCount = shotCount;
         }
         public abstract void OnShot(Vector3 tr, float angle = 999f);

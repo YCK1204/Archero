@@ -52,6 +52,7 @@ public class SceneManagerEx : MonoBehaviour
         SceneManager.LoadSceneAsync(sceneName).completed += (op) =>
         {
             callback?.Invoke();
+            DefaultCallback?.Invoke();
         };
 
     }

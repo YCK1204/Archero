@@ -19,6 +19,7 @@ public class NormalMonster : Monster
     // Update is called once per frame
     protected override void Update()
     {
+        if (!MapManager.Instance.IsBaked) return;
         patrolTimer += Time.deltaTime;
         if (!BaseUpdate())
         {

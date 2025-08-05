@@ -12,9 +12,13 @@ public class BossMonster : Monster
     protected override void Start()
     {
         fsm = new MonsterStateMachine(GetComponent<Animator>());
-        stat = new MonsterStat(100, 10, 5f, 7f, 5f, 1);
+        
         fsm.Init();
         col = GetComponent<Collider2D>();
+
+        statSetter = new KingStatSetter();
+        statSetter.StatChange(ref stat, 1);
+
         attackHandle = IAttackHandler.TypeFactory(MobType.Boss);
         moveHandler = IMoveHandler.Factory(MoveType.none,null);
         base.Init();

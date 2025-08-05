@@ -97,19 +97,12 @@ public class SimpleDungeonGenerator : AbstractDungeonGenerator
             foreach (var pos in corridor.Positions)
                 floorPos.Add(pos);
         }
-
         foreach (var room in roomPositions)
         {
             foreach (var pos in room)
                 floorPos.Add(pos);
-
         }
         TilemapVisualizer.PaintFloorTiles(floorPos);
-        foreach (var corridor in corridors)
-        {
-            foreach (var pos in corridor.Positions)
-                TilemapVisualizer.PaintSingleTile(TilemapVisualizer.FloorTilemap, TilemapVisualizer.CorridorTile, pos);
-        }
         TilemapVisualizer.GenerateWalls(floorPos);
     }
     void RemoveIsland(List<HashSet<Vector2Int>> roomPositions, List<Vector2Int> roomCenterPositions)

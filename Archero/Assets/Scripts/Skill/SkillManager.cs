@@ -61,7 +61,7 @@ public class SkillManager : MonoBehaviour
 
     private void BuildSkillDatabase()
         {
-        // --- 레벨업 & 발키리 이벤트 스킬 (ID, 이름, 등급, 카테고리) ---
+        // --- 레벨업 이벤트 스킬 (ID, 이름, 등급, 카테고리) ---
         allSkills.Add(new Skill("AttackUp", "공격력 증가", ESkillGrade.Common, ESkillCategory.LevelUp));
         allSkills.Add(new Skill("AttackUp", "공격력 증가", ESkillGrade.Rare, ESkillCategory.LevelUp));
         allSkills.Add(new Skill("AttackUp", "공격력 증가", ESkillGrade.Epic, ESkillCategory.LevelUp));
@@ -77,6 +77,13 @@ public class SkillManager : MonoBehaviour
         allSkills.Add(new Skill("Heal", "HP 회복", ESkillGrade.Common, ESkillCategory.LevelUp));
         allSkills.Add(new Skill("Heal", "HP 회복", ESkillGrade.Rare, ESkillCategory.LevelUp));
         allSkills.Add(new Skill("Heal", "HP 회복", ESkillGrade.Epic, ESkillCategory.LevelUp));
+
+        // --- 발키리 이벤트 스킬 (ID, 이름, 등급, 카테고리) ---
+        allSkills.Add(new Skill("AttackUp", "공격력 증가", ESkillGrade.Common, ESkillCategory.Valkyrie));
+        allSkills.Add(new Skill("AttackSpeedUp", "공격속도 증가", ESkillGrade.Common, ESkillCategory.Valkyrie));
+        allSkills.Add(new Skill("MoveSpeedUp", "이동속도 증가", ESkillGrade.Common, ESkillCategory.Valkyrie));
+        allSkills.Add(new Skill("MaxHealthUp", "최대체력 증가", ESkillGrade.Common, ESkillCategory.Valkyrie));
+        allSkills.Add(new Skill("Heal", "HP 회복", ESkillGrade.Common, ESkillCategory.Valkyrie));
 
         // ============================ 플레이어 총알 스킬 추가 =========================================
         allSkills.Add(new Skill("DiagonalShot", "사선샷", ESkillGrade.Common, ESkillCategory.Valkyrie));

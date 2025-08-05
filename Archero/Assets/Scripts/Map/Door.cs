@@ -45,14 +45,17 @@ public class Door : MonoBehaviour
         renderer.sprite = OpenSprite;
         collider.isTrigger = true;
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        
+    }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (!isActivate && collision.gameObject.layer == 3)
+        if (!isActivate && collision.gameObject.layer == 6)
         {
             BattleManager.GetInstance.SpawnMonster();
             
             isActivate = true;
-            Collider2D.isTrigger = false;
             //TODO : 문 수집해둔게 있으면 전체적으로 잠그는것도 괜찮아보입니다!
         }
     }

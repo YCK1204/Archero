@@ -16,8 +16,8 @@ public class HPDropItem : DropItem
         if (collision.CompareTag("Player"))
         {
             collision.GetComponent<CharacterStats>().Heal(healValue);
-            Destroy(gameObject);
-            //BattleManager.GetInstance.Items[1].EnQueue(this);
+            Debug.LogError("나중에 수정해야함");
+            BattleManager.GetInstance.Items[1].EnQueue(this);
         }
     }
 }
